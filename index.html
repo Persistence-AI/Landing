@@ -817,8 +817,8 @@
         <div class="install-section">
             <div class="install-label">Install:</div>
             <div class="install-command">
-                <code id="hero-install-command">curl -fsSL https://persistenceai.com/install | bash</code>
-                <button class="copy-btn" id="hero-copy-btn" onclick="copyToClipboard('curl -fsSL https://persistenceai.com/install | bash', this, 'linux')">Copy</button>
+                <code id="hero-install-command">curl -fsSL https://persistence-ai.github.io/Landing/install.sh | bash</code>
+                <button class="copy-btn" id="hero-copy-btn" onclick="copyToClipboard('curl -fsSL https://persistence-ai.github.io/Landing/install.sh | bash', this, 'linux')">Copy</button>
             </div>
             <div style="margin-top: 0.75rem; font-size: 0.85rem; color: var(--text-secondary); text-align: center;">
                 <span id="platform-hint">Linux/macOS command shown. </span>
@@ -875,7 +875,7 @@
                     <h3 style="margin-bottom: 1rem; color: var(--text-primary);">Install</h3>
                     <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Install PersistenceAI with a single command</p>
                     <div class="code-block" style="text-align: left;">
-                        <code>curl -fsSL https://persistenceai.com/install | bash</code>
+                        <code>curl -fsSL https://persistence-ai.github.io/Landing/install.sh | bash</code>
                     </div>
                 </div>
                 <div class="feature-card" style="text-align: center; padding: 2rem;">
@@ -1596,10 +1596,10 @@ persistenceai run --model ollama/llama3</code>
                 </h4>
                 <p>Quick install for Linux and macOS</p>
                 <div class="command">
-                    curl -fsSL https://persistenceai.com/install | bash
-                    <button class="command-copy" onclick="copyToClipboard('curl -fsSL https://persistenceai.com/install | bash', this, 'linux')">Copy</button>
+                    curl -fsSL https://persistence-ai.github.io/Landing/install.sh | bash
+                    <button class="command-copy" onclick="copyToClipboard('curl -fsSL https://persistence-ai.github.io/Landing/install.sh | bash', this, 'linux')">Copy</button>
                 </div>
-                <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-secondary);">For Windows, use PowerShell: <code style="font-size: 0.85rem;">iwr -useb https://persistenceai.com/install | iex</code></p>
+                <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-secondary);">For Windows, use PowerShell: <code style="font-size: 0.85rem;">iwr -useb https://persistence-ai.github.io/Landing/install.ps1 | iex</code></p>
             </div>
 
             <div class="install-method">
@@ -2608,15 +2608,15 @@ persistenceai github install
             
             if (!isWindowsCommand) {
                 // Switch to Windows
-                commandEl.textContent = 'iwr -useb https://persistenceai.com/install | iex';
-                buttonEl.setAttribute('onclick', "copyToClipboard('iwr -useb https://persistenceai.com/install | iex', this, 'windows')");
+                commandEl.textContent = 'iwr -useb https://persistence-ai.github.io/Landing/install.ps1 | iex';
+                buttonEl.setAttribute('onclick', "copyToClipboard('iwr -useb https://persistence-ai.github.io/Landing/install.ps1 | iex', this, 'windows')");
                 hintEl.textContent = 'Windows PowerShell command shown. ';
                 linkEl.textContent = 'Switch to Linux/macOS →';
                 isWindowsCommand = true;
             } else {
                 // Switch to Unix
-                commandEl.textContent = 'curl -fsSL https://persistenceai.com/install | bash';
-                buttonEl.setAttribute('onclick', "copyToClipboard('curl -fsSL https://persistenceai.com/install | bash', this, 'linux')");
+                commandEl.textContent = 'curl -fsSL https://persistence-ai.github.io/Landing/install.sh | bash';
+                buttonEl.setAttribute('onclick', "copyToClipboard('curl -fsSL https://persistence-ai.github.io/Landing/install.sh | bash', this, 'linux')");
                 hintEl.textContent = 'Linux/macOS command shown. ';
                 linkEl.textContent = 'Switch to Windows →';
                 isWindowsCommand = false;
