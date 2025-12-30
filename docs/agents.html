@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agents - PersistenceAI Documentation</title>
+    <title><p>Agents</p> - PersistenceAI Documentation</title>
     <style>
         * {
             margin: 0;
@@ -138,11 +138,11 @@
 <body>
     <div class="container">
         <a href="index.html" class="back-link">← Back to Documentation</a>
-        <h1>Agents</h1>
+        <h1><p>Agents</p></h1>
 
 <p>PersistenceAI uses an agent system where different agents have specialized roles and capabilities.</p>
 
-<h2>Overview</h2>
+<h2><p>Overview</p></h2>
 
 <p>Agents in PersistenceAI are specialized AI assistants, each designed for specific tasks:</p>
 
@@ -152,62 +152,60 @@
 <li><strong>Architect</strong> - Helps with system design and architecture</li>
 <li><strong>And more...</strong></li>
 
-</ul><h2>Switching Agents</h2>
+</ul><h2><p>Switching Agents</p></h2>
 
-<h3>Using Keyboard</h3>
+<h3><p>Using Keyboard</p></h3>
 
 <ul><li><strong><code>Tab</code></strong> - Cycle to next agent</li>
 <li><strong><code>Shift+Tab</code></strong> - Cycle to previous agent</li>
 
-</ul><h3>Using Command</h3>
+</ul><h3><p>Using Command</p></h3>
 
-<p>``<code></p>
-<p>/agents</p>
-</code>`<code>
+<pre><code>/agents</code></pre>
 
 <p>This lists all available agents. Select one to switch.</p>
 
-<h3>Using Shortcut</h3>
+<h3><p>Using Shortcut</p></h3>
 
-<ul><li><strong></code><leader>A<code></strong> (default: </code>Ctrl+X A<code>) - List agents</li>
+<ul><li><strong><code><leader>A</code></strong> (default: <code>Ctrl+X A</code>) - List agents</li>
 
-</ul><h2>Agent Roles</h2>
+</ul><h2><p>Agent Roles</p></h2>
 
 <p>Each agent has a specific role and set of skills:</p>
 
-<h3>General Agent</h3>
+<h3><p>General Agent</p></h3>
 
 <p>The default agent for most coding tasks. Good for:</p>
-<ul><li>General code changes</li>
-<li>Feature implementation</li>
-<li>Code explanations</li>
-<li>Project analysis</li>
+<ul><li><p>General code changes</p></li>
+<li><p>Feature implementation</p></li>
+<li><p>Code explanations</p></li>
+<li><p>Project analysis</p></li>
 
-</ul><h3>Code Reviewer</h3>
+</ul><h3><p>Code Reviewer</p></h3>
 
 <p>Specialized in code review. Good for:</p>
-<ul><li>Code quality checks</li>
-<li>Finding potential issues</li>
-<li>Suggesting improvements</li>
-<li>Security reviews</li>
+<ul><li><p>Code quality checks</p></li>
+<li><p>Finding potential issues</p></li>
+<li><p>Suggesting improvements</p></li>
+<li><p>Security reviews</p></li>
 
-</ul><h3>Debugger</h3>
+</ul><h3><p>Debugger</p></h3>
 
 <p>Focused on debugging. Good for:</p>
-<ul><li>Finding bugs</li>
-<li>Analyzing error messages</li>
-<li>Fixing broken code</li>
-<li>Performance issues</li>
+<ul><li><p>Finding bugs</p></li>
+<li><p>Analyzing error messages</p></li>
+<li><p>Fixing broken code</p></li>
+<li><p>Performance issues</p></li>
 
-</ul><h3>Architect</h3>
+</ul><h3><p>Architect</p></h3>
 
 <p>Helps with system design. Good for:</p>
-<ul><li>Architecture decisions</li>
-<li>Design patterns</li>
-<li>System structure</li>
-<li>Technical planning</li>
+<ul><li><p>Architecture decisions</p></li>
+<li><p>Design patterns</p></li>
+<li><p>System structure</p></li>
+<li><p>Technical planning</p></li>
 
-</ul><h2>Agent Skills</h2>
+</ul><h2><p>Agent Skills</p></h2>
 
 <p>Agents have access to different skills (tools) based on their role:</p>
 
@@ -217,33 +215,29 @@
 <li><strong>Execution</strong> - Run commands and scripts</li>
 <li><strong>And more...</strong></li>
 
-</ul><h2>Using @ Mentions</h2>
+</ul><h2><p>Using @ Mentions</p></h2>
 
-<p>You can mention specific agents in your prompts using </code>@<code>:</p>
+<p>You can mention specific agents in your prompts using <code>@</code>:</p>
 
-</code>`<code>
-<p>@debugger Can you help me fix this error?</p>
-</code>`<code>
+<pre><code>@debugger Can you help me fix this error?</code></pre>
 
 <p>This ensures the right agent handles your request.</p>
 
-<h2>Agent Configuration</h2>
+<h2><p>Agent Configuration</p></h2>
 
-<p>Agents can be configured in your project's </code>AGENTS.md<code> file or in the global config.</p>
+<p>Agents can be configured in your project's <code>AGENTS.md</code> file or in the global config.</p>
 
-<h3>Example Agent Config</h3>
+<h3><p>Example Agent Config</p></h3>
 
-</code>`<code>json
-<p>{</p>
-<p>"agents": [</p>
-<p>{</p>
-<p>"name": "general",</p>
-<p>"role": "General coding assistant",</p>
-<p>"skills": ["file", "search", "execute"]</p>
-<p>}</p>
-<p>]</p>
-<p>}</p>
-</code>``
+<pre><code>{
+  &quot;agents&quot;: [
+    {
+      &quot;name&quot;: &quot;general&quot;,
+      &quot;role&quot;: &quot;General coding assistant&quot;,
+      &quot;skills&quot;: [&quot;file&quot;, &quot;search&quot;, &quot;execute&quot;]
+    }
+  ]
+}</code></pre>
 
 <hr>
 

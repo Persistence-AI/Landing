@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Troubleshooting - PersistenceAI Documentation</title>
+    <title><p>Troubleshooting</p> - PersistenceAI Documentation</title>
     <style>
         * {
             margin: 0;
@@ -138,180 +138,176 @@
 <body>
     <div class="container">
         <a href="index.html" class="back-link">← Back to Documentation</a>
-        <h1>Troubleshooting</h1>
+        <h1><p>Troubleshooting</p></h1>
 
 <p>Common issues and solutions for PersistenceAI.</p>
 
-<h2>Installation Issues</h2>
+<h2><p>Installation Issues</p></h2>
 
-<h3>Install Script Fails</h3>
+<h3><p>Install Script Fails</p></h3>
 
 <strong>Problem</strong>: Install script fails to download or execute.
 
 <strong>Solutions</strong>:
-<ul><li>Check your internet connection</li>
-<li>Verify the install URL is correct:</li>
+<ul><li><p>Check your internet connection</p></li>
+<li><p>Verify the install URL is correct:</p></li>
    </ul>- Linux/macOS: <code>https://persistence-ai.github.io/Landing/install.sh</code>
    - Windows: <code>https://persistence-ai.github.io/Landing/install.ps1</code>
-<ul><li>Try downloading the binary directly from <a href="https://github.com/Persistence-AI/Landing/releases">Releases</a></li>
+<ul><li><p>Try downloading the binary directly from <a href="https://github.com/Persistence-AI/Landing/releases">Releases</a></p></li>
 
-</ul><h3>Binary Not Found After Installation</h3>
+</ul><h3><p>Binary Not Found After Installation</p></h3>
 
 <strong>Problem</strong>: <code>persistenceai</code> command not found.
 
 <strong>Solutions</strong>:
-<ul><li>Verify the binary was installed:</li>
+<ul><li><p>Verify the binary was installed:</p></li>
    </ul>- Windows: <code>%USERPROFILE%\.persistenceai\bin\persistenceai.exe</code>
    - Linux/macOS: <code>~/.persistenceai/bin/persistenceai</code>
-<ul><li>Check your PATH environment variable includes the install directory</li>
-<li>Restart your terminal after installation</li>
+<ul><li><p>Check your PATH environment variable includes the install directory</p></li>
+<li><p>Restart your terminal after installation</p></li>
 
 </ul><hr>
 
-<h2>Configuration Issues</h2>
+<h2><p>Configuration Issues</p></h2>
 
-<h3>Config File Not Found</h3>
+<h3><p>Config File Not Found</p></h3>
 
 <strong>Problem</strong>: PersistenceAI can't find your config file.
 
 <strong>Solutions</strong>:
-<ul><li>Create the config directory:</li>
+<ul><li><p>Create the config directory:</p></li>
    </ul>- Windows: <code>%USERPROFILE%\.config\pai\</code>
    - Linux/macOS: <code>~/.config/pai/</code>
-<ul><li>Create <code>opencode.json</code> with basic configuration:</li>
-   </ul>``<code>json
-<p>{</p>
-<p>"keybinds": {},</p>
-<p>"providers": {}</p>
-<p>}</p>
-   </code>`<code>
+<ul><li><p>Create <code>opencode.json</code> with basic configuration:</p></li>
+   </ul><pre><code>{
+     &quot;keybinds&quot;: {},
+     &quot;providers&quot;: {}
+   }</code></pre>
 
-<h3>Keybinds Not Working</h3>
+<h3><p>Keybinds Not Working</p></h3>
 
 <strong>Problem</strong>: Keyboard shortcuts don't work.
 
 <strong>Solutions</strong>:
-<ul><li>Check your keybind configuration in </code>opencode.json<code></li>
-<li>Verify the leader key is set correctly (default: </code>Ctrl+X<code>)</li>
-<li>Ensure no other application is capturing the shortcuts</li>
-<li>Try resetting keybinds to defaults</li>
+<ul><li><p>Check your keybind configuration in <code>opencode.json</code></p></li>
+<li><p>Verify the leader key is set correctly (default: <code>Ctrl+X</code>)</p></li>
+<li><p>Ensure no other application is capturing the shortcuts</p></li>
+<li><p>Try resetting keybinds to defaults</p></li>
 
 </ul><hr>
 
-<h2>Provider Issues</h2>
+<h2><p>Provider Issues</p></h2>
 
-<h3>API Key Not Working</h3>
+<h3><p>API Key Not Working</p></h3>
 
 <strong>Problem</strong>: Provider authentication fails.
 
 <strong>Solutions</strong>:
-<ul><li>Verify your API key is correct</li>
-<li>Check API key hasn't expired</li>
-<li>Ensure you have sufficient credits/quota</li>
-<li>Try reconnecting: </code>/connect<code></li>
+<ul><li><p>Verify your API key is correct</p></li>
+<li><p>Check API key hasn't expired</p></li>
+<li><p>Ensure you have sufficient credits/quota</p></li>
+<li><p>Try reconnecting: <code>/connect</code></p></li>
 
-</ul><h3>Ollama Connection Failed</h3>
+</ul><h3><p>Ollama Connection Failed</p></h3>
 
 <strong>Problem</strong>: Can't connect to Ollama.
 
 <strong>Solutions</strong>:
-<ul><li>Verify Ollama is running:</li>
-   </ul></code>`<code>bash
-<p>ollama list</p>
-   </code>`<code>
-<ul><li>Check Ollama base URL (default: </code>http://localhost:11434<code>)</li>
-<li>Ensure firewall isn't blocking the connection</li>
-<li>Try restarting Ollama service</li>
+<ul><li><p>Verify Ollama is running:</p></li>
+   </ul><pre><code>ollama list</code></pre>
+<ul><li><p>Check Ollama base URL (default: <code>http://localhost:11434</code>)</p></li>
+<li><p>Ensure firewall isn't blocking the connection</p></li>
+<li><p>Try restarting Ollama service</p></li>
 
 </ul><hr>
 
-<h2>Performance Issues</h2>
+<h2><p>Performance Issues</p></h2>
 
-<h3>Slow Response Times</h3>
+<h3><p>Slow Response Times</p></h3>
 
 <strong>Problem</strong>: PersistenceAI responds slowly.
 
 <strong>Solutions</strong>:
-<ul><li>Check your internet connection (for cloud providers)</li>
-<li>Try a faster model (smaller models are faster)</li>
-<li>For Ollama: Ensure GPU acceleration is enabled</li>
-<li>Check system resources (CPU, RAM, GPU)</li>
+<ul><li><p>Check your internet connection (for cloud providers)</p></li>
+<li><p>Try a faster model (smaller models are faster)</p></li>
+<li><p>For Ollama: Ensure GPU acceleration is enabled</p></li>
+<li><p>Check system resources (CPU, RAM, GPU)</p></li>
 
-</ul><h3>High Memory Usage</h3>
+</ul><h3><p>High Memory Usage</p></h3>
 
 <strong>Problem</strong>: PersistenceAI uses too much memory.
 
 <strong>Solutions</strong>:
-<ul><li>Use smaller models</li>
-<li>Close unused sessions</li>
-<li>Restart PersistenceAI periodically</li>
-<li>Check for memory leaks in your terminal</li>
+<ul><li><p>Use smaller models</p></li>
+<li><p>Close unused sessions</p></li>
+<li><p>Restart PersistenceAI periodically</p></li>
+<li><p>Check for memory leaks in your terminal</p></li>
 
 </ul><hr>
 
-<h2>Feature Issues</h2>
+<h2><p>Feature Issues</p></h2>
 
-<h3>@ File Search Not Working</h3>
+<h3><p>@ File Search Not Working</p></h3>
 
-<strong>Problem</strong>: </code>@<code> shortcut doesn't show file suggestions.
+<strong>Problem</strong>: <code>@</code> shortcut doesn't show file suggestions.
 
 <strong>Solutions</strong>:
-<ul><li>Ensure you're in a project directory (not empty)</li>
-<li>Run </code>/init<code> to initialize the project</li>
-<li>Check file permissions</li>
-<li>Verify workspace is enabled (</code>Ctrl+B<code>)</li>
+<ul><li><p>Ensure you're in a project directory (not empty)</p></li>
+<li><p>Run <code>/init</code> to initialize the project</p></li>
+<li><p>Check file permissions</p></li>
+<li><p>Verify workspace is enabled (<code>Ctrl+B</code>)</p></li>
 
-</ul><h3>Editor Not Opening</h3>
+</ul><h3><p>Editor Not Opening</p></h3>
 
 <strong>Problem</strong>: Editor pane doesn't open.
 
 <strong>Solutions</strong>:
-<ul><li>Press </code>Ctrl+E<code> to toggle editor</li>
-<li>Check editor configuration</li>
-<li>Verify file permissions</li>
-<li>Try opening external editor: </code><leader>E<code></li>
+<ul><li><p>Press <code>Ctrl+E</code> to toggle editor</p></li>
+<li><p>Check editor configuration</p></li>
+<li><p>Verify file permissions</p></li>
+<li><p>Try opening external editor: <code><leader>E</code></p></li>
 
-</ul><h3>Commands Not Working</h3>
+</ul><h3><p>Commands Not Working</p></h3>
 
-<strong>Problem</strong>: Commands like </code>/undo<code> don't work.
+<strong>Problem</strong>: Commands like <code>/undo</code> don't work.
 
 <strong>Solutions</strong>:
-<ul><li>Ensure you're in an active session</li>
-<li>Check command syntax (must start with </code>/<code>)</li>
-<li>Verify the command exists: </code>/commands<code></li>
-<li>Check session state (some commands require specific states)</li>
+<ul><li><p>Ensure you're in an active session</p></li>
+<li><p>Check command syntax (must start with <code>/</code>)</p></li>
+<li><p>Verify the command exists: <code>/commands</code></p></li>
+<li><p>Check session state (some commands require specific states)</p></li>
 
 </ul><hr>
 
-<h2>Terminal Compatibility</h2>
+<h2><p>Terminal Compatibility</p></h2>
 
-<h3>Windows PowerShell Issues</h3>
+<h3><p>Windows PowerShell Issues</p></h3>
 
 <strong>Problem</strong>: TUI doesn't render correctly in PowerShell.
 
 <strong>Solutions</strong>:
-<ul><li>Use Windows Terminal instead of PowerShell 5.1</li>
-<li>Update to PowerShell 7+</li>
-<li>Use a modern terminal emulator (WezTerm, Alacritty)</li>
+<ul><li><p>Use Windows Terminal instead of PowerShell 5.1</p></li>
+<li><p>Update to PowerShell 7+</p></li>
+<li><p>Use a modern terminal emulator (WezTerm, Alacritty)</p></li>
 
-</ul><h3>Terminal Not Supported</h3>
+</ul><h3><p>Terminal Not Supported</p></h3>
 
 <strong>Problem</strong>: Terminal compatibility errors.
 
 <strong>Solutions</strong>:
-<ul><li>Use a modern terminal emulator:</li>
+<ul><li><p>Use a modern terminal emulator:</p></li>
    </ul>- WezTerm (cross-platform)
    - Alacritty (cross-platform)
    - Windows Terminal (Windows)
    - iTerm2 (macOS)
-<ul><li>Check terminal supports:</li>
+<ul><li><p>Check terminal supports:</p></li>
    </ul>- True color
    - Unicode
    - Mouse events
 
 <hr>
 
-<h2>Getting Help</h2>
+<h2><p>Getting Help</p></h2>
 
 <p>If you're still experiencing issues:</p>
 
@@ -322,21 +318,21 @@
 
 </ul><hr>
 
-<h2>Common Error Messages</h2>
+<h2><p>Common Error Messages</p></h2>
 
-<h3>"Provider not configured"</h3>
+<h3><p>"Provider not configured"</p></h3>
 
-<strong>Solution</strong>: Run </code>/connect<code> to configure a provider.
+<strong>Solution</strong>: Run <code>/connect</code> to configure a provider.
 
-<h3>"Session not found"</h3>
+<h3><p>"Session not found"</p></h3>
 
-<strong>Solution</strong>: Create a new session with </code>/new<code> or list sessions with </code>/session<code>.
+<strong>Solution</strong>: Create a new session with <code>/new</code> or list sessions with <code>/session</code>.
 
-<h3>"Model not available"</h3>
+<h3><p>"Model not available"</p></h3>
 
-<strong>Solution</strong>: Check model name is correct, or select from </code>/models`.
+<strong>Solution</strong>: Check model name is correct, or select from <code>/models</code>.
 
-<h3>"Permission denied"</h3>
+<h3><p>"Permission denied"</p></h3>
 
 <strong>Solution</strong>: Check file permissions and ensure PersistenceAI has access.
 

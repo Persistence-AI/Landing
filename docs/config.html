@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Configuration - PersistenceAI Documentation</title>
+    <title><p>Configuration</p> - PersistenceAI Documentation</title>
     <style>
         * {
             margin: 0;
@@ -138,89 +138,83 @@
 <body>
     <div class="container">
         <a href="index.html" class="back-link">← Back to Documentation</a>
-        <h1>Configuration</h1>
+        <h1><p>Configuration</p></h1>
 
 <p>PersistenceAI can be configured through a JSON configuration file.</p>
 
-<h2>Configuration File Location</h2>
+<h2><p>Configuration File Location</p></h2>
 
 <ul><li><strong>Windows</strong>: <code>%USERPROFILE%\.config\pai\opencode.json</code></li>
 <li><strong>Linux/macOS</strong>: <code>~/.config/pai/opencode.json</code></li>
 
-</ul>You can also use <code>opencode.jsonc</code> (JSON with Comments) for better readability.
+</ul><p>You can also use <code>opencode.jsonc</code> (JSON with Comments) for better readability.</p>
 
-<h2>Configuration Structure</h2>
+<h2><p>Configuration Structure</p></h2>
 
-<p>``<code>json</p>
-<p>{</p>
-<p>"keybinds": {</p>
-<p>"leader": "ctrl+x",</p>
-<p>"session_new": "<leader>n"</p>
-<p>},</p>
-<p>"providers": {</p>
-<p>"openai": {</p>
-<p>"apiKey": "sk-..."</p>
-<p>}</p>
-<p>},</p>
-<p>"agents": [],</p>
-<p>"theme": "default",</p>
-<p>"models": {</p>
-<p>"default": "openai/gpt-4"</p>
-<p>}</p>
-<p>}</p>
-</code>`<code>
+<pre><code>{
+  &quot;keybinds&quot;: {
+    &quot;leader&quot;: &quot;ctrl+x&quot;,
+    &quot;session_new&quot;: &quot;&lt;leader&gt;n&quot;
+  },
+  &quot;providers&quot;: {
+    &quot;openai&quot;: {
+      &quot;apiKey&quot;: &quot;sk-...&quot;
+    }
+  },
+  &quot;agents&quot;: [],
+  &quot;theme&quot;: &quot;default&quot;,
+  &quot;models&quot;: {
+    &quot;default&quot;: &quot;openai/gpt-4&quot;
+  }
+}</code></pre>
 
-<h2>Keybind Configuration</h2>
+<h2><p>Keybind Configuration</p></h2>
 
 <p>See the <a href="./keybinds.md">Keybinds documentation</a> for detailed keybind configuration.</p>
 
-<h2>Provider Configuration</h2>
+<h2><p>Provider Configuration</p></h2>
 
 <p>See the <a href="./providers.md">Providers documentation</a> for provider setup.</p>
 
-<h2>Agent Configuration</h2>
+<h2><p>Agent Configuration</p></h2>
 
 <p>See the <a href="./agents.md">Agents documentation</a> for agent configuration.</p>
 
-<h2>Theme Configuration</h2>
+<h2><p>Theme Configuration</p></h2>
 
 <p>Set your preferred theme:</p>
 
-</code>`<code>json
-<p>{</p>
-<p>"theme": "opencode"</p>
-<p>}</p>
-</code>`<code>
+<pre><code>{
+  &quot;theme&quot;: &quot;opencode&quot;
+}</code></pre>
 
 <p>Available themes:</p>
-<ul><li></code>opencode<code> (default)</li>
-<li></code>dark<code></li>
-<li></code>light<code></li>
-<li>And more...</li>
+<ul><li><code>opencode</code> (default)</li>
+<li><code>dark</code></li>
+<li><code>light</code></li>
+<li><p>And more...</p></li>
 
-</ul><h2>Model Configuration</h2>
+</ul><h2><p>Model Configuration</p></h2>
 
 <p>Set default models:</p>
 
-</code>`<code>json
-<p>{</p>
-<p>"models": {</p>
-<p>"default": "openai/gpt-4",</p>
-<p>"small": "cogito:3b",</p>
-<p>"medium": "qwen2.5-coder:4b",</p>
-<p>"large": "qwen2.5-coder:7b"</p>
-<p>}</p>
-<p>}</p>
-</code>`<code>
+<pre><code>{
+  &quot;models&quot;: {
+    &quot;default&quot;: &quot;openai/gpt-4&quot;,
+    &quot;small&quot;: &quot;cogito:3b&quot;,
+    &quot;medium&quot;: &quot;qwen2.5-coder:4b&quot;,
+    &quot;large&quot;: &quot;qwen2.5-coder:7b&quot;
+  }
+}</code></pre>
 
-<h2>Project-Specific Configuration</h2>
+<h2><p>Project-Specific Configuration</p></h2>
 
 <p>You can also create a project-specific config file:</p>
 
-<ul><li></code>opencode.json<code> in your project root</li>
-<li></code>opencode.jsonc` in your project root</li>
+<ul><li><code>opencode.json</code> in your project root</li>
+<li><code>opencode.jsonc</code> in your project root</li>
 
-</ul>Project configs override global configs.
+</ul><p>Project configs override global configs.</p>
 
 <hr>
 

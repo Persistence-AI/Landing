@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Providers - PersistenceAI Documentation</title>
+    <title><p>Providers</p> - PersistenceAI Documentation</title>
     <style>
         * {
             margin: 0;
@@ -138,22 +138,20 @@
 <body>
     <div class="container">
         <a href="index.html" class="back-link">← Back to Documentation</a>
-        <h1>Providers</h1>
+        <h1><p>Providers</p></h1>
 
 <p>PersistenceAI supports multiple LLM providers. You can configure API keys for any provider you want to use.</p>
 
-<h2>Connecting a Provider</h2>
+<h2><p>Connecting a Provider</p></h2>
 
-<ul><li>Run the <code>/connect</code> command in the TUI</li>
-<li>Select a provider from the list</li>
-<li>Follow the provider-specific authentication steps</li>
-<li>Enter your API key when prompted</li>
+<ul><li><p>Run the <code>/connect</code> command in the TUI</p></li>
+<li><p>Select a provider from the list</p></li>
+<li><p>Follow the provider-specific authentication steps</p></li>
+<li><p>Enter your API key when prompted</p></li>
 
-</ul>``<code>
-<p>/connect</p>
-</code>`<code>
+</ul><pre><code>/connect</code></pre>
 
-<h2>Supported Providers</h2>
+<h2><p>Supported Providers</p></h2>
 
 <p>PersistenceAI supports all major LLM providers:</p>
 
@@ -162,101 +160,95 @@
 <li><strong>Google</strong> - Gemini models</li>
 <li><strong>Ollama</strong> - Local models (self-hosted)</li>
 <li><strong>PersistenceAI Zen</strong> - Curated list of tested models</li>
-<li>And many more...</li>
+<li><p>And many more...</p></li>
 
-</ul><h2>Provider Configuration</h2>
+</ul><h2><p>Provider Configuration</p></h2>
 
 <p>Provider configurations are stored in your global config file:</p>
 
-<ul><li><strong>Windows</strong>: </code>%USERPROFILE%\.config\pai\opencode.json<code></li>
-<li><strong>Linux/macOS</strong>: </code>~/.config/pai/opencode.json<code></li>
+<ul><li><strong>Windows</strong>: <code>%USERPROFILE%\.config\pai\opencode.json</code></li>
+<li><strong>Linux/macOS</strong>: <code>~/.config/pai/opencode.json</code></li>
 
-</ul><h3>Example Configuration</h3>
+</ul><h3><p>Example Configuration</p></h3>
 
-</code>`<code>json
-<p>{</p>
-<p>"providers": {</p>
-<p>"openai": {</p>
-<p>"apiKey": "sk-..."</p>
-<p>},</p>
-<p>"anthropic": {</p>
-<p>"apiKey": "sk-ant-..."</p>
-<p>},</p>
-<p>"ollama": {</p>
-<p>"baseURL": "http://localhost:11434"</p>
-<p>}</p>
-<p>}</p>
-<p>}</p>
-</code>`<code>
+<pre><code>{
+  &quot;providers&quot;: {
+    &quot;openai&quot;: {
+      &quot;apiKey&quot;: &quot;sk-...&quot;
+    },
+    &quot;anthropic&quot;: {
+      &quot;apiKey&quot;: &quot;sk-ant-...&quot;
+    },
+    &quot;ollama&quot;: {
+      &quot;baseURL&quot;: &quot;http://localhost:11434&quot;
+    }
+  }
+}</code></pre>
 
-<h2>Ollama (Self-Hosted)</h2>
+<h2><p>Ollama (Self-Hosted)</p></h2>
 
 <p>PersistenceAI has excellent support for Ollama, allowing you to run models locally without API costs.</p>
 
-<h3>Setup</h3>
+<h3><p>Setup</p></h3>
 
-<ul><li>Install Ollama from <a href="https://ollama.ai">ollama.ai</a></li>
-<li>Pull the models you want to use:</li>
-   </ul></code>`<code>bash
-<p>ollama pull llama2</p>
-<p>ollama pull codellama</p>
-   </code>`<code>
-<ul><li>Connect to Ollama in PersistenceAI:</li>
-   </ul></code>`<code>
-<p>/connect</p>
-   </code>`<code>
-<p>Select "Ollama" and enter your base URL (default: </code>http://localhost:11434<code>)</p>
+<ul><li><p>Install Ollama from <a href="https://ollama.ai">ollama.ai</a></p></li>
+<li><p>Pull the models you want to use:</p></li>
+   </ul><pre><code>ollama pull llama2
+   ollama pull codellama</code></pre>
+<ul><li><p>Connect to Ollama in PersistenceAI:</p></li>
+   </ul><pre><code>/connect</code></pre>
+<p>Select "Ollama" and enter your base URL (default: <code>http://localhost:11434</code>)</p>
 
-<h3>Recommended Models</h3>
+<h3><p>Recommended Models</p></h3>
 
 <ul><li><strong>cogito:3b</strong> - Fast, lightweight for simple tasks</li>
 <li><strong>qwen2.5-coder:4b</strong> - Good balance of speed and capability</li>
 <li><strong>qwen2.5-coder:7b</strong> - More capable for complex tasks</li>
 <li><strong>qwen2.5-coder:13b+</strong> - Maximum capability</li>
 
-</ul><h2>PersistenceAI Zen</h2>
+</ul><h2><p>PersistenceAI Zen</p></h2>
 
 <p>PersistenceAI Zen is a curated list of models that have been tested and verified by the PersistenceAI team.</p>
 
-<ul><li>Run </code>/connect<code> and select "PersistenceAI Zen"</li>
-<li>Visit the authentication page</li>
-<li>Sign in and get your API key</li>
-<li>Paste the key in PersistenceAI</li>
+<ul><li><p>Run <code>/connect</code> and select "PersistenceAI Zen"</p></li>
+<li><p>Visit the authentication page</p></li>
+<li><p>Sign in and get your API key</p></li>
+<li><p>Paste the key in PersistenceAI</p></li>
 
-</ul><h2>Model Selection</h2>
+</ul><h2><p>Model Selection</p></h2>
 
 <p>You can switch between models using:</p>
 
-<ul><li><strong>Keyboard</strong>: </code>F2<code> to cycle through recently used models</li>
-<li><strong>Command</strong>: </code>/models<code> to see all available models</li>
-<li><strong>Shortcut</strong>: </code><leader>M<code> (default: </code>Ctrl+X M`)</li>
+<ul><li><strong>Keyboard</strong>: <code>F2</code> to cycle through recently used models</li>
+<li><strong>Command</strong>: <code>/models</code> to see all available models</li>
+<li><strong>Shortcut</strong>: <code><leader>M</code> (default: <code>Ctrl+X M</code>)</li>
 
-</ul><h2>Provider-Specific Notes</h2>
+</ul><h2><p>Provider-Specific Notes</p></h2>
 
-<h3>OpenAI</h3>
+<h3><p>OpenAI</p></h3>
 
-<ul><li>Requires API key from <a href="https://platform.openai.com">platform.openai.com</a></li>
-<li>Supports GPT-4, GPT-3.5, and other models</li>
-<li>Usage-based billing</li>
+<ul><li><p>Requires API key from <a href="https://platform.openai.com">platform.openai.com</a></p></li>
+<li><p>Supports GPT-4, GPT-3.5, and other models</p></li>
+<li><p>Usage-based billing</p></li>
 
-</ul><h3>Anthropic</h3>
+</ul><h3><p>Anthropic</p></h3>
 
-<ul><li>Requires API key from <a href="https://console.anthropic.com">console.anthropic.com</a></li>
-<li>Supports Claude 3 models</li>
-<li>Usage-based billing</li>
+<ul><li><p>Requires API key from <a href="https://console.anthropic.com">console.anthropic.com</a></p></li>
+<li><p>Supports Claude 3 models</p></li>
+<li><p>Usage-based billing</p></li>
 
-</ul><h3>Google</h3>
+</ul><h3><p>Google</p></h3>
 
-<ul><li>Requires API key from <a href="https://makersuite.google.com/app/apikey">Google AI Studio</a></li>
-<li>Supports Gemini models</li>
-<li>Usage-based billing</li>
+<ul><li><p>Requires API key from <a href="https://makersuite.google.com/app/apikey">Google AI Studio</a></p></li>
+<li><p>Supports Gemini models</p></li>
+<li><p>Usage-based billing</p></li>
 
-</ul><h3>Ollama</h3>
+</ul><h3><p>Ollama</p></h3>
 
-<ul><li>Free and self-hosted</li>
-<li>No API key required</li>
-<li>Runs models locally on your machine</li>
-<li>Best for privacy-sensitive projects</li>
+<ul><li><p>Free and self-hosted</p></li>
+<li><p>No API key required</p></li>
+<li><p>Runs models locally on your machine</p></li>
+<li><p>Best for privacy-sensitive projects</p></li>
 
 </ul><hr>
 

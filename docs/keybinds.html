@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Keybinds - PersistenceAI Documentation</title>
+    <title><p>Keybinds</p> - PersistenceAI Documentation</title>
     <style>
         * {
             margin: 0;
@@ -138,290 +138,282 @@
 <body>
     <div class="container">
         <a href="index.html" class="back-link">← Back to Documentation</a>
-        <h1>Keybinds</h1>
+        <h1><p>Keybinds</p></h1>
 
 <p>PersistenceAI has a comprehensive list of keybinds that you can customize through the PersistenceAI config.</p>
 
-<h2>Leader Key</h2>
+<h2><p>Leader Key</p></h2>
 
 <p>PersistenceAI uses a <code>leader</code> key for most keybinds. This avoids conflicts in your terminal.</p>
 
 <p>By default, <code>Ctrl+X</code> is the leader key and most actions require you to first press the leader key and then the shortcut. For example, to start a new session you first press <code>Ctrl+X</code> and then press <code>N</code>.</p>
 
-<h2>Configuration</h2>
+<h2><p>Configuration</p></h2>
 
 <p>Keybinds can be customized in your configuration file (<code>opencode.json</code> or <code>opencode.jsonc</code>):</p>
 
-<p>``<code>json</p>
-<p>{</p>
-<p>"keybinds": {</p>
-<p>"leader": "ctrl+x",</p>
-<p>"app_exit": "ctrl+c,ctrl+d,<leader>q",</p>
-<p>"editor_open": "<leader>e",</p>
-<p>"theme_list": "<leader>t",</p>
-<p>"sidebar_toggle": "<leader>b",</p>
-<p>"username_toggle": "none",</p>
-<p>"status_view": "<leader>s",</p>
-<p>"session_export": "<leader>x",</p>
-<p>"session_new": "<leader>n",</p>
-<p>"session_list": "<leader>l",</p>
-<p>"session_timeline": "<leader>g",</p>
-<p>"session_share": "none",</p>
-<p>"session_unshare": "none",</p>
-<p>"session_interrupt": "escape",</p>
-<p>"session_compact": "<leader>c",</p>
-<p>"session_child_cycle": "<leader>+right",</p>
-<p>"session_child_cycle_reverse": "<leader>+left",</p>
-<p>"messages_page_up": "pageup",</p>
-<p>"messages_page_down": "pagedown",</p>
-<p>"messages_half_page_up": "ctrl+alt+u",</p>
-<p>"messages_half_page_down": "ctrl+alt+d",</p>
-<p>"messages_first": "ctrl+g,home",</p>
-<p>"messages_last": "ctrl+alt+g,end",</p>
-<p>"messages_copy": "<leader>y",</p>
-<p>"messages_undo": "<leader>u",</p>
-<p>"messages_redo": "<leader>r",</p>
-<p>"messages_last_user": "none",</p>
-<p>"messages_toggle_conceal": "<leader>h",</p>
-<p>"model_list": "<leader>m",</p>
-<p>"model_cycle_recent": "f2",</p>
-<p>"model_cycle_recent_reverse": "shift+f2",</p>
-<p>"command_list": "ctrl+p",</p>
-<p>"agent_list": "<leader>a",</p>
-<p>"agent_cycle": "tab",</p>
-<p>"agent_cycle_reverse": "shift+tab",</p>
-<p>"input_clear": "ctrl+c",</p>
-<p>"input_paste": "ctrl+v",</p>
-<p>"input_submit": "enter",</p>
-<p>"input_newline": "shift+enter,ctrl+j",</p>
-<p>"history_previous": "up",</p>
-<p>"history_next": "down"</p>
-<p>}</p>
-<p>}</p>
-</code>`<code>
+<pre><code>{
+  &quot;keybinds&quot;: {
+    &quot;leader&quot;: &quot;ctrl+x&quot;,
+    &quot;app_exit&quot;: &quot;ctrl+c,ctrl+d,&lt;leader&gt;q&quot;,
+    &quot;editor_open&quot;: &quot;&lt;leader&gt;e&quot;,
+    &quot;theme_list&quot;: &quot;&lt;leader&gt;t&quot;,
+    &quot;sidebar_toggle&quot;: &quot;&lt;leader&gt;b&quot;,
+    &quot;username_toggle&quot;: &quot;none&quot;,
+    &quot;status_view&quot;: &quot;&lt;leader&gt;s&quot;,
+    &quot;session_export&quot;: &quot;&lt;leader&gt;x&quot;,
+    &quot;session_new&quot;: &quot;&lt;leader&gt;n&quot;,
+    &quot;session_list&quot;: &quot;&lt;leader&gt;l&quot;,
+    &quot;session_timeline&quot;: &quot;&lt;leader&gt;g&quot;,
+    &quot;session_share&quot;: &quot;none&quot;,
+    &quot;session_unshare&quot;: &quot;none&quot;,
+    &quot;session_interrupt&quot;: &quot;escape&quot;,
+    &quot;session_compact&quot;: &quot;&lt;leader&gt;c&quot;,
+    &quot;session_child_cycle&quot;: &quot;&lt;leader&gt;+right&quot;,
+    &quot;session_child_cycle_reverse&quot;: &quot;&lt;leader&gt;+left&quot;,
+    &quot;messages_page_up&quot;: &quot;pageup&quot;,
+    &quot;messages_page_down&quot;: &quot;pagedown&quot;,
+    &quot;messages_half_page_up&quot;: &quot;ctrl+alt+u&quot;,
+    &quot;messages_half_page_down&quot;: &quot;ctrl+alt+d&quot;,
+    &quot;messages_first&quot;: &quot;ctrl+g,home&quot;,
+    &quot;messages_last&quot;: &quot;ctrl+alt+g,end&quot;,
+    &quot;messages_copy&quot;: &quot;&lt;leader&gt;y&quot;,
+    &quot;messages_undo&quot;: &quot;&lt;leader&gt;u&quot;,
+    &quot;messages_redo&quot;: &quot;&lt;leader&gt;r&quot;,
+    &quot;messages_last_user&quot;: &quot;none&quot;,
+    &quot;messages_toggle_conceal&quot;: &quot;&lt;leader&gt;h&quot;,
+    &quot;model_list&quot;: &quot;&lt;leader&gt;m&quot;,
+    &quot;model_cycle_recent&quot;: &quot;f2&quot;,
+    &quot;model_cycle_recent_reverse&quot;: &quot;shift+f2&quot;,
+    &quot;command_list&quot;: &quot;ctrl+p&quot;,
+    &quot;agent_list&quot;: &quot;&lt;leader&gt;a&quot;,
+    &quot;agent_cycle&quot;: &quot;tab&quot;,
+    &quot;agent_cycle_reverse&quot;: &quot;shift+tab&quot;,
+    &quot;input_clear&quot;: &quot;ctrl+c&quot;,
+    &quot;input_paste&quot;: &quot;ctrl+v&quot;,
+    &quot;input_submit&quot;: &quot;enter&quot;,
+    &quot;input_newline&quot;: &quot;shift+enter,ctrl+j&quot;,
+    &quot;history_previous&quot;: &quot;up&quot;,
+    &quot;history_next&quot;: &quot;down&quot;
+  }
+}</code></pre>
 
-<h2>Leader Key Syntax</h2>
+<h2><p>Leader Key Syntax</p></h2>
 
-<ul><li></code><leader><code> - Replaced with the leader key (default: </code>Ctrl+X<code>)</li>
-<li>Example: </code><leader>N<code> = </code>Ctrl+X<code> then </code>N<code></li>
+<ul><li><code><leader></code> - Replaced with the leader key (default: <code>Ctrl+X</code>)</li>
+<li><p>Example: <code><leader>N</code> = <code>Ctrl+X</code> then <code>N</code></p></li>
 
-</ul><h2>Multiple Keybind Options</h2>
+</ul><h2><p>Multiple Keybind Options</p></h2>
 
 <p>Some keybinds support multiple options (comma-separated):</p>
 
-</code>`<code>json
-<p>{</p>
-<p>"app_exit": "ctrl+c,ctrl+d,<leader>q",</p>
-<p>"input_newline": "shift+return,ctrl+j"</p>
-<p>}</p>
-</code>`<code>
+<pre><code>{
+  &quot;app_exit&quot;: &quot;ctrl+c,ctrl+d,&lt;leader&gt;q&quot;,
+  &quot;input_newline&quot;: &quot;shift+return,ctrl+j&quot;
+}</code></pre>
 
 <p>The first matching keybind will be used.</p>
 
-<h2>Disabling Keybinds</h2>
+<h2><p>Disabling Keybinds</p></h2>
 
-<p>Set a keybind to </code>"none"<code> to disable it:</p>
+<p>Set a keybind to <code>"none"</code> to disable it:</p>
 
-</code>`<code>json
-<p>{</p>
-<p>"session_share": "none",</p>
-<p>"username_toggle": "none"</p>
-<p>}</p>
-</code>`<code>
+<pre><code>{
+  &quot;session_share&quot;: &quot;none&quot;,
+  &quot;username_toggle&quot;: &quot;none&quot;
+}</code></pre>
 
 <hr>
 
-<h2>Application-Level Keybinds</h2>
+<h2><p>Application-Level Keybinds</p></h2>
 
-<h3>Application Control</h3>
+<h3><p>Application Control</p></h3>
 
-<table><thead><tr><th>Keybind</th><th>Default</th><th>Description</th></tr></thead><tbody>
+<table><thead><tr><th><p>Keybind</p></th><th><p>Default</p></th><th><p>Description</p></th></tr></thead><tbody>
 
-<tr><td></code>app_exit<code></td><td></code>Ctrl+C<code>, </code>Ctrl+D<code>, </code><leader>Q<code></td><td>Exit the application</td></tr>
-<tr><td></code>terminal_suspend<code></td><td></code>Ctrl+Z<code></td><td>Suspend terminal (send SIGTSTP)</td></tr>
+<tr><td><code>app_exit</code></td><td><code>Ctrl+C</code>, <code>Ctrl+D</code>, <code><leader>Q</code></td><td><p>Exit the application</p></td></tr>
+<tr><td><code>terminal_suspend</code></td><td><code>Ctrl+Z</code></td><td><p>Suspend terminal (send SIGTSTP)</p></td></tr>
 
-</tbody></table><h3>Session Management</h3>
+</tbody></table><h3><p>Session Management</p></h3>
 
-<table><thead><tr><th>Keybind</th><th>Default</th><th>Description</th></tr></thead><tbody>
+<table><thead><tr><th><p>Keybind</p></th><th><p>Default</p></th><th><p>Description</p></th></tr></thead><tbody>
 
-<tr><td></code>session_new<code></td><td></code><leader>N<code></td><td>Create a new session</td></tr>
-<tr><td></code>session_list<code></td><td></code><leader>L<code></td><td>List all sessions</td></tr>
-<tr><td></code>session_export<code></td><td></code><leader>X<code></td><td>Export session to editor</td></tr>
-<tr><td></code>session_timeline<code></td><td></code><leader>G<code></td><td>Show session timeline</td></tr>
-<tr><td></code>session_share<code></td><td></code>none<code></td><td>Share current session</td></tr>
-<tr><td></code>session_unshare<code></td><td></code>none<code></td><td>Unshare current session</td></tr>
-<tr><td></code>session_interrupt<code></td><td></code>Escape<code></td><td>Interrupt current session</td></tr>
-<tr><td></code>session_compact<code></td><td></code><leader>C<code></td><td>Compact the session</td></tr>
-<tr><td></code>session_child_cycle<code></td><td></code><leader>→<code> (Right Arrow)</td><td>Next child session</td></tr>
-<tr><td></code>session_child_cycle_reverse<code></td><td></code><leader>←<code> (Left Arrow)</td><td>Previous child session</td></tr>
+<tr><td><code>session_new</code></td><td><code><leader>N</code></td><td><p>Create a new session</p></td></tr>
+<tr><td><code>session_list</code></td><td><code><leader>L</code></td><td><p>List all sessions</p></td></tr>
+<tr><td><code>session_export</code></td><td><code><leader>X</code></td><td><p>Export session to editor</p></td></tr>
+<tr><td><code>session_timeline</code></td><td><code><leader>G</code></td><td><p>Show session timeline</p></td></tr>
+<tr><td><code>session_share</code></td><td><code>none</code></td><td><p>Share current session</p></td></tr>
+<tr><td><code>session_unshare</code></td><td><code>none</code></td><td><p>Unshare current session</p></td></tr>
+<tr><td><code>session_interrupt</code></td><td><code>Escape</code></td><td><p>Interrupt current session</p></td></tr>
+<tr><td><code>session_compact</code></td><td><code><leader>C</code></td><td><p>Compact the session</p></td></tr>
+<tr><td><code>session_child_cycle</code></td><td><code><leader>→</code> (Right Arrow)</td><td><p>Next child session</p></td></tr>
+<tr><td><code>session_child_cycle_reverse</code></td><td><code><leader>←</code> (Left Arrow)</td><td><p>Previous child session</p></td></tr>
 
-</tbody></table><h3>Message Navigation</h3>
+</tbody></table><h3><p>Message Navigation</p></h3>
 
-<table><thead><tr><th>Keybind</th><th>Default</th><th>Description</th></tr></thead><tbody>
+<table><thead><tr><th><p>Keybind</p></th><th><p>Default</p></th><th><p>Description</p></th></tr></thead><tbody>
 
-<tr><td></code>messages_page_up<code></td><td></code>PageUp<code></td><td>Scroll messages up by one page</td></tr>
-<tr><td></code>messages_page_down<code></td><td></code>PageDown<code></td><td>Scroll messages down by one page</td></tr>
-<tr><td></code>messages_half_page_up<code></td><td></code>Ctrl+Alt+U<code></td><td>Scroll messages up by half page</td></tr>
-<tr><td></code>messages_half_page_down<code></td><td></code>Ctrl+Alt+D<code></td><td>Scroll messages down by half page</td></tr>
-<tr><td></code>messages_first<code></td><td></code>Ctrl+G, Home<code></td><td>Navigate to first message</td></tr>
-<tr><td></code>messages_last<code></td><td></code>Ctrl+Alt+G, End<code></td><td>Navigate to last message</td></tr>
-<tr><td></code>messages_last_user<code></td><td></code>none<code></td><td>Navigate to last user message</td></tr>
-<tr><td></code>messages_copy<code></td><td></code><leader>Y<code></td><td>Copy message</td></tr>
-<tr><td></code>messages_undo<code></td><td></code><leader>U<code></td><td>Undo message</td></tr>
-<tr><td></code>messages_redo<code></td><td></code><leader>R<code></td><td>Redo message</td></tr>
-<tr><td></code>messages_toggle_conceal<code></td><td></code><leader>H<code></td><td>Toggle code block concealment in messages</td></tr>
+<tr><td><code>messages_page_up</code></td><td><code>PageUp</code></td><td><p>Scroll messages up by one page</p></td></tr>
+<tr><td><code>messages_page_down</code></td><td><code>PageDown</code></td><td><p>Scroll messages down by one page</p></td></tr>
+<tr><td><code>messages_half_page_up</code></td><td><code>Ctrl+Alt+U</code></td><td><p>Scroll messages up by half page</p></td></tr>
+<tr><td><code>messages_half_page_down</code></td><td><code>Ctrl+Alt+D</code></td><td><p>Scroll messages down by half page</p></td></tr>
+<tr><td><code>messages_first</code></td><td><code>Ctrl+G, Home</code></td><td><p>Navigate to first message</p></td></tr>
+<tr><td><code>messages_last</code></td><td><code>Ctrl+Alt+G, End</code></td><td><p>Navigate to last message</p></td></tr>
+<tr><td><code>messages_last_user</code></td><td><code>none</code></td><td><p>Navigate to last user message</p></td></tr>
+<tr><td><code>messages_copy</code></td><td><code><leader>Y</code></td><td><p>Copy message</p></td></tr>
+<tr><td><code>messages_undo</code></td><td><code><leader>U</code></td><td><p>Undo message</p></td></tr>
+<tr><td><code>messages_redo</code></td><td><code><leader>R</code></td><td><p>Redo message</p></td></tr>
+<tr><td><code>messages_toggle_conceal</code></td><td><code><leader>H</code></td><td><p>Toggle code block concealment in messages</p></td></tr>
 
-</tbody></table><h3>Agent & Model Management</h3>
+</tbody></table><h3><p>Agent & Model Management</p></h3>
 
-<table><thead><tr><th>Keybind</th><th>Default</th><th>Description</th></tr></thead><tbody>
+<table><thead><tr><th><p>Keybind</p></th><th><p>Default</p></th><th><p>Description</p></th></tr></thead><tbody>
 
-<tr><td></code>agent_list<code></td><td></code><leader>A<code></td><td>List agents</td></tr>
-<tr><td></code>agent_cycle<code></td><td></code>Tab<code></td><td>Next agent</td></tr>
-<tr><td></code>agent_cycle_reverse<code></td><td></code>Shift+Tab<code></td><td>Previous agent</td></tr>
-<tr><td></code>model_list<code></td><td></code><leader>M<code></td><td>List available models</td></tr>
-<tr><td></code>model_cycle_recent<code></td><td></code>F2<code></td><td>Next recently used model</td></tr>
-<tr><td></code>model_cycle_recent_reverse<code></td><td></code>Shift+F2<code></td><td>Previous recently used model</td></tr>
+<tr><td><code>agent_list</code></td><td><code><leader>A</code></td><td><p>List agents</p></td></tr>
+<tr><td><code>agent_cycle</code></td><td><code>Tab</code></td><td><p>Next agent</p></td></tr>
+<tr><td><code>agent_cycle_reverse</code></td><td><code>Shift+Tab</code></td><td><p>Previous agent</p></td></tr>
+<tr><td><code>model_list</code></td><td><code><leader>M</code></td><td><p>List available models</p></td></tr>
+<tr><td><code>model_cycle_recent</code></td><td><code>F2</code></td><td><p>Next recently used model</p></td></tr>
+<tr><td><code>model_cycle_recent_reverse</code></td><td><code>Shift+F2</code></td><td><p>Previous recently used model</p></td></tr>
 
-</tbody></table><h3>Input/Prompt Keybindings</h3>
+</tbody></table><h3><p>Input/Prompt Keybindings</p></h3>
 
-<table><thead><tr><th>Keybind</th><th>Default</th><th>Description</th></tr></thead><tbody>
+<table><thead><tr><th><p>Keybind</p></th><th><p>Default</p></th><th><p>Description</p></th></tr></thead><tbody>
 
-<tr><td></code>input_clear<code></td><td></code>Ctrl+C<code></td><td>Clear input field</td></tr>
-<tr><td></code>input_paste<code></td><td></code>Ctrl+V<code></td><td>Paste from clipboard</td></tr>
-<tr><td></code>input_submit<code></td><td></code>Enter<code></td><td>Submit input</td></tr>
-<tr><td></code>input_newline<code></td><td></code>Shift+Enter<code>, </code>Ctrl+J<code></td><td>Insert newline in input</td></tr>
-<tr><td></code>history_previous<code></td><td></code>↑<code> (Up Arrow)</td><td>Previous history item</td></tr>
-<tr><td></code>history_next<code></td><td></code>↓<code> (Down Arrow)</td><td>Next history item</td></tr>
+<tr><td><code>input_clear</code></td><td><code>Ctrl+C</code></td><td><p>Clear input field</p></td></tr>
+<tr><td><code>input_paste</code></td><td><code>Ctrl+V</code></td><td><p>Paste from clipboard</p></td></tr>
+<tr><td><code>input_submit</code></td><td><code>Enter</code></td><td><p>Submit input</p></td></tr>
+<tr><td><code>input_newline</code></td><td><code>Shift+Enter</code>, <code>Ctrl+J</code></td><td><p>Insert newline in input</p></td></tr>
+<tr><td><code>history_previous</code></td><td><code>↑</code> (Up Arrow)</td><td><p>Previous history item</p></td></tr>
+<tr><td><code>history_next</code></td><td><code>↓</code> (Down Arrow)</td><td><p>Next history item</p></td></tr>
 
-</tbody></table><h3>Commands & Dialogs</h3>
+</tbody></table><h3><p>Commands & Dialogs</p></h3>
 
-<table><thead><tr><th>Keybind</th><th>Default</th><th>Description</th></tr></thead><tbody>
+<table><thead><tr><th><p>Keybind</p></th><th><p>Default</p></th><th><p>Description</p></th></tr></thead><tbody>
 
-<tr><td></code>command_list<code></td><td></code>Ctrl+P<code></td><td>List available commands</td></tr>
-<tr><td></code>editor_open<code></td><td></code><leader>E<code></td><td>Open external editor</td></tr>
-<tr><td></code>theme_list<code></td><td></code><leader>T<code></td><td>List available themes</td></tr>
-<tr><td></code>sidebar_toggle<code></td><td></code><leader>B<code></td><td>Toggle sidebar</td></tr>
-<tr><td></code>status_view<code></td><td></code><leader>S<code></td><td>View status</td></tr>
-<tr><td></code>scrollbar_toggle<code></td><td></code>none<code></td><td>Toggle session scrollbar</td></tr>
-<tr><td></code>username_toggle<code></td><td></code>none<code></td><td>Toggle username visibility</td></tr>
-<tr><td></code>tool_details<code></td><td></code>none<code></td><td>Toggle tool details visibility</td></tr>
+<tr><td><code>command_list</code></td><td><code>Ctrl+P</code></td><td><p>List available commands</p></td></tr>
+<tr><td><code>editor_open</code></td><td><code><leader>E</code></td><td><p>Open external editor</p></td></tr>
+<tr><td><code>theme_list</code></td><td><code><leader>T</code></td><td><p>List available themes</p></td></tr>
+<tr><td><code>sidebar_toggle</code></td><td><code><leader>B</code></td><td><p>Toggle sidebar</p></td></tr>
+<tr><td><code>status_view</code></td><td><code><leader>S</code></td><td><p>View status</p></td></tr>
+<tr><td><code>scrollbar_toggle</code></td><td><code>none</code></td><td><p>Toggle session scrollbar</p></td></tr>
+<tr><td><code>username_toggle</code></td><td><code>none</code></td><td><p>Toggle username visibility</p></td></tr>
+<tr><td><code>tool_details</code></td><td><code>none</code></td><td><p>Toggle tool details visibility</p></td></tr>
 
 </tbody></table><hr>
 
-<h2>Editor Pane Keybindings</h2>
+<h2><p>Editor Pane Keybindings</p></h2>
 
 <p>These shortcuts work when the editor is focused.</p>
 
-<h3>File Operations</h3>
+<h3><p>File Operations</p></h3>
 
-<table><thead><tr><th>Shortcut</th><th>Action</th><th>Description</th></tr></thead><tbody>
+<table><thead><tr><th><p>Shortcut</p></th><th><p>Action</p></th><th><p>Description</p></th></tr></thead><tbody>
 
-<tr><td></code>Ctrl+S<code></td><td>Save file</td><td>Saves the current file (only if modified)</td></tr>
-<tr><td></code>Ctrl+F<code></td><td>Toggle search</td><td>Opens/closes the search bar</td></tr>
-<tr><td></code>Escape<code></td><td>Close search</td><td>Closes search bar when search is visible</td></tr>
+<tr><td><code>Ctrl+S</code></td><td><p>Save file</p></td><td><p>Saves the current file (only if modified)</p></td></tr>
+<tr><td><code>Ctrl+F</code></td><td><p>Toggle search</p></td><td><p>Opens/closes the search bar</p></td></tr>
+<tr><td><code>Escape</code></td><td><p>Close search</p></td><td><p>Closes search bar when search is visible</p></td></tr>
 
-</tbody></table><h3>Undo/Redo</h3>
+</tbody></table><h3><p>Undo/Redo</p></h3>
 
-<table><thead><tr><th>Shortcut</th><th>Action</th><th>Description</th></tr></thead><tbody>
+<table><thead><tr><th><p>Shortcut</p></th><th><p>Action</p></th><th><p>Description</p></th></tr></thead><tbody>
 
-<tr><td></code>Ctrl+Z<code></td><td>Undo</td><td>Undo last change (per-file history)</td></tr>
-<tr><td></code>Ctrl+Y<code></td><td>Redo</td><td>Redo last undone change</td></tr>
-<tr><td></code>Ctrl+Shift+Z<code></td><td>Redo</td><td>Alternative redo shortcut</td></tr>
+<tr><td><code>Ctrl+Z</code></td><td><p>Undo</p></td><td><p>Undo last change (per-file history)</p></td></tr>
+<tr><td><code>Ctrl+Y</code></td><td><p>Redo</p></td><td><p>Redo last undone change</p></td></tr>
+<tr><td><code>Ctrl+Shift+Z</code></td><td><p>Redo</p></td><td><p>Alternative redo shortcut</p></td></tr>
 
 </tbody></table><hr>
 
-<h2>Workspace & Editor Toggle Shortcuts</h2>
+<h2><p>Workspace & Editor Toggle Shortcuts</p></h2>
 
 <p>These shortcuts work globally (when no dialog is open).</p>
 
-<table><thead><tr><th>Shortcut</th><th>Action</th><th>Description</th></tr></thead><tbody>
+<table><thead><tr><th><p>Shortcut</p></th><th><p>Action</p></th><th><p>Description</p></th></tr></thead><tbody>
 
-<tr><td></code>Ctrl+B<code></td><td>Toggle workspace</td><td>Show/hide file explorer pane</td></tr>
-<tr><td></code>Ctrl+E<code></td><td>Toggle editor</td><td>Show/hide editor pane</td></tr>
+<tr><td><code>Ctrl+B</code></td><td><p>Toggle workspace</p></td><td><p>Show/hide file explorer pane</p></td></tr>
+<tr><td><code>Ctrl+E</code></td><td><p>Toggle editor</p></td><td><p>Show/hide editor pane</p></td></tr>
 
 </tbody></table><strong>Note</strong>: When workspace is toggled on, it automatically refreshes the file tree.
 
 <hr>
 
-<h2>Pane Resize Shortcuts</h2>
+<h2><p>Pane Resize Shortcuts</p></h2>
 
-<h3>Workspace Resize (when workspace visible)</h3>
+<h3><p>Workspace Resize (when workspace visible)</p></h3>
 
-<table><thead><tr><th>Shortcut</th><th>Action</th><th>Description</th></tr></thead><tbody>
+<table><thead><tr><th><p>Shortcut</p></th><th><p>Action</p></th><th><p>Description</p></th></tr></thead><tbody>
 
-<tr><td></code>Shift+Left<code></td><td>Shrink workspace</td><td>Decrease workspace width by 2 characters (min: 15)</td></tr>
-<tr><td></code>Shift+Right<code></td><td>Expand workspace</td><td>Increase workspace width by 2 characters (max: 50)</td></tr>
-<tr><td></code>Ctrl+Shift+Left<code></td><td>Shrink workspace</td><td>Alternative: Decrease workspace width by 2 characters</td></tr>
-<tr><td></code>Ctrl+Shift+Right<code></td><td>Expand workspace</td><td>Alternative: Increase workspace width by 2 characters</td></tr>
+<tr><td><code>Shift+Left</code></td><td><p>Shrink workspace</p></td><td><p>Decrease workspace width by 2 characters (min: 15)</p></td></tr>
+<tr><td><code>Shift+Right</code></td><td><p>Expand workspace</p></td><td><p>Increase workspace width by 2 characters (max: 50)</p></td></tr>
+<tr><td><code>Ctrl+Shift+Left</code></td><td><p>Shrink workspace</p></td><td><p>Alternative: Decrease workspace width by 2 characters</p></td></tr>
+<tr><td><code>Ctrl+Shift+Right</code></td><td><p>Expand workspace</p></td><td><p>Alternative: Increase workspace width by 2 characters</p></td></tr>
 
-</tbody></table><h3>Editor Resize (when editor visible)</h3>
+</tbody></table><h3><p>Editor Resize (when editor visible)</p></h3>
 
-<table><thead><tr><th>Shortcut</th><th>Action</th><th>Description</th></tr></thead><tbody>
+<table><thead><tr><th><p>Shortcut</p></th><th><p>Action</p></th><th><p>Description</p></th></tr></thead><tbody>
 
-<tr><td></code>Ctrl+Shift+,<code> (Comma)</td><td>Shrink editor</td><td>Decrease editor width by 5 characters (min: 30)</td></tr>
-<tr><td></code>Ctrl+Shift+.<code> (Period)</td><td>Expand editor</td><td>Increase editor width by 5 characters (max: screen width - 50)</td></tr>
+<tr><td><code>Ctrl+Shift+,</code> (Comma)</td><td><p>Shrink editor</p></td><td><p>Decrease editor width by 5 characters (min: 30)</p></td></tr>
+<tr><td><code>Ctrl+Shift+.</code> (Period)</td><td><p>Expand editor</p></td><td><p>Increase editor width by 5 characters (max: screen width - 50)</p></td></tr>
 
 </tbody></table><hr>
 
-<h2>Special Features</h2>
+<h2><p>Special Features</p></h2>
 
-<h3>@ File Search</h3>
+<h3><p>@ File Search</p></h3>
 
-<p>Press </code>@<code> in the chat input to fuzzy search for files and agents in your project.</p>
+<p>Press <code>@</code> in the chat input to fuzzy search for files and agents in your project.</p>
 
-<ul><li>Type </code>@<code> followed by a filename or path</li>
-<li>Use arrow keys to navigate suggestions</li>
-<li>Press </code>Enter<code> to select</li>
-<li>Works for both files and agents</li>
+<ul><li><p>Type <code>@</code> followed by a filename or path</p></li>
+<li><p>Use arrow keys to navigate suggestions</p></li>
+<li><p>Press <code>Enter</code> to select</p></li>
+<li><p>Works for both files and agents</p></li>
 
-</ul>Example:
-</code>`<code>
-<p>How does authentication work in @src/auth/login.ts</p>
-</code>`<code>
+</ul><p>Example:</p>
+<pre><code>How does authentication work in @src/auth/login.ts</code></pre>
 
-<h3>Command Palette</h3>
+<h3><p>Command Palette</p></h3>
 
-<p>Press </code>Ctrl+P<code> to open the command palette with all available commands.</p>
+<p>Press <code>Ctrl+P</code> to open the command palette with all available commands.</p>
 
 <hr>
 
-<h2>Quick Reference</h2>
+<h2><p>Quick Reference</p></h2>
 
-<h3>Most Used Shortcuts</h3>
+<h3><p>Most Used Shortcuts</p></h3>
 
 <strong>Editor:</strong>
-<ul><li></code>Ctrl+S<code> - Save file</li>
-<li></code>Ctrl+F<code> - Search</li>
-<li></code>Ctrl+Z<code> - Undo</li>
-<li></code>Ctrl+Y<code> - Redo</li>
+<ul><li><code>Ctrl+S</code> - Save file</li>
+<li><code>Ctrl+F</code> - Search</li>
+<li><code>Ctrl+Z</code> - Undo</li>
+<li><code>Ctrl+Y</code> - Redo</li>
 
 </ul><strong>Workspace:</strong>
-<ul><li></code>Ctrl+B<code> - Toggle workspace</li>
-<li></code>Ctrl+E<code> - Toggle editor</li>
-<li></code>Shift+←/→<code> - Resize workspace</li>
+<ul><li><code>Ctrl+B</code> - Toggle workspace</li>
+<li><code>Ctrl+E</code> - Toggle editor</li>
+<li><code>Shift+←/→</code> - Resize workspace</li>
 
 </ul><strong>Chat:</strong>
-<ul><li></code>Enter<code> - Submit message</li>
-<li></code>Shift+Enter<code> - Newline</li>
-<li></code>Ctrl+P<code> - Command palette</li>
-<li></code>↑/↓<code> - History navigation</li>
-<li></code>@<code> - File/agent search</li>
+<ul><li><code>Enter</code> - Submit message</li>
+<li><code>Shift+Enter</code> - Newline</li>
+<li><code>Ctrl+P</code> - Command palette</li>
+<li><code>↑/↓</code> - History navigation</li>
+<li><code>@</code> - File/agent search</li>
 
 </ul><strong>Session:</strong>
-<ul><li></code><leader>N<code> (default: </code>Ctrl+X N<code>) - New session</li>
-<li></code><leader>L<code> (default: </code>Ctrl+X L<code>) - List sessions</li>
-<li></code>Escape<code> - Interrupt session</li>
+<ul><li><code><leader>N</code> (default: <code>Ctrl+X N</code>) - New session</li>
+<li><code><leader>L</code> (default: <code>Ctrl+X L</code>) - List sessions</li>
+<li><code>Escape</code> - Interrupt session</li>
 
 </ul><strong>Navigation:</strong>
-<ul><li></code>PageUp/PageDown<code> - Scroll messages</li>
-<li></code><leader>→/←<code> - Navigate child sessions</li>
-<li></code>Tab/Shift+Tab<code> - Cycle agents</li>
+<ul><li><code>PageUp/PageDown</code> - Scroll messages</li>
+<li><code><leader>→/←</code> - Navigate child sessions</li>
+<li><code>Tab/Shift+Tab</code> - Cycle agents</li>
 
 </ul><hr>
 
-<h2>Notes</h2>
+<h2><p>Notes</p></h2>
 
-<ul><li><strong>Leader Key</strong>: Most keybinds use the leader key (</code>Ctrl+X` by default) to avoid conflicts with terminal shortcuts.</li>
+<ul><li><strong>Leader Key</strong>: Most keybinds use the leader key (<code>Ctrl+X</code> by default) to avoid conflicts with terminal shortcuts.</li>
 
 <li><strong>Focus Context</strong>: Some shortcuts only work when specific components are focused:</li>
    </ul>- Editor shortcuts only work when editor pane is focused

@@ -8,15 +8,19 @@ function markdownToHTML(markdown) {
   // Remove front matter
   html = html.replace(/^---[\s\S]*?---\s*/m, '');
   
+  // Code blocks (must be FIRST, before any other processing)
+  // Use a placeholder to protect code blocks from other processing
+  const codeBlocks = [];
+  html = html.replace(/```(\w+)?\n?([\s\S]*?)```/g, (match, lang, code) => {
+    const placeholder = `__CODE_BLOCK_${codeBlocks.length}__`;
+    codeBlocks.push(escapeHtml(code.trim()));
+    return placeholder;
+  });
+  
   // Headers
   html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
   html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
   html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>');
-  
-  // Code blocks (must be before inline code)
-  html = html.replace(/```(\w+)?\n([\s\S]*?)```/g, (match, lang, code) => {
-    return `<pre><code>${escapeHtml(code.trim())}</code></pre>`;
-  });
   
   // Inline code
   html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
@@ -74,20 +78,34 @@ function markdownToHTML(markdown) {
   html = html.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>');
   
   // Paragraphs (lines that don't start with HTML tags)
-  html = html.split('\n').map(line => {
-    const trimmed = line.trim();
-    if (!trimmed || 
-        trimmed.startsWith('<') || 
-        trimmed.startsWith('#') ||
-        trimmed.startsWith('-') ||
-        trimmed.startsWith('|') ||
-        trimmed.startsWith('>') ||
-        trimmed.startsWith('```') ||
-        /^\d+\./.test(trimmed)) {
-      return line;
+  // Split by code blocks and other HTML elements first to protect them
+  const parts = html.split(/(__CODE_BLOCK_\d+__|<pre><code>[\s\S]*?<\/code><\/pre>|<h[1-6]>|<\/h[1-6]>|<ul>|<\/ul>|<ol>|<\/ol>|<li>|<\/li>|<table>|<\/table>|<tr>|<\/tr>|<th>|<\/th>|<td>|<\/td>|<blockquote>|<\/blockquote>|<hr>)/);
+  html = parts.map((part) => {
+    // Skip code blocks and HTML elements
+    if (part.match(/^(__CODE_BLOCK_\d+__|<pre><code>|<\/code><\/pre>|<h[1-6]>|<\/h[1-6]>|<ul>|<\/ul>|<ol>|<\/ol>|<li>|<\/li>|<table>|<\/table>|<tr>|<\/tr>|<th>|<\/th>|<td>|<\/td>|<blockquote>|<\/blockquote>|<hr>)/)) {
+      return part;
     }
-    return `<p>${trimmed}</p>`;
-  }).join('\n');
+    // Process other parts
+    return part.split('\n').map(line => {
+      const trimmed = line.trim();
+      if (!trimmed || 
+          trimmed.startsWith('<') || 
+          trimmed.startsWith('#') ||
+          trimmed.startsWith('-') ||
+          trimmed.startsWith('|') ||
+          trimmed.startsWith('>') ||
+          trimmed.startsWith('```') ||
+          /^\d+\./.test(trimmed)) {
+        return line;
+      }
+      return `<p>${trimmed}</p>`;
+    }).join('\n');
+  }).join('');
+  
+  // Restore code blocks
+  codeBlocks.forEach((code, index) => {
+    html = html.replace(`__CODE_BLOCK_${index}__`, `<pre><code>${code}</code></pre>`);
+  });
   
   // Clean up multiple empty lines
   html = html.replace(/\n{3,}/g, '\n\n');
