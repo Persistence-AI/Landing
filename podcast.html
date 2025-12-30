@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PersistenceAI Podcast - Discussions about AI development, coding agents, and software engineering">
+    <title>Podcast - PersistenceAI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #1e1e1e;
+            --text-primary: #d4d4d4;
+            --text-secondary: #858585;
+            --accent: #4ec9b0;
+            --accent-bright: #00ff88;
+            --border: #3e3e3e;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header/Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            padding: 1rem 2rem;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 80px;
+            padding: 3rem 2rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h1 {
+            color: var(--accent);
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+        }
+
+        .episode-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .episode-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .episode-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(78, 201, 176, 0.1);
+        }
+
+        .episode-number {
+            color: var(--accent);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .episode-title {
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .episode-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .episode-meta {
+            display: flex;
+            gap: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .audio-player {
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .audio-player audio {
+            width: 100%;
+            height: 40px;
+        }
+
+        .coming-soon {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .coming-soon h2 {
+            color: var(--accent);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .coming-soon p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-top: 5rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .footer-copyright {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .episode-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="currentColor"/>
+                    <path d="M2 17L12 22L22 17V12L12 17L2 12V17Z" fill="currentColor"/>
+                </svg>
+                PersistenceAI
+            </a>
+            <div class="nav-links">
+                <a href="index.html#quick-start">Quick Start</a>
+                <a href="index.html#features">Features</a>
+                <a href="index.html#install">Install</a>
+                <a href="docs/">Documentation</a>
+                <a href="podcast.html">Podcast</a>
+                <a href="https://github.com/Persistence-AI" target="_blank" rel="noopener">GitHub</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <h1>🎙️ PersistenceAI Podcast</h1>
+        <p class="subtitle">Discussions about AI development, coding agents, and software engineering</p>
+
+        <div class="coming-soon">
+            <h2>Coming Soon</h2>
+            <p>
+                We're working on bringing you insightful discussions about AI development, 
+                coding agents, multi-agent systems, and the future of software engineering. 
+                Stay tuned for our first episode!
+            </p>
+        </div>
+
+        <!-- Episode cards will be added here when episodes are available -->
+        <!--
+        <div class="episode-grid">
+            <div class="episode-card">
+                <div class="episode-number">Episode 1</div>
+                <div class="episode-title">Introduction to Multi-Agent Systems</div>
+                <div class="episode-meta">
+                    <span>📅 January 15, 2025</span>
+                    <span>⏱️ 45 min</span>
+                </div>
+                <div class="episode-description">
+                    In our first episode, we explore the fundamentals of multi-agent AI systems 
+                    and how they're revolutionizing software development.
+                </div>
+                <div class="audio-player">
+                    <audio controls>
+                        <source src="episodes/episode-1.mp3" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+            </div>
+        </div>
+        -->
+    </main>
+
+    <footer>
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="docs/">Documentation</a>
+            <a href="podcast.html">Podcast</a>
+            <a href="https://github.com/Persistence-AI/Landing">GitHub</a>
+            <a href="https://x.com/AiPersiste65218">Twitter/X</a>
+            <a href="mailto:PersistenceAI@proton.me">Contact</a>
+        </div>
+        <div class="footer-copyright">
+            © 2025 PersistenceAI. All rights reserved.
+        </div>
+    </footer>
+</body>
+</html>
