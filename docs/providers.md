@@ -34,8 +34,8 @@ PersistenceAI supports all major LLM providers:
 
 Provider configurations are stored in your global config file:
 
-- **Windows**: `%USERPROFILE%\.config\pai\opencode.json`
-- **Linux/macOS**: `~/.config/pai/opencode.json`
+- **Windows**: `%USERPROFILE%\.config\pai\pai.json`
+- **Linux/macOS**: `~/.config/pai/pai.json`
 
 ### Example Configuration
 

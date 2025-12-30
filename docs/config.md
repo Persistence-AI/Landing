@@ -10,10 +10,10 @@ PersistenceAI can be configured through a JSON configuration file.
 
 ## Configuration File Location
 
-- **Windows**: `%USERPROFILE%\.config\pai\opencode.json`
-- **Linux/macOS**: `~/.config/pai/opencode.json`
+- **Windows**: `%USERPROFILE%\.config\pai\pai.json`
+- **Linux/macOS**: `~/.config/pai/pai.json`
 
-You can also use `opencode.jsonc` (JSON with Comments) for better readability.
+You can also use `pai.jsonc` (JSON with Comments) for better readability.
 
 ## Configuration Structure
 
@@ -83,8 +83,8 @@ Set default models:
 
 You can also create a project-specific config file:
 
-- `opencode.json` in your project root
-- `opencode.jsonc` in your project root
+- `pai.json` in your project root
+- `pai.jsonc` in your project root
 
 Project configs override global configs.
 

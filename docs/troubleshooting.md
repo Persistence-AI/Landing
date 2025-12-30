@@ -44,7 +44,7 @@ Common issues and solutions for PersistenceAI.
 1. Create the config directory:
    - Windows: `%USERPROFILE%\.config\pai\`
    - Linux/macOS: `~/.config/pai/`
-2. Create `opencode.json` with basic configuration:
+2. Create `pai.json` with basic configuration:
    ```json
    {
      "keybinds": {},
@@ -57,7 +57,7 @@ Common issues and solutions for PersistenceAI.
 **Problem**: Keyboard shortcuts don't work.
 
 **Solutions**:
-1. Check your keybind configuration in `opencode.json`
+1. Check your keybind configuration in `pai.json`
 2. Verify the leader key is set correctly (default: `Ctrl+X`)
 3. Ensure no other application is capturing the shortcuts
 4. Try resetting keybinds to defaults

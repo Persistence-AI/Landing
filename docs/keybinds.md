@@ -16,7 +16,7 @@ By default, `Ctrl+X` is the leader key and most actions require you to first pre
 
 ## Configuration
 
-Keybinds can be customized in your configuration file (`opencode.json` or `opencode.jsonc`):
+Keybinds can be customized in your configuration file (`pai.json` or `pai.jsonc`):
 
 ```json
 {
