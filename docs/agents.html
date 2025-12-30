@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agents - PersistenceAI Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --text-primary: #d4d4d4;
+            --text-secondary: #858585;
+            --accent: #4ec9b0;
+            --border: #3e3e3e;
+            --code-bg: #161b22;
+            --code-border: #30363d;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+        .back-link:hover {
+            color: var(--accent);
+        }
+        h1 {
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            font-size: 2.5rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 1rem;
+        }
+        h2 {
+            color: var(--accent);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-size: 1.75rem;
+        }
+        h3 {
+            color: var(--text-primary);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.25rem;
+        }
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        ul, ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+        li {
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        code {
+            background: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-radius: 4px;
+            padding: 0.2rem 0.4rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: var(--accent);
+        }
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+        pre code {
+            background: none;
+            border: none;
+            padding: 0;
+            color: var(--text-primary);
+            white-space: pre;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+        }
+        th, td {
+            border: 1px solid var(--border);
+            padding: 0.75rem;
+            text-align: left;
+        }
+        th {
+            background: var(--bg-secondary);
+            color: var(--accent);
+            font-weight: 600;
+        }
+        td {
+            color: var(--text-primary);
+        }
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        blockquote {
+            border-left: 4px solid var(--accent);
+            padding-left: 1rem;
+            margin-left: 0;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 2rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Documentation</a>
+        <h1>Agents</h1>
+
+<p>PersistenceAI uses an agent system where different agents have specialized roles and capabilities.</p>
+
+<h2>Overview</h2>
+
+<p>Agents in PersistenceAI are specialized AI assistants, each designed for specific tasks:</p>
+
+<ul><li><strong>General Agent</strong> - Default agent for general coding tasks</li>
+<li><strong>Code Reviewer</strong> - Specialized in code review and quality</li>
+<li><strong>Debugger</strong> - Focused on finding and fixing bugs</li>
+<li><strong>Architect</strong> - Helps with system design and architecture</li>
+<li><strong>And more...</strong></li>
+
+</ul><h2>Switching Agents</h2>
+
+<h3>Using Keyboard</h3>
+
+<ul><li><strong><code>Tab</code></strong> - Cycle to next agent</li>
+<li><strong><code>Shift+Tab</code></strong> - Cycle to previous agent</li>
+
+</ul><h3>Using Command</h3>
+
+<p>``<code></p>
+<p>/agents</p>
+</code>`<code>
+
+<p>This lists all available agents. Select one to switch.</p>
+
+<h3>Using Shortcut</h3>
+
+<ul><li><strong></code><leader>A<code></strong> (default: </code>Ctrl+X A<code>) - List agents</li>
+
+</ul><h2>Agent Roles</h2>
+
+<p>Each agent has a specific role and set of skills:</p>
+
+<h3>General Agent</h3>
+
+<p>The default agent for most coding tasks. Good for:</p>
+<ul><li>General code changes</li>
+<li>Feature implementation</li>
+<li>Code explanations</li>
+<li>Project analysis</li>
+
+</ul><h3>Code Reviewer</h3>
+
+<p>Specialized in code review. Good for:</p>
+<ul><li>Code quality checks</li>
+<li>Finding potential issues</li>
+<li>Suggesting improvements</li>
+<li>Security reviews</li>
+
+</ul><h3>Debugger</h3>
+
+<p>Focused on debugging. Good for:</p>
+<ul><li>Finding bugs</li>
+<li>Analyzing error messages</li>
+<li>Fixing broken code</li>
+<li>Performance issues</li>
+
+</ul><h3>Architect</h3>
+
+<p>Helps with system design. Good for:</p>
+<ul><li>Architecture decisions</li>
+<li>Design patterns</li>
+<li>System structure</li>
+<li>Technical planning</li>
+
+</ul><h2>Agent Skills</h2>
+
+<p>Agents have access to different skills (tools) based on their role:</p>
+
+<ul><li><strong>File Operations</strong> - Read, write, modify files</li>
+<li><strong>Code Analysis</strong> - Analyze codebase structure</li>
+<li><strong>Search</strong> - Search code and files</li>
+<li><strong>Execution</strong> - Run commands and scripts</li>
+<li><strong>And more...</strong></li>
+
+</ul><h2>Using @ Mentions</h2>
+
+<p>You can mention specific agents in your prompts using </code>@<code>:</p>
+
+</code>`<code>
+<p>@debugger Can you help me fix this error?</p>
+</code>`<code>
+
+<p>This ensures the right agent handles your request.</p>
+
+<h2>Agent Configuration</h2>
+
+<p>Agents can be configured in your project's </code>AGENTS.md<code> file or in the global config.</p>
+
+<h3>Example Agent Config</h3>
+
+</code>`<code>json
+<p>{</p>
+<p>"agents": [</p>
+<p>{</p>
+<p>"name": "general",</p>
+<p>"role": "General coding assistant",</p>
+<p>"skills": ["file", "search", "execute"]</p>
+<p>}</p>
+<p>]</p>
+<p>}</p>
+</code>``
+
+<hr>
+
+<p>For more information, see:</p>
+<ul><li><a href="./commands.md">Commands</a> - Agent-related commands</li>
+<li><a href="./keybinds.md">Keybinds</a> - Agent switching shortcuts</li>
+<li><a href="./config.md">Configuration</a> - Agent configuration</li>
+</ul>
+    </div>
+</body>
+</html>

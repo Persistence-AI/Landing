@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Troubleshooting - PersistenceAI Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --text-primary: #d4d4d4;
+            --text-secondary: #858585;
+            --accent: #4ec9b0;
+            --border: #3e3e3e;
+            --code-bg: #161b22;
+            --code-border: #30363d;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+        .back-link:hover {
+            color: var(--accent);
+        }
+        h1 {
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            font-size: 2.5rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 1rem;
+        }
+        h2 {
+            color: var(--accent);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-size: 1.75rem;
+        }
+        h3 {
+            color: var(--text-primary);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.25rem;
+        }
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        ul, ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+        li {
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        code {
+            background: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-radius: 4px;
+            padding: 0.2rem 0.4rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: var(--accent);
+        }
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+        pre code {
+            background: none;
+            border: none;
+            padding: 0;
+            color: var(--text-primary);
+            white-space: pre;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+        }
+        th, td {
+            border: 1px solid var(--border);
+            padding: 0.75rem;
+            text-align: left;
+        }
+        th {
+            background: var(--bg-secondary);
+            color: var(--accent);
+            font-weight: 600;
+        }
+        td {
+            color: var(--text-primary);
+        }
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        blockquote {
+            border-left: 4px solid var(--accent);
+            padding-left: 1rem;
+            margin-left: 0;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 2rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Documentation</a>
+        <h1>Troubleshooting</h1>
+
+<p>Common issues and solutions for PersistenceAI.</p>
+
+<h2>Installation Issues</h2>
+
+<h3>Install Script Fails</h3>
+
+<strong>Problem</strong>: Install script fails to download or execute.
+
+<strong>Solutions</strong>:
+<ul><li>Check your internet connection</li>
+<li>Verify the install URL is correct:</li>
+   </ul>- Linux/macOS: <code>https://persistence-ai.github.io/Landing/install.sh</code>
+   - Windows: <code>https://persistence-ai.github.io/Landing/install.ps1</code>
+<ul><li>Try downloading the binary directly from <a href="https://github.com/Persistence-AI/Landing/releases">Releases</a></li>
+
+</ul><h3>Binary Not Found After Installation</h3>
+
+<strong>Problem</strong>: <code>persistenceai</code> command not found.
+
+<strong>Solutions</strong>:
+<ul><li>Verify the binary was installed:</li>
+   </ul>- Windows: <code>%USERPROFILE%\.persistenceai\bin\persistenceai.exe</code>
+   - Linux/macOS: <code>~/.persistenceai/bin/persistenceai</code>
+<ul><li>Check your PATH environment variable includes the install directory</li>
+<li>Restart your terminal after installation</li>
+
+</ul><hr>
+
+<h2>Configuration Issues</h2>
+
+<h3>Config File Not Found</h3>
+
+<strong>Problem</strong>: PersistenceAI can't find your config file.
+
+<strong>Solutions</strong>:
+<ul><li>Create the config directory:</li>
+   </ul>- Windows: <code>%USERPROFILE%\.config\pai\</code>
+   - Linux/macOS: <code>~/.config/pai/</code>
+<ul><li>Create <code>opencode.json</code> with basic configuration:</li>
+   </ul>``<code>json
+<p>{</p>
+<p>"keybinds": {},</p>
+<p>"providers": {}</p>
+<p>}</p>
+   </code>`<code>
+
+<h3>Keybinds Not Working</h3>
+
+<strong>Problem</strong>: Keyboard shortcuts don't work.
+
+<strong>Solutions</strong>:
+<ul><li>Check your keybind configuration in </code>opencode.json<code></li>
+<li>Verify the leader key is set correctly (default: </code>Ctrl+X<code>)</li>
+<li>Ensure no other application is capturing the shortcuts</li>
+<li>Try resetting keybinds to defaults</li>
+
+</ul><hr>
+
+<h2>Provider Issues</h2>
+
+<h3>API Key Not Working</h3>
+
+<strong>Problem</strong>: Provider authentication fails.
+
+<strong>Solutions</strong>:
+<ul><li>Verify your API key is correct</li>
+<li>Check API key hasn't expired</li>
+<li>Ensure you have sufficient credits/quota</li>
+<li>Try reconnecting: </code>/connect<code></li>
+
+</ul><h3>Ollama Connection Failed</h3>
+
+<strong>Problem</strong>: Can't connect to Ollama.
+
+<strong>Solutions</strong>:
+<ul><li>Verify Ollama is running:</li>
+   </ul></code>`<code>bash
+<p>ollama list</p>
+   </code>`<code>
+<ul><li>Check Ollama base URL (default: </code>http://localhost:11434<code>)</li>
+<li>Ensure firewall isn't blocking the connection</li>
+<li>Try restarting Ollama service</li>
+
+</ul><hr>
+
+<h2>Performance Issues</h2>
+
+<h3>Slow Response Times</h3>
+
+<strong>Problem</strong>: PersistenceAI responds slowly.
+
+<strong>Solutions</strong>:
+<ul><li>Check your internet connection (for cloud providers)</li>
+<li>Try a faster model (smaller models are faster)</li>
+<li>For Ollama: Ensure GPU acceleration is enabled</li>
+<li>Check system resources (CPU, RAM, GPU)</li>
+
+</ul><h3>High Memory Usage</h3>
+
+<strong>Problem</strong>: PersistenceAI uses too much memory.
+
+<strong>Solutions</strong>:
+<ul><li>Use smaller models</li>
+<li>Close unused sessions</li>
+<li>Restart PersistenceAI periodically</li>
+<li>Check for memory leaks in your terminal</li>
+
+</ul><hr>
+
+<h2>Feature Issues</h2>
+
+<h3>@ File Search Not Working</h3>
+
+<strong>Problem</strong>: </code>@<code> shortcut doesn't show file suggestions.
+
+<strong>Solutions</strong>:
+<ul><li>Ensure you're in a project directory (not empty)</li>
+<li>Run </code>/init<code> to initialize the project</li>
+<li>Check file permissions</li>
+<li>Verify workspace is enabled (</code>Ctrl+B<code>)</li>
+
+</ul><h3>Editor Not Opening</h3>
+
+<strong>Problem</strong>: Editor pane doesn't open.
+
+<strong>Solutions</strong>:
+<ul><li>Press </code>Ctrl+E<code> to toggle editor</li>
+<li>Check editor configuration</li>
+<li>Verify file permissions</li>
+<li>Try opening external editor: </code><leader>E<code></li>
+
+</ul><h3>Commands Not Working</h3>
+
+<strong>Problem</strong>: Commands like </code>/undo<code> don't work.
+
+<strong>Solutions</strong>:
+<ul><li>Ensure you're in an active session</li>
+<li>Check command syntax (must start with </code>/<code>)</li>
+<li>Verify the command exists: </code>/commands<code></li>
+<li>Check session state (some commands require specific states)</li>
+
+</ul><hr>
+
+<h2>Terminal Compatibility</h2>
+
+<h3>Windows PowerShell Issues</h3>
+
+<strong>Problem</strong>: TUI doesn't render correctly in PowerShell.
+
+<strong>Solutions</strong>:
+<ul><li>Use Windows Terminal instead of PowerShell 5.1</li>
+<li>Update to PowerShell 7+</li>
+<li>Use a modern terminal emulator (WezTerm, Alacritty)</li>
+
+</ul><h3>Terminal Not Supported</h3>
+
+<strong>Problem</strong>: Terminal compatibility errors.
+
+<strong>Solutions</strong>:
+<ul><li>Use a modern terminal emulator:</li>
+   </ul>- WezTerm (cross-platform)
+   - Alacritty (cross-platform)
+   - Windows Terminal (Windows)
+   - iTerm2 (macOS)
+<ul><li>Check terminal supports:</li>
+   </ul>- True color
+   - Unicode
+   - Mouse events
+
+<hr>
+
+<h2>Getting Help</h2>
+
+<p>If you're still experiencing issues:</p>
+
+<ul><li><strong>Check Documentation</strong>: Review the <a href="./index.md">full documentation</a></li>
+<li><strong>Search Issues</strong>: Check <a href="https://github.com/Persistence-AI/.github/issues">GitHub Issues</a></li>
+<li><strong>Report Bug</strong>: <a href="https://github.com/Persistence-AI/.github/issues/new?template=bug-report.yml">Open a new issue</a></li>
+<li><strong>Community</strong>: Join our Discord or community forums</li>
+
+</ul><hr>
+
+<h2>Common Error Messages</h2>
+
+<h3>"Provider not configured"</h3>
+
+<strong>Solution</strong>: Run </code>/connect<code> to configure a provider.
+
+<h3>"Session not found"</h3>
+
+<strong>Solution</strong>: Create a new session with </code>/new<code> or list sessions with </code>/session<code>.
+
+<h3>"Model not available"</h3>
+
+<strong>Solution</strong>: Check model name is correct, or select from </code>/models`.
+
+<h3>"Permission denied"</h3>
+
+<strong>Solution</strong>: Check file permissions and ensure PersistenceAI has access.
+
+<hr>
+
+<p>For more help, see:</p>
+<ul><li><a href="./index.md#install">Installation Guide</a></li>
+<li><a href="./config.md">Configuration</a></li>
+<li><a href="./commands.md">Commands</a></li>
+</ul>
+    </div>
+</body>
+</html>

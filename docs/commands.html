@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commands - PersistenceAI Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --text-primary: #d4d4d4;
+            --text-secondary: #858585;
+            --accent: #4ec9b0;
+            --border: #3e3e3e;
+            --code-bg: #161b22;
+            --code-border: #30363d;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+        .back-link:hover {
+            color: var(--accent);
+        }
+        h1 {
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            font-size: 2.5rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 1rem;
+        }
+        h2 {
+            color: var(--accent);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-size: 1.75rem;
+        }
+        h3 {
+            color: var(--text-primary);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.25rem;
+        }
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        ul, ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+        li {
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        code {
+            background: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-radius: 4px;
+            padding: 0.2rem 0.4rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: var(--accent);
+        }
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+        pre code {
+            background: none;
+            border: none;
+            padding: 0;
+            color: var(--text-primary);
+            white-space: pre;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+        }
+        th, td {
+            border: 1px solid var(--border);
+            padding: 0.75rem;
+            text-align: left;
+        }
+        th {
+            background: var(--bg-secondary);
+            color: var(--accent);
+            font-weight: 600;
+        }
+        td {
+            color: var(--text-primary);
+        }
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        blockquote {
+            border-left: 4px solid var(--accent);
+            padding-left: 1rem;
+            margin-left: 0;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 2rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Documentation</a>
+        <h1>Commands</h1>
+
+<p>PersistenceAI provides a set of commands that you can use to interact with the application. Commands start with <code>/</code> and can be accessed via the command palette (<code>Ctrl+P</code>) or by typing them directly in the chat input.</p>
+
+<h2>Command Palette</h2>
+
+<p>Press <code>Ctrl+P</code> (or <code><leader>P</code> if customized) to open the command palette. This shows all available commands with descriptions.</p>
+
+<p>You can also type <code>/</code> in the chat input to see command suggestions.</p>
+
+<hr>
+
+<h2>Session Commands</h2>
+
+<h3><code>/init</code></h3>
+
+<p>Initialize PersistenceAI for the current project. This analyzes your project and creates an <code>AGENTS.md</code> file in the project root.</p>
+
+<p>``<code></p>
+<p>/init</p>
+</code>`<code>
+
+<blockquote><strong>Tip</strong>: You should commit your project's </code>AGENTS.md<code> file to Git. This helps PersistenceAI understand the project structure and coding patterns.</blockquote>
+
+<h3></code>/new<code> or </code>/clear<code></h3>
+
+<p>Create a new session.</p>
+
+</code>`<code>
+<p>/new</p>
+</code>`<code>
+
+<p>Aliases: </code>/clear<code></p>
+
+<h3></code>/session<code>, </code>/resume<code>, or </code>/continue<code></h3>
+
+<p>List all available sessions so you can resume one.</p>
+
+</code>`<code>
+<p>/session</p>
+</code>`<code>
+
+<p>Aliases: </code>/resume<code>, </code>/continue<code></p>
+
+<h3></code>/share<code></h3>
+
+<p>Share the current session. This creates a link to the conversation that you can share with your team.</p>
+
+</code>`<code>
+<p>/share</p>
+</code>`<code>
+
+<blockquote><strong>Note</strong>: Sessions are not shared by default. You must explicitly share them.</blockquote>
+
+<h3></code>/unshare<code></h3>
+
+<p>Unshare a previously shared session.</p>
+
+</code>`<code>
+<p>/unshare</p>
+</code>`<code>
+
+<p>Only available if the session is currently shared.</p>
+
+<h3></code>/rename<code></h3>
+
+<p>Rename the current session.</p>
+
+</code>`<code>
+<p>/rename</p>
+</code>`<code>
+
+<h3></code>/copy<code></h3>
+
+<p>Copy the session transcript to your clipboard.</p>
+
+</code>`<code>
+<p>/copy</p>
+</code>`<code>
+
+<h3></code>/export<code></h3>
+
+<p>Export the session transcript to a file.</p>
+
+</code>`<code>
+<p>/export</p>
+</code>`<code>
+
+<h3></code>/timeline<code></h3>
+
+<p>Jump to a specific message in the session timeline.</p>
+
+</code>`<code>
+<p>/timeline</p>
+</code>`<code>
+
+<h3></code>/undo<code></h3>
+
+<p>Undo the last message and its changes.</p>
+
+</code>`<code>
+<p>/undo</p>
+</code>`<code>
+
+<blockquote><strong>Tip</strong>: You can run </code>/undo<code> multiple times to undo multiple changes.</blockquote>
+
+<h3></code>/redo<code></h3>
+
+<p>Redo the last undone message.</p>
+
+</code>`<code>
+<p>/redo</p>
+</code>`<code>
+
+<h3></code>/thinking<code></h3>
+
+<p>Toggle the visibility of AI thinking/reasoning steps.</p>
+
+</code>`<code>
+<p>/thinking</p>
+</code>`<code>
+
+<hr>
+
+<h2>Provider & Model Commands</h2>
+
+<h3></code>/connect<code></h3>
+
+<p>Connect to an LLM provider. This opens a dialog to select a provider and enter your API key.</p>
+
+</code>`<code>
+<p>/connect</p>
+</code>`<code>
+
+<h3></code>/models<code></h3>
+
+<p>List all available models from configured providers.</p>
+
+</code>`<code>
+<p>/models</p>
+</code>`<code>
+
+<hr>
+
+<h2>Agent Commands</h2>
+
+<h3></code>/agents<code></h3>
+
+<p>List all available agents.</p>
+
+</code>`<code>
+<p>/agents</p>
+</code>`<code>
+
+<p>You can also cycle through agents using:</p>
+<ul><li></code>Tab<code> - Next agent</li>
+<li></code>Shift+Tab<code> - Previous agent</li>
+
+</ul><hr>
+
+<h2>MCP Commands</h2>
+
+<h3></code>/mcp<code></h3>
+
+<p>Toggle MCP (Model Context Protocol) servers.</p>
+
+</code>`<code>
+<p>/mcp</p>
+</code>`<code>
+
+<hr>
+
+<h2>UI Commands</h2>
+
+<h3></code>/theme<code></h3>
+
+<p>Switch between available themes.</p>
+
+</code>`<code>
+<p>/theme</p>
+</code>`<code>
+
+<p>You can also use </code><leader>T<code> (default: </code>Ctrl+X T<code>) to list themes.</p>
+
+<h3></code>/editor<code></h3>
+
+<p>Open the external editor for the current prompt.</p>
+
+</code>`<code>
+<p>/editor</p>
+</code>`<code>
+
+<h3></code>/status<code></h3>
+
+<p>Show the current status and system information.</p>
+
+</code>`<code>
+<p>/status</p>
+</code>`<code>
+
+<hr>
+
+<h2>Help Commands</h2>
+
+<h3></code>/help<code></h3>
+
+<p>Show help information.</p>
+
+</code>`<code>
+<p>/help</p>
+</code>`<code>
+
+<h3></code>/commands<code></h3>
+
+<p>Show all available commands (same as command palette).</p>
+
+</code>`<code>
+<p>/commands</p>
+</code>`<code>
+
+<hr>
+
+<h2>System Commands</h2>
+
+<h3></code>/exit<code>, </code>/quit<code>, or </code>/q<code></h3>
+
+<p>Exit the application.</p>
+
+</code>`<code>
+<p>/exit</p>
+</code>`<code>
+
+<p>Aliases: </code>/quit<code>, </code>/q<code></p>
+
+<hr>
+
+<h2>Using Commands</h2>
+
+<h3>Command Autocomplete</h3>
+
+<p>When you type </code>/<code> in the chat input, PersistenceAI will show command suggestions. You can:</p>
+
+<ul><li>Use arrow keys to navigate suggestions</li>
+<li>Press </code>Enter<code> to select a command</li>
+<li>Continue typing to filter commands</li>
+
+</ul><h3>Command Arguments</h3>
+
+<p>Some commands accept arguments. For example:</p>
+
+</code>`<code>
+<p>/rename My New Session Name</p>
+</code>`<code>
+
+<h3>Command Shortcuts</h3>
+
+<p>Many commands have keyboard shortcuts. See the <a href="./keybinds.md">Keybinds documentation</a> for a complete list.</p>
+
+<hr>
+
+<h2>Command Reference</h2>
+
+<table><thead><tr><th>Command</th><th>Shortcut</th><th>Description</th></tr></thead><tbody>
+
+<tr><td></code>/init<code></td><td>-</td><td>Initialize project</td></tr>
+<tr><td></code>/new<code></td><td></code><leader>N<code></td><td>New session</td></tr>
+<tr><td></code>/session<code></td><td></code><leader>L<code></td><td>List sessions</td></tr>
+<tr><td></code>/share<code></td><td>-</td><td>Share session</td></tr>
+<tr><td></code>/unshare<code></td><td>-</td><td>Unshare session</td></tr>
+<tr><td></code>/rename<code></td><td>-</td><td>Rename session</td></tr>
+<tr><td></code>/copy<code></td><td>-</td><td>Copy transcript</td></tr>
+<tr><td></code>/export<code></td><td></code><leader>X<code></td><td>Export transcript</td></tr>
+<tr><td></code>/timeline<code></td><td></code><leader>G<code></td><td>Jump to message</td></tr>
+<tr><td></code>/undo<code></td><td></code><leader>U<code></td><td>Undo message</td></tr>
+<tr><td></code>/redo<code></td><td></code><leader>R<code></td><td>Redo message</td></tr>
+<tr><td></code>/thinking<code></td><td>-</td><td>Toggle thinking</td></tr>
+<tr><td></code>/connect<code></td><td>-</td><td>Connect provider</td></tr>
+<tr><td></code>/models<code></td><td></code><leader>M<code></td><td>List models</td></tr>
+<tr><td></code>/agents<code></td><td></code><leader>A<code></td><td>List agents</td></tr>
+<tr><td></code>/mcp<code></td><td>-</td><td>Toggle MCPs</td></tr>
+<tr><td></code>/theme<code></td><td></code><leader>T<code></td><td>Switch theme</td></tr>
+<tr><td></code>/editor<code></td><td></code><leader>E<code></td><td>Open editor</td></tr>
+<tr><td></code>/status<code></td><td></code><leader>S<code></td><td>Show status</td></tr>
+<tr><td></code>/help<code></td><td>-</td><td>Show help</td></tr>
+<tr><td></code>/commands<code></td><td></code>Ctrl+P<code></td><td>Command palette</td></tr>
+<tr><td></code>/exit<code></td><td></code>Ctrl+C/D<code></td><td>Exit app</td></tr>
+
+</tbody></table><hr>
+
+<h2>Tips</h2>
+
+<ul><li><strong>Command Palette</strong>: Use </code>Ctrl+P<code> to quickly access any command without typing the full command name.</li>
+
+<li><strong>Autocomplete</strong>: Start typing </code>/<code> and use autocomplete to find commands quickly.</li>
+
+<li><strong>Keyboard Shortcuts</strong>: Most commands have keyboard shortcuts for faster access.</li>
+
+<li><strong>Command History</strong>: Use arrow keys (</code>↑/↓`) in the chat input to navigate command history.</li>
+
+</ul><hr>
+
+<p>For more information, see:</p>
+<ul><li><a href="./keybinds.md">Keybinds</a> - Keyboard shortcuts</li>
+<li><a href="./index.md#usage">Usage</a> - Basic usage guide</li>
+<li><a href="./agents.md">Agents</a> - Agent system</li>
+</ul>
+    </div>
+</body>
+</html>

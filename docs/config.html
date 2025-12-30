@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuration - PersistenceAI Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --text-primary: #d4d4d4;
+            --text-secondary: #858585;
+            --accent: #4ec9b0;
+            --border: #3e3e3e;
+            --code-bg: #161b22;
+            --code-border: #30363d;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+        .back-link:hover {
+            color: var(--accent);
+        }
+        h1 {
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            font-size: 2.5rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 1rem;
+        }
+        h2 {
+            color: var(--accent);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-size: 1.75rem;
+        }
+        h3 {
+            color: var(--text-primary);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.25rem;
+        }
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        ul, ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+        li {
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        code {
+            background: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-radius: 4px;
+            padding: 0.2rem 0.4rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: var(--accent);
+        }
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+        pre code {
+            background: none;
+            border: none;
+            padding: 0;
+            color: var(--text-primary);
+            white-space: pre;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+        }
+        th, td {
+            border: 1px solid var(--border);
+            padding: 0.75rem;
+            text-align: left;
+        }
+        th {
+            background: var(--bg-secondary);
+            color: var(--accent);
+            font-weight: 600;
+        }
+        td {
+            color: var(--text-primary);
+        }
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        blockquote {
+            border-left: 4px solid var(--accent);
+            padding-left: 1rem;
+            margin-left: 0;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 2rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Documentation</a>
+        <h1>Configuration</h1>
+
+<p>PersistenceAI can be configured through a JSON configuration file.</p>
+
+<h2>Configuration File Location</h2>
+
+<ul><li><strong>Windows</strong>: <code>%USERPROFILE%\.config\pai\opencode.json</code></li>
+<li><strong>Linux/macOS</strong>: <code>~/.config/pai/opencode.json</code></li>
+
+</ul>You can also use <code>opencode.jsonc</code> (JSON with Comments) for better readability.
+
+<h2>Configuration Structure</h2>
+
+<p>``<code>json</p>
+<p>{</p>
+<p>"keybinds": {</p>
+<p>"leader": "ctrl+x",</p>
+<p>"session_new": "<leader>n"</p>
+<p>},</p>
+<p>"providers": {</p>
+<p>"openai": {</p>
+<p>"apiKey": "sk-..."</p>
+<p>}</p>
+<p>},</p>
+<p>"agents": [],</p>
+<p>"theme": "default",</p>
+<p>"models": {</p>
+<p>"default": "openai/gpt-4"</p>
+<p>}</p>
+<p>}</p>
+</code>`<code>
+
+<h2>Keybind Configuration</h2>
+
+<p>See the <a href="./keybinds.md">Keybinds documentation</a> for detailed keybind configuration.</p>
+
+<h2>Provider Configuration</h2>
+
+<p>See the <a href="./providers.md">Providers documentation</a> for provider setup.</p>
+
+<h2>Agent Configuration</h2>
+
+<p>See the <a href="./agents.md">Agents documentation</a> for agent configuration.</p>
+
+<h2>Theme Configuration</h2>
+
+<p>Set your preferred theme:</p>
+
+</code>`<code>json
+<p>{</p>
+<p>"theme": "opencode"</p>
+<p>}</p>
+</code>`<code>
+
+<p>Available themes:</p>
+<ul><li></code>opencode<code> (default)</li>
+<li></code>dark<code></li>
+<li></code>light<code></li>
+<li>And more...</li>
+
+</ul><h2>Model Configuration</h2>
+
+<p>Set default models:</p>
+
+</code>`<code>json
+<p>{</p>
+<p>"models": {</p>
+<p>"default": "openai/gpt-4",</p>
+<p>"small": "cogito:3b",</p>
+<p>"medium": "qwen2.5-coder:4b",</p>
+<p>"large": "qwen2.5-coder:7b"</p>
+<p>}</p>
+<p>}</p>
+</code>`<code>
+
+<h2>Project-Specific Configuration</h2>
+
+<p>You can also create a project-specific config file:</p>
+
+<ul><li></code>opencode.json<code> in your project root</li>
+<li></code>opencode.jsonc` in your project root</li>
+
+</ul>Project configs override global configs.
+
+<hr>
+
+<p>For more information, see:</p>
+<ul><li><a href="./keybinds.md">Keybinds</a> - Keyboard shortcuts</li>
+<li><a href="./providers.md">Providers</a> - LLM provider setup</li>
+<li><a href="./agents.md">Agents</a> - Agent configuration</li>
+</ul>
+    </div>
+</body>
+</html>

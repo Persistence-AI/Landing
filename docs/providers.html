@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Providers - PersistenceAI Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --text-primary: #d4d4d4;
+            --text-secondary: #858585;
+            --accent: #4ec9b0;
+            --border: #3e3e3e;
+            --code-bg: #161b22;
+            --code-border: #30363d;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+        .back-link:hover {
+            color: var(--accent);
+        }
+        h1 {
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            font-size: 2.5rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 1rem;
+        }
+        h2 {
+            color: var(--accent);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-size: 1.75rem;
+        }
+        h3 {
+            color: var(--text-primary);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.25rem;
+        }
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        ul, ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+        li {
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        code {
+            background: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-radius: 4px;
+            padding: 0.2rem 0.4rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: var(--accent);
+        }
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+        pre code {
+            background: none;
+            border: none;
+            padding: 0;
+            color: var(--text-primary);
+            white-space: pre;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+        }
+        th, td {
+            border: 1px solid var(--border);
+            padding: 0.75rem;
+            text-align: left;
+        }
+        th {
+            background: var(--bg-secondary);
+            color: var(--accent);
+            font-weight: 600;
+        }
+        td {
+            color: var(--text-primary);
+        }
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        blockquote {
+            border-left: 4px solid var(--accent);
+            padding-left: 1rem;
+            margin-left: 0;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 2rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Documentation</a>
+        <h1>Providers</h1>
+
+<p>PersistenceAI supports multiple LLM providers. You can configure API keys for any provider you want to use.</p>
+
+<h2>Connecting a Provider</h2>
+
+<ul><li>Run the <code>/connect</code> command in the TUI</li>
+<li>Select a provider from the list</li>
+<li>Follow the provider-specific authentication steps</li>
+<li>Enter your API key when prompted</li>
+
+</ul>``<code>
+<p>/connect</p>
+</code>`<code>
+
+<h2>Supported Providers</h2>
+
+<p>PersistenceAI supports all major LLM providers:</p>
+
+<ul><li><strong>OpenAI</strong> - GPT-4, GPT-3.5, and more</li>
+<li><strong>Anthropic</strong> - Claude models</li>
+<li><strong>Google</strong> - Gemini models</li>
+<li><strong>Ollama</strong> - Local models (self-hosted)</li>
+<li><strong>PersistenceAI Zen</strong> - Curated list of tested models</li>
+<li>And many more...</li>
+
+</ul><h2>Provider Configuration</h2>
+
+<p>Provider configurations are stored in your global config file:</p>
+
+<ul><li><strong>Windows</strong>: </code>%USERPROFILE%\.config\pai\opencode.json<code></li>
+<li><strong>Linux/macOS</strong>: </code>~/.config/pai/opencode.json<code></li>
+
+</ul><h3>Example Configuration</h3>
+
+</code>`<code>json
+<p>{</p>
+<p>"providers": {</p>
+<p>"openai": {</p>
+<p>"apiKey": "sk-..."</p>
+<p>},</p>
+<p>"anthropic": {</p>
+<p>"apiKey": "sk-ant-..."</p>
+<p>},</p>
+<p>"ollama": {</p>
+<p>"baseURL": "http://localhost:11434"</p>
+<p>}</p>
+<p>}</p>
+<p>}</p>
+</code>`<code>
+
+<h2>Ollama (Self-Hosted)</h2>
+
+<p>PersistenceAI has excellent support for Ollama, allowing you to run models locally without API costs.</p>
+
+<h3>Setup</h3>
+
+<ul><li>Install Ollama from <a href="https://ollama.ai">ollama.ai</a></li>
+<li>Pull the models you want to use:</li>
+   </ul></code>`<code>bash
+<p>ollama pull llama2</p>
+<p>ollama pull codellama</p>
+   </code>`<code>
+<ul><li>Connect to Ollama in PersistenceAI:</li>
+   </ul></code>`<code>
+<p>/connect</p>
+   </code>`<code>
+<p>Select "Ollama" and enter your base URL (default: </code>http://localhost:11434<code>)</p>
+
+<h3>Recommended Models</h3>
+
+<ul><li><strong>cogito:3b</strong> - Fast, lightweight for simple tasks</li>
+<li><strong>qwen2.5-coder:4b</strong> - Good balance of speed and capability</li>
+<li><strong>qwen2.5-coder:7b</strong> - More capable for complex tasks</li>
+<li><strong>qwen2.5-coder:13b+</strong> - Maximum capability</li>
+
+</ul><h2>PersistenceAI Zen</h2>
+
+<p>PersistenceAI Zen is a curated list of models that have been tested and verified by the PersistenceAI team.</p>
+
+<ul><li>Run </code>/connect<code> and select "PersistenceAI Zen"</li>
+<li>Visit the authentication page</li>
+<li>Sign in and get your API key</li>
+<li>Paste the key in PersistenceAI</li>
+
+</ul><h2>Model Selection</h2>
+
+<p>You can switch between models using:</p>
+
+<ul><li><strong>Keyboard</strong>: </code>F2<code> to cycle through recently used models</li>
+<li><strong>Command</strong>: </code>/models<code> to see all available models</li>
+<li><strong>Shortcut</strong>: </code><leader>M<code> (default: </code>Ctrl+X M`)</li>
+
+</ul><h2>Provider-Specific Notes</h2>
+
+<h3>OpenAI</h3>
+
+<ul><li>Requires API key from <a href="https://platform.openai.com">platform.openai.com</a></li>
+<li>Supports GPT-4, GPT-3.5, and other models</li>
+<li>Usage-based billing</li>
+
+</ul><h3>Anthropic</h3>
+
+<ul><li>Requires API key from <a href="https://console.anthropic.com">console.anthropic.com</a></li>
+<li>Supports Claude 3 models</li>
+<li>Usage-based billing</li>
+
+</ul><h3>Google</h3>
+
+<ul><li>Requires API key from <a href="https://makersuite.google.com/app/apikey">Google AI Studio</a></li>
+<li>Supports Gemini models</li>
+<li>Usage-based billing</li>
+
+</ul><h3>Ollama</h3>
+
+<ul><li>Free and self-hosted</li>
+<li>No API key required</li>
+<li>Runs models locally on your machine</li>
+<li>Best for privacy-sensitive projects</li>
+
+</ul><hr>
+
+<p>For more information, see:</p>
+<ul><li><a href="./config.md">Configuration</a> - Full configuration options</li>
+<li><a href="./models.md">Models</a> - Model selection and usage</li>
+</ul>
+    </div>
+</body>
+</html>
