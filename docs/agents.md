@@ -12,11 +12,17 @@ PersistenceAI uses an agent system where different agents have specialized roles
 
 Agents in PersistenceAI are specialized AI assistants, each designed for specific tasks:
 
-- **General Agent** - Default agent for general coding tasks
-- **Code Reviewer** - Specialized in code review and quality
-- **Debugger** - Focused on finding and fixing bugs
-- **Architect** - Helps with system design and architecture
-- **And more...**
+**Built-in Primary Agents:**
+- **Build** - Default primary agent with all tools enabled for development work
+- **Plan** - Restricted agent for planning and analysis (asks permission before making changes)
+- **Oligarchy** - Combines build and plan agents with voting system for consensus-based decisions
+
+**Built-in Subagents:**
+- **General** - General-purpose agent for researching complex questions and executing multi-step tasks
+- **Explore** - Fast agent specialized for exploring codebases (file search, code search, pattern matching)
+
+**Custom Agents:**
+You can also create custom agents (like code reviewers, debuggers, architects) through configuration. See [Agent Configuration](#agent-configuration) below.
 
 ## Switching Agents
 
@@ -41,37 +47,43 @@ This lists all available agents. Select one to switch.
 
 Each agent has a specific role and set of skills:
 
-### General Agent
+### Build Agent
 
-The default agent for most coding tasks. Good for:
+The default primary agent for most coding tasks. Good for:
 - General code changes
 - Feature implementation
 - Code explanations
 - Project analysis
+- Full development work with all tools enabled
 
-### Code Reviewer
+### Plan Agent
 
-Specialized in code review. Good for:
-- Code quality checks
-- Finding potential issues
+A restricted primary agent designed for planning and analysis. Good for:
+- Code analysis without making changes
 - Suggesting improvements
-- Security reviews
+- Creating implementation plans
+- Reviewing code structure
 
-### Debugger
+**Note:** Plan agent asks for permission before making any file edits or running bash commands.
 
-Focused on debugging. Good for:
-- Finding bugs
-- Analyzing error messages
-- Fixing broken code
-- Performance issues
+### General Subagent
 
-### Architect
+A general-purpose subagent for complex tasks. Good for:
+- Researching complex questions
+- Executing multi-step tasks
+- Searching for keywords or files across the codebase
+- Parallel task execution
 
-Helps with system design. Good for:
-- Architecture decisions
-- Design patterns
-- System structure
-- Technical planning
+### Explore Subagent
+
+A fast subagent specialized for codebase exploration. Good for:
+- Quickly finding files by patterns (e.g., `src/components/**/*.tsx`)
+- Searching code for keywords
+- Answering questions about codebase structure
+- Fast codebase navigation
+
+**Custom Agents:**
+You can create custom agents like code reviewers, debuggers, or architects through configuration. See the [Agent Configuration](#agent-configuration) section for examples.
 
 ## Subagents
 
@@ -133,19 +145,25 @@ Agents have access to different skills (tools) based on their role:
 
 ## Using @ Mentions
 
-You can mention specific agents in your prompts using `@`:
+You can mention specific **subagents** in your prompts using `@`:
 
 ```
-@debugger Can you help me fix this error?
+@general help me search for this function across the codebase
 ```
 
-This ensures the right agent handles your request.
+This ensures the right subagent handles your request.
 
-**Available Mentions:**
-- Primary agents: `@general`, `@code-reviewer`, `@debugger`, `@architect`
-- Subagents: `@git-committer` (and any custom subagents you've configured)
+**Built-in Subagents Available for @ Mentions:**
+- `@general` - General-purpose agent for researching complex questions and executing multi-step tasks
+- `@explore` - Fast agent specialized for exploring codebases (file search, code search, pattern matching)
+- `@git-committer` - Specialized subagent for git operations (commit and push)
 
-When you type `@` in the prompt, you'll see an autocomplete list of available agents and files in your workspace.
+**Note:** Primary agents (`build`, `plan`, `oligarchy`) are switched using the **Tab** key, not @ mentions. The @ mention feature is specifically for subagents.
+
+**Custom Agents:**
+You can also create custom agents (like `@code-reviewer`, `@debugger`, `@architect`) through configuration. These will appear in the autocomplete when you type `@`.
+
+When you type `@` in the prompt, you'll see an autocomplete list of available subagents and files in your workspace.
 
 ## Agent Configuration
 

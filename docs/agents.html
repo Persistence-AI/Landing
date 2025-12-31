@@ -146,13 +146,19 @@
 
 <p>Agents in PersistenceAI are specialized AI assistants, each designed for specific tasks:</p>
 
-<ul><li><strong>General Agent</strong> - Default agent for general coding tasks</li>
-<li><strong>Code Reviewer</strong> - Specialized in code review and quality</li>
-<li><strong>Debugger</strong> - Focused on finding and fixing bugs</li>
-<li><strong>Architect</strong> - Helps with system design and architecture</li>
-<li><strong>And more...</strong></li>
+<strong>Built-in Primary Agents:</strong>
+<ul><li><strong>Build</strong> - Default primary agent with all tools enabled for development work</li>
+<li><strong>Plan</strong> - Restricted agent for planning and analysis (asks permission before making changes)</li>
+<li><strong>Oligarchy</strong> - Combines build and plan agents with voting system for consensus-based decisions</li>
 
-</ul><h2><p>Switching Agents</p></h2>
+</ul><strong>Built-in Subagents:</strong>
+<ul><li><strong>General</strong> - General-purpose agent for researching complex questions and executing multi-step tasks</li>
+<li><strong>Explore</strong> - Fast agent specialized for exploring codebases (file search, code search, pattern matching)</li>
+
+</ul><strong>Custom Agents:</strong>
+<p>You can also create custom agents (like code reviewers, debuggers, architects) through configuration. See <a href="#agent-configuration">Agent Configuration</a> below.</p>
+
+<h2><p>Switching Agents</p></h2>
 
 <h3><p>Using Keyboard</p></h3>
 
@@ -173,39 +179,45 @@
 
 <p>Each agent has a specific role and set of skills:</p>
 
-<h3><p>General Agent</p></h3>
+<h3><p>Build Agent</p></h3>
 
-<p>The default agent for most coding tasks. Good for:</p>
+<p>The default primary agent for most coding tasks. Good for:</p>
 <ul><li><p>General code changes</p></li>
 <li><p>Feature implementation</p></li>
 <li><p>Code explanations</p></li>
 <li><p>Project analysis</p></li>
+<li><p>Full development work with all tools enabled</p></li>
 
-</ul><h3><p>Code Reviewer</p></h3>
+</ul><h3><p>Plan Agent</p></h3>
 
-<p>Specialized in code review. Good for:</p>
-<ul><li><p>Code quality checks</p></li>
-<li><p>Finding potential issues</p></li>
+<p>A restricted primary agent designed for planning and analysis. Good for:</p>
+<ul><li><p>Code analysis without making changes</p></li>
 <li><p>Suggesting improvements</p></li>
-<li><p>Security reviews</p></li>
+<li><p>Creating implementation plans</p></li>
+<li><p>Reviewing code structure</p></li>
 
-</ul><h3><p>Debugger</p></h3>
+</ul><strong>Note:</strong> Plan agent asks for permission before making any file edits or running bash commands.
 
-<p>Focused on debugging. Good for:</p>
-<ul><li><p>Finding bugs</p></li>
-<li><p>Analyzing error messages</p></li>
-<li><p>Fixing broken code</p></li>
-<li><p>Performance issues</p></li>
+<h3><p>General Subagent</p></h3>
 
-</ul><h3><p>Architect</p></h3>
+<p>A general-purpose subagent for complex tasks. Good for:</p>
+<ul><li><p>Researching complex questions</p></li>
+<li><p>Executing multi-step tasks</p></li>
+<li><p>Searching for keywords or files across the codebase</p></li>
+<li><p>Parallel task execution</p></li>
 
-<p>Helps with system design. Good for:</p>
-<ul><li><p>Architecture decisions</p></li>
-<li><p>Design patterns</p></li>
-<li><p>System structure</p></li>
-<li><p>Technical planning</p></li>
+</ul><h3><p>Explore Subagent</p></h3>
 
-</ul><h2><p>Subagents</p></h2>
+<p>A fast subagent specialized for codebase exploration. Good for:</p>
+<ul><li><p>Quickly finding files by patterns (e.g., <code>src/components/<em>*/</em>.tsx</code>)</p></li>
+<li><p>Searching code for keywords</p></li>
+<li><p>Answering questions about codebase structure</p></li>
+<li><p>Fast codebase navigation</p></li>
+
+</ul><strong>Custom Agents:</strong>
+<p>You can create custom agents like code reviewers, debuggers, or architects through configuration. See the <a href="#agent-configuration">Agent Configuration</a> section for examples.</p>
+
+<h2><p>Subagents</p></h2>
 
 <p>Subagents are specialized agents that can be invoked using <code>@</code> mentions for specific tasks. They operate independently and are designed for focused, single-purpose operations.</p>
 
@@ -261,17 +273,23 @@
 
 </ul><h2><p>Using @ Mentions</p></h2>
 
-<p>You can mention specific agents in your prompts using <code>@</code>:</p>
+<p>You can mention specific <strong>subagents</strong> in your prompts using <code>@</code>:</p>
 
-<pre><code>@debugger Can you help me fix this error?</code></pre>
+<pre><code>@general help me search for this function across the codebase</code></pre>
 
-<p>This ensures the right agent handles your request.</p>
+<p>This ensures the right subagent handles your request.</p>
 
-<strong>Available Mentions:</strong>
-<ul><li><p>Primary agents: <code>@general</code>, <code>@code-reviewer</code>, <code>@debugger</code>, <code>@architect</code></p></li>
-<li><p>Subagents: <code>@git-committer</code> (and any custom subagents you've configured)</p></li>
+<strong>Built-in Subagents Available for @ Mentions:</strong>
+<ul><li><code>@general</code> - General-purpose agent for researching complex questions and executing multi-step tasks</li>
+<li><code>@explore</code> - Fast agent specialized for exploring codebases (file search, code search, pattern matching)</li>
+<li><code>@git-committer</code> - Specialized subagent for git operations (commit and push)</li>
 
-</ul><p>When you type <code>@</code> in the prompt, you'll see an autocomplete list of available agents and files in your workspace.</p>
+</ul><strong>Note:</strong> Primary agents (<code>build</code>, <code>plan</code>, <code>oligarchy</code>) are switched using the <strong>Tab</strong> key, not @ mentions. The @ mention feature is specifically for subagents.
+
+<strong>Custom Agents:</strong>
+<p>You can also create custom agents (like <code>@code-reviewer</code>, <code>@debugger</code>, <code>@architect</code>) through configuration. These will appear in the autocomplete when you type <code>@</code>.</p>
+
+<p>When you type <code>@</code> in the prompt, you'll see an autocomplete list of available subagents and files in your workspace.</p>
 
 <h2><p>Agent Configuration</p></h2>
 
