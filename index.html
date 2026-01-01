@@ -47,6 +47,27 @@
     }
     </script>
 
+    <!-- Case-Insensitive URL Redirect -->
+    <script>
+    (function() {
+        // Only run on GitHub Pages (not local file://)
+        if (window.location.protocol === 'file:') return;
+        
+        const pathname = window.location.pathname;
+        const correctPath = '/Landing/';
+        
+        // Check if path is a case variation of /Landing/
+        const pathLower = pathname.toLowerCase();
+        const correctPathLower = correctPath.toLowerCase();
+        
+        // If path matches /landing/ or /LANDING/ etc (case-insensitive) but not exact match
+        if (pathLower === correctPathLower && pathname !== correctPath) {
+            // Redirect to correct case
+            window.location.replace(correctPath + window.location.search + window.location.hash);
+        }
+    })();
+    </script>
+
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
     {
