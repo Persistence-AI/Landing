@@ -1919,11 +1919,11 @@ persistenceai run --model ollama/llama3</code>
             </h4>
             <p>Remove PersistenceAI binaries and directories</p>
             <div class="command">
-                Remove-Item -Path "$env:USERPROFILE\.persistenceai\bin\*" -Force<br>Remove-Item -Path "$env:USERPROFILE\.pai\bin\*" -Force
-                <button class="command-copy" onclick="copyToClipboard('Remove-Item -Path &quot;$env:USERPROFILE\\.persistenceai\\bin\\*&quot; -Force\nRemove-Item -Path &quot;$env:USERPROFILE\\.pai\\bin\\*&quot; -Force', this, 'windows')">Copy</button>
+                if (Test-Path &quot;$env:USERPROFILE\.persistenceai\bin&quot;) { Remove-Item -Path &quot;$env:USERPROFILE\.persistenceai\bin\*&quot; -Force -ErrorAction SilentlyContinue }<br>if (Test-Path &quot;$env:USERPROFILE\.pai\bin&quot;) { Remove-Item -Path &quot;$env:USERPROFILE\.pai\bin\*&quot; -Force -ErrorAction SilentlyContinue }
+                <button class="command-copy" onclick="copyToClipboard('if (Test-Path &quot;$env:USERPROFILE\\.persistenceai\\bin&quot;) { Remove-Item -Path &quot;$env:USERPROFILE\\.persistenceai\\bin\\*&quot; -Force -ErrorAction SilentlyContinue }\nif (Test-Path &quot;$env:USERPROFILE\\.pai\\bin&quot;) { Remove-Item -Path &quot;$env:USERPROFILE\\.pai\\bin\\*&quot; -Force -ErrorAction SilentlyContinue }', this, 'windows')">Copy</button>
             </div>
             <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-secondary);">
-                Optional: Remove config files: <code style="font-size: 0.85rem;">Remove-Item -Path "$env:USERPROFILE\.config\persistenceai" -Recurse -Force</code>
+                Optional: Remove config files: <code style="font-size: 0.85rem;">if (Test-Path &quot;$env:USERPROFILE\.config\persistenceai&quot;) { Remove-Item -Path &quot;$env:USERPROFILE\.config\persistenceai&quot; -Recurse -Force }</code>
             </p>
         </div>
 
@@ -1938,11 +1938,11 @@ persistenceai run --model ollama/llama3</code>
             </h4>
             <p>Remove PersistenceAI binaries and directories</p>
             <div class="command">
-                rm -rf ~/.persistenceai/bin/*<br>rm -rf ~/.pai/bin/*
-                <button class="command-copy" onclick="copyToClipboard('rm -rf ~/.persistenceai/bin/*\nrm -rf ~/.pai/bin/*', this, 'linux')">Copy</button>
+                [ -d ~/.persistenceai/bin ] && rm -rf ~/.persistenceai/bin/*<br>[ -d ~/.pai/bin ] && rm -rf ~/.pai/bin/*
+                <button class="command-copy" onclick="copyToClipboard('[ -d ~/.persistenceai/bin ] && rm -rf ~/.persistenceai/bin/*\n[ -d ~/.pai/bin ] && rm -rf ~/.pai/bin/*', this, 'linux')">Copy</button>
             </div>
             <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-secondary);">
-                Optional: Remove config files: <code style="font-size: 0.85rem;">rm -rf ~/.config/persistenceai</code>
+                Optional: Remove config files: <code style="font-size: 0.85rem;">[ -d ~/.config/persistenceai ] && rm -rf ~/.config/persistenceai</code>
             </p>
         </div>
     </section>
