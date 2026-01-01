@@ -1920,7 +1920,7 @@ persistenceai run --model ollama/llama3</code>
             <p>Remove PersistenceAI binaries and directories</p>
             <div class="command">
                 Remove-Item -Path "$env:USERPROFILE\.persistenceai\bin\*" -Force<br>Remove-Item -Path "$env:USERPROFILE\.pai\bin\*" -Force
-                <button class="command-copy" onclick="copyToClipboard('Remove-Item -Path \"$env:USERPROFILE\\.persistenceai\\bin\\*\" -Force\nRemove-Item -Path \"$env:USERPROFILE\\.pai\\bin\\*\" -Force', this, 'windows')">Copy</button>
+                <button class="command-copy" onclick='copyToClipboard("Remove-Item -Path `"$env:USERPROFILE\\.persistenceai\\bin\\*`" -Force`nRemove-Item -Path `"$env:USERPROFILE\\.pai\\bin\\*`" -Force", this, "windows")'>Copy</button>
             </div>
             <p style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-secondary);">
                 Optional: Remove config files: <code style="font-size: 0.85rem;">Remove-Item -Path "$env:USERPROFILE\.config\persistenceai" -Recurse -Force</code>
