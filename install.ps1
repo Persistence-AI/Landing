@@ -69,7 +69,6 @@ if ($args.Count -gt 0) {
 
 # Build download URL - use serverless function to proxy private GitHub Releases
 Write-Info "Getting download URL from serverless API..."
-$downloadApiUrl = "https://serverless-woad-one.vercel.app/api/download"
 
 # If version is "latest", fetch the actual version first
 if ($Version -eq "latest") {
@@ -84,8 +83,8 @@ if ($Version -eq "latest") {
     }
 }
 
-# Build the download URL
-$downloadUrl = "$downloadApiUrl?version=$Version&platform=windows&arch=x64"
+# Build the download URL using serverless function
+$downloadUrl = "https://serverless-woad-one.vercel.app/api/download?version=$Version&platform=windows&arch=x64"
 Write-Info "Download URL: $downloadUrl"
 
 # Check if already installed
