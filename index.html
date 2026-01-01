@@ -2794,13 +2794,11 @@ persistenceai github install
         // Update visitor stats display
         function updateVisitorStatsDisplay() {
             // Add visitor stats to the counter display if elements exist
-            // This can be enhanced to show visitor count alongside copy count
             const visitorDisplay = document.getElementById('visitor-stats-display');
             if (visitorDisplay) {
                 visitorDisplay.innerHTML = `
                     <span style="color: var(--text-secondary); font-size: 0.85rem;">
-                        👥 ${formatNumber(visitorStats.total)} visitors | 
-                        👁️ ${formatNumber(visitorStats.pageViews)} page views
+                        👥 ${formatNumber(visitorStats.total)} visitors
                     </span>
                 `;
             }
