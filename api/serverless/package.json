@@ -1,0 +1,7 @@
+{
+  "name": "persistenceai-stats-api",
+  "version": "1.0.0",
+  "description": "Serverless function for syncing website stats to GitHub Gist",
+  "main": "write-stats.js",
+  "type": "module"
+}

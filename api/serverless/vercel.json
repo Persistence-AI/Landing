@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/write-stats.js": {
+      "maxDuration": 10
+    }
+  }
+}

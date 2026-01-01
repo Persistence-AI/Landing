@@ -2581,8 +2581,14 @@ persistenceai github install
         // GitHub API base URL
         const GITHUB_API_BASE = 'https://api.github.com';
         
+        // Serverless function URL for writing stats
+        const STATS_API_URL = 'https://serverless-woad-one.vercel.app/api/write-stats';
+        
         // Check if GitHub stats are enabled
         const GITHUB_STATS_ENABLED = GITHUB_STATS_GIST_ID !== '';
+        
+        // Check if write API is configured
+        const STATS_WRITE_ENABLED = STATS_API_URL !== '';
         
         // Visitor and page view tracking
         let visitorStats = {
@@ -2654,16 +2660,83 @@ persistenceai github install
             
             // Track if this is a new visit today
             if (lastVisit !== today) {
-                // Store pending page view (will be synced via GitHub Actions)
-                const pending = JSON.parse(localStorage.getItem('persistenceai_pending_writes') || '[]');
-                pending.push({
-                    type: 'pageView',
-                    fingerprint: fingerprint,
-                    date: today,
-                    timestamp: new Date().toISOString()
-                });
-                localStorage.setItem('persistenceai_pending_writes', JSON.stringify(pending));
+                // Write to serverless function for global sync
+                if (STATS_WRITE_ENABLED) {
+                    syncStatsToGist({
+                        type: 'pageView',
+                        fingerprint: fingerprint,
+                        date: today,
+                        timestamp: new Date().toISOString()
+                    }).catch(err => {
+                        console.error('[Stats] Failed to sync page view:', err);
+                        // Fallback: store in localStorage
+                        const pending = JSON.parse(localStorage.getItem('persistenceai_pending_writes') || '[]');
+                        pending.push({
+                            type: 'pageView',
+                            fingerprint: fingerprint,
+                            date: today,
+                            timestamp: new Date().toISOString()
+                        });
+                        localStorage.setItem('persistenceai_pending_writes', JSON.stringify(pending));
+                    });
+                } else {
+                    // Fallback: store in localStorage if API not configured
+                    const pending = JSON.parse(localStorage.getItem('persistenceai_pending_writes') || '[]');
+                    pending.push({
+                        type: 'pageView',
+                        fingerprint: fingerprint,
+                        date: today,
+                        timestamp: new Date().toISOString()
+                    });
+                    localStorage.setItem('persistenceai_pending_writes', JSON.stringify(pending));
+                }
                 localStorage.setItem('persistenceai_last_visit', today);
+            }
+        }
+        
+        // Sync stats to Gist via serverless function
+        async function syncStatsToGist(data) {
+            if (!STATS_WRITE_ENABLED) {
+                return null;
+            }
+            
+            try {
+                const response = await fetch(STATS_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log('[Stats] Successfully synced to Gist:', result);
+                    
+                    // If stats were returned, update local display immediately
+                    if (result.stats) {
+                        if (result.stats.copyCounts) {
+                            copyCounts = {
+                                windows: parseInt(result.stats.copyCounts.windows || 0, 10),
+                                linux: parseInt(result.stats.copyCounts.linux || 0, 10),
+                                mac: parseInt(result.stats.copyCounts.mac || 0, 10),
+                                total: parseInt(result.stats.copyCounts.total || 0, 10)
+                            };
+                            updateCounterDisplay();
+                        }
+                        if (result.stats.visitors) {
+                            visitorStats.total = parseInt(result.stats.visitors.total || 0, 10);
+                            updateVisitorStatsDisplay();
+                        }
+                    }
+                    
+                    return result;
+                } else {
+                    throw new Error(`API returned ${response.status}`);
+                }
+            } catch (error) {
+                console.error('[Stats] Error syncing to Gist:', error);
+                throw error;
             }
         }
 
@@ -2844,8 +2917,26 @@ persistenceai github install
             localStorage.setItem('persistenceai_copy_counts', JSON.stringify(copyCounts));
             localStorage.setItem(lastCopyKey, now.toString());
 
-            // Store pending write for GitHub Gist sync
-            if (GITHUB_STATS_ENABLED) {
+            // Write to serverless function for global sync
+            if (STATS_WRITE_ENABLED) {
+                syncStatsToGist({
+                    type: 'copy',
+                    platform: targetPlatform,
+                    timestamp: new Date().toISOString()
+                }).catch(err => {
+                    console.error('[Stats] Failed to sync copy event:', err);
+                    // Fallback: store in localStorage for later sync
+                    const pending = JSON.parse(localStorage.getItem('persistenceai_pending_writes') || '[]');
+                    pending.push({
+                        type: 'copy',
+                        platform: targetPlatform,
+                        sessionId: sessionId,
+                        timestamp: new Date().toISOString()
+                    });
+                    localStorage.setItem('persistenceai_pending_writes', JSON.stringify(pending));
+                });
+            } else if (GITHUB_STATS_ENABLED) {
+                // Fallback: store in localStorage if API not configured
                 const pending = JSON.parse(localStorage.getItem('persistenceai_pending_writes') || '[]');
                 pending.push({
                     type: 'copy',
