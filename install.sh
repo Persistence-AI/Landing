@@ -87,11 +87,34 @@ else
     info "Installing version: $VERSION"
 fi
 
-# Build download URL
+# Build download URL - direct from GitHub Releases (like OpenCode)
+info "Finding asset in GitHub Releases..."
+
+# Query GitHub API to find the actual asset filename
 if [ "$VERSION" = "latest" ]; then
-    DOWNLOAD_URL="$BASE_URL/download/$ZIP_NAME"
+    RELEASE_URL="https://api.github.com/repos/Persistence-AI/Landing/releases/latest"
 else
-    DOWNLOAD_URL="$BASE_URL/download/v$VERSION/$ZIP_NAME"
+    RELEASE_URL="https://api.github.com/repos/Persistence-AI/Landing/releases/tags/v$VERSION"
+fi
+
+# Try to get asset URL from GitHub API
+ASSET_URL=$(curl -s "$RELEASE_URL" 2>/dev/null | \
+    grep -o '"browser_download_url":"[^"]*' | \
+    grep -i "$PLATFORM.*\.zip" | \
+    head -n1 | \
+    cut -d'"' -f4 || echo "")
+
+if [ -n "$ASSET_URL" ]; then
+    DOWNLOAD_URL="$ASSET_URL"
+    info "Found asset via GitHub API"
+else
+    # Fallback to standard URL pattern
+    if [ "$VERSION" = "latest" ]; then
+        DOWNLOAD_URL="https://github.com/Persistence-AI/Landing/releases/latest/download/persistenceai-$PLATFORM.zip"
+    else
+        DOWNLOAD_URL="https://github.com/Persistence-AI/Landing/releases/download/v$VERSION/persistenceai-$PLATFORM-v$VERSION.zip"
+    fi
+    warning "Could not find asset via API, using standard URL pattern"
 fi
 
 # Check if already installed
@@ -121,23 +144,16 @@ info "Downloading PersistenceAI from: $DOWNLOAD_URL"
 ZIP_PATH="$TEMP_DIR/$ZIP_NAME"
 
 if ! curl -fsSL -o "$ZIP_PATH" "$DOWNLOAD_URL"; then
-    warning "Primary download failed, trying GitHub Releases..."
-    
-    # Fallback: GitHub Releases
-    if [ "$VERSION" = "latest" ]; then
-        GH_URL="https://github.com/Persistence-AI/Landing/releases/latest/download/persistenceai-$PLATFORM-v$VERSION.zip"
-    else
-        GH_URL="https://github.com/Persistence-AI/Landing/releases/download/v$VERSION/persistenceai-$PLATFORM-v$VERSION.zip"
-    fi
-    
-    if ! curl -fsSL -o "$ZIP_PATH" "$GH_URL"; then
-        error "All download methods failed"
-        exit 1
-    fi
-    success "Download completed from GitHub"
-else
-    success "Download completed"
+    error "Download failed from: $DOWNLOAD_URL"
+    error ""
+    error "Please check:"
+    error "1. The version exists in GitHub Releases: https://github.com/Persistence-AI/Landing/releases"
+    error "2. The file name matches: persistenceai-$PLATFORM-v$VERSION.zip (or similar)"
+    error "3. Your internet connection is working"
+    exit 1
 fi
+
+success "Download completed"
 
 # Verify download
 if [ ! -f "$ZIP_PATH" ]; then
