@@ -914,6 +914,7 @@
                 <a href="#" id="switch-platform-link" style="color: var(--accent); text-decoration: none;" onclick="switchInstallCommand(); return false;">Switch to Windows →</a>
             </div>
             <div class="copy-counter" id="hero-counter">
+                <div id="visitor-stats-display" style="text-align: center; margin-bottom: 0.75rem; color: var(--text-secondary); font-size: 0.85rem;"></div>
                 <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-bottom: 0.5rem;">
                     <span class="copy-counter-icon">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -969,11 +970,7 @@
                         <h3 style="margin: 0; color: var(--text-primary); font-size: 1rem; font-weight: 600;">Home Screen</h3>
                     </div>
                     <div style="position: relative; padding: 0; background: #000;">
-                        <img src="assets/tui-home-preview.png" 
-                             alt="PersistenceAI TUI Home Screen" 
-                             style="width: 100%; height: auto; display: block;"
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div style="display: none; align-items: center; justify-content: center; min-height: 300px; padding: 2rem; background: var(--bg-secondary); color: var(--text-secondary); flex-direction: column; gap: 1rem;">
+                        <div id="tui-home-placeholder" style="display: flex; align-items: center; justify-content: center; min-height: 300px; padding: 2rem; background: var(--bg-secondary); color: var(--text-secondary); flex-direction: column; gap: 1rem;">
                             <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
                                 <path d="M9 3v18"/>
@@ -981,6 +978,11 @@
                             </svg>
                             <p style="margin: 0; text-align: center;">Screenshot will appear here<br/><small>Place tui-home-preview.png in assets/ folder</small></p>
                         </div>
+                        <img id="tui-home-img" src="assets/tui-home-preview.png" 
+                             alt="PersistenceAI TUI Home Screen" 
+                             style="width: 100%; height: auto; display: none;"
+                             onload="if (this.naturalWidth > 1 && this.naturalHeight > 1) { this.style.display='block'; document.getElementById('tui-home-placeholder').style.display='none'; }"
+                             onerror="this.style.display='none';">
                     </div>
                 </div>
                 <div style="background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);">
@@ -988,11 +990,7 @@
                         <h3 style="margin: 0; color: var(--text-primary); font-size: 1rem; font-weight: 600;">Multi-Pane Interface</h3>
                     </div>
                     <div style="position: relative; padding: 0; background: #000;">
-                        <img src="assets/tui-multipane-preview.png" 
-                             alt="PersistenceAI TUI Multi-Pane Interface" 
-                             style="width: 100%; height: auto; display: block;"
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div style="display: none; align-items: center; justify-content: center; min-height: 300px; padding: 2rem; background: var(--bg-secondary); color: var(--text-secondary); flex-direction: column; gap: 1rem;">
+                        <div id="tui-multipane-placeholder" style="display: flex; align-items: center; justify-content: center; min-height: 300px; padding: 2rem; background: var(--bg-secondary); color: var(--text-secondary); flex-direction: column; gap: 1rem;">
                             <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
                                 <path d="M9 3v18"/>
@@ -1000,6 +998,11 @@
                             </svg>
                             <p style="margin: 0; text-align: center;">Screenshot will appear here<br/><small>Place tui-multipane-preview.png in assets/ folder</small></p>
                         </div>
+                        <img id="tui-multipane-img" src="assets/tui-multipane-preview.png" 
+                             alt="PersistenceAI TUI Multi-Pane Interface" 
+                             style="width: 100%; height: auto; display: none;"
+                             onload="if (this.naturalWidth > 1 && this.naturalHeight > 1) { this.style.display='block'; document.getElementById('tui-multipane-placeholder').style.display='none'; }"
+                             onerror="this.style.display='none';">
                     </div>
                 </div>
             </div>
@@ -2571,12 +2574,21 @@ persistenceai github install
     </footer>
 
     <script>
-        // API Configuration
-        // Update with your actual API domain when deployed
-        const API_BASE_URL = 'https://api.persistenceai.com';
+        // GitHub Gist API Configuration
+        // Gist ID created via setup-github-stats.ps1
+        const GITHUB_STATS_GIST_ID = 'd91c13368227583a3456fe3f5c29ef34';
         
-        // Check if API is available (will be false until deployed)
-        const API_ENABLED = false; // Set to true when API is deployed
+        // GitHub API base URL
+        const GITHUB_API_BASE = 'https://api.github.com';
+        
+        // Check if GitHub stats are enabled
+        const GITHUB_STATS_ENABLED = GITHUB_STATS_GIST_ID !== '';
+        
+        // Visitor and page view tracking
+        let visitorStats = {
+            total: 0,
+            pageViews: 0
+        };
         
         // Platform-specific copy counter management
         let copyCounts = {
@@ -2613,8 +2625,53 @@ persistenceai github install
             return 'linux';
         }
 
-        // Initialize counter from localStorage or API
+        // Generate anonymous visitor fingerprint
+        function generateVisitorFingerprint() {
+            const data = [
+                navigator.userAgent,
+                navigator.language,
+                screen.width + 'x' + screen.height,
+                new Date().getTimezoneOffset()
+            ].join('|');
+            
+            // Simple hash function
+            let hash = 0;
+            for (let i = 0; i < data.length; i++) {
+                const char = data.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash; // Convert to 32-bit integer
+            }
+            return 'fp_' + Math.abs(hash).toString(36);
+        }
+
+        // Track page view
+        async function trackPageView() {
+            if (!GITHUB_STATS_ENABLED) return;
+            
+            const fingerprint = generateVisitorFingerprint();
+            const lastVisit = localStorage.getItem('persistenceai_last_visit');
+            const today = new Date().toISOString().split('T')[0];
+            
+            // Track if this is a new visit today
+            if (lastVisit !== today) {
+                // Store pending page view (will be synced via GitHub Actions)
+                const pending = JSON.parse(localStorage.getItem('persistenceai_pending_writes') || '[]');
+                pending.push({
+                    type: 'pageView',
+                    fingerprint: fingerprint,
+                    date: today,
+                    timestamp: new Date().toISOString()
+                });
+                localStorage.setItem('persistenceai_pending_writes', JSON.stringify(pending));
+                localStorage.setItem('persistenceai_last_visit', today);
+            }
+        }
+
+        // Initialize counter from localStorage or GitHub Gist
         function initializeCounter() {
+            // Track page view
+            trackPageView();
+            
             // Try to load from localStorage first (for immediate display)
             const stored = localStorage.getItem('persistenceai_copy_counts');
             if (stored) {
@@ -2632,38 +2689,61 @@ persistenceai github install
                 }
             }
 
-            // Fetch from API (for accurate server-side count)
-            fetchCounts();
+            // Fetch from GitHub Gist (for accurate global count)
+            fetchStatsFromGist();
 
             // Poll for updates every 30 seconds
-            setInterval(fetchCounts, 30000);
+            setInterval(fetchStatsFromGist, 30000);
         }
 
-        // Fetch current counts from API
-        async function fetchCounts() {
-            if (!API_ENABLED) {
-                // API not deployed yet, skip
+        // Fetch stats from GitHub Gist
+        async function fetchStatsFromGist() {
+            if (!GITHUB_STATS_ENABLED) {
                 return;
             }
+            
             try {
-                const response = await fetch(`${API_BASE_URL}/api/copy-stats`);
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data && typeof data === 'object') {
-                        copyCounts = {
-                            windows: parseInt(data.windows || 0, 10),
-                            linux: parseInt(data.linux || 0, 10),
-                            mac: parseInt(data.mac || 0, 10),
-                            total: parseInt(data.total || 0, 10)
-                        };
-                        updateCounterDisplay();
-                        // Update localStorage with server values
-                        localStorage.setItem('persistenceai_copy_counts', JSON.stringify(copyCounts));
+                const response = await fetch(`${GITHUB_API_BASE}/gists/${GITHUB_STATS_GIST_ID}`, {
+                    headers: {
+                        'Accept': 'application/vnd.github.v3+json'
                     }
+                });
+                
+                if (response.ok) {
+                    const gist = await response.json();
+                    const filename = Object.keys(gist.files)[0];
+                    const content = gist.files[filename].content;
+                    const stats = JSON.parse(content);
+                    
+                    // Update copy counts
+                    if (stats.copyCounts) {
+                        copyCounts = {
+                            windows: parseInt(stats.copyCounts.windows || 0, 10),
+                            linux: parseInt(stats.copyCounts.linux || 0, 10),
+                            mac: parseInt(stats.copyCounts.mac || 0, 10),
+                            total: parseInt(stats.copyCounts.total || 0, 10)
+                        };
+                    }
+                    
+                    // Update visitor stats
+                    if (stats.visitors) {
+                        visitorStats.total = parseInt(stats.visitors.total || 0, 10);
+                    }
+                    if (stats.pageViews) {
+                        visitorStats.pageViews = parseInt(stats.pageViews.total || 0, 10);
+                    }
+                    
+                    updateCounterDisplay();
+                    updateVisitorStatsDisplay();
+                    
+                    // Update localStorage with server values
+                    localStorage.setItem('persistenceai_copy_counts', JSON.stringify(copyCounts));
+                } else if (response.status === 404) {
+                    console.log('Gist not found. Run setup-github-stats.ps1 to create it.');
                 }
             } catch (err) {
-                // API not available, use localStorage value
-                // Silently fail - API will be enabled when deployed
+                // Silently fail - stats will be available when Gist is set up
+                console.log('Could not fetch stats from GitHub Gist:', err.message);
             }
         }
 
@@ -2706,6 +2786,21 @@ persistenceai github install
             if (installMac) installMac.textContent = formatNumber(copyCounts.mac);
         }
 
+        // Update visitor stats display
+        function updateVisitorStatsDisplay() {
+            // Add visitor stats to the counter display if elements exist
+            // This can be enhanced to show visitor count alongside copy count
+            const visitorDisplay = document.getElementById('visitor-stats-display');
+            if (visitorDisplay) {
+                visitorDisplay.innerHTML = `
+                    <span style="color: var(--text-secondary); font-size: 0.85rem;">
+                        👥 ${formatNumber(visitorStats.total)} visitors | 
+                        👁️ ${formatNumber(visitorStats.pageViews)} page views
+                    </span>
+                `;
+            }
+        }
+
         // Format number with commas
         function formatNumber(num) {
             return num.toLocaleString('en-US');
@@ -2721,6 +2816,18 @@ persistenceai github install
                 targetPlatform = detectPlatform();
             }
             
+            // Check rate limiting (10 minutes per session)
+            const sessionId = getOrCreateSessionId();
+            const lastCopyKey = `last_copy_${sessionId}`;
+            const lastCopyTime = localStorage.getItem(lastCopyKey);
+            const now = Date.now();
+            const tenMinutes = 10 * 60 * 1000;
+            
+            if (lastCopyTime && (now - parseInt(lastCopyTime)) < tenMinutes) {
+                const minutesLeft = Math.ceil((tenMinutes - (now - parseInt(lastCopyTime))) / 60000);
+                return { rateLimited: true, minutesLeft };
+            }
+            
             // Update locally first (optimistic update)
             if (targetPlatform === 'windows') {
                 copyCounts.windows++;
@@ -2732,72 +2839,21 @@ persistenceai github install
             copyCounts.total = copyCounts.windows + copyCounts.linux + copyCounts.mac;
             updateCounterDisplay(true);
             localStorage.setItem('persistenceai_copy_counts', JSON.stringify(copyCounts));
+            localStorage.setItem(lastCopyKey, now.toString());
 
-            // Send to API with session tracking (if enabled)
-            if (!API_ENABLED) {
-                return { success: true };
-            }
-
-            const sessionId = getOrCreateSessionId();
-
-            // Send to API with session tracking
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/copy-stats`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ 
-                        platform: targetPlatform,
-                        sessionId: sessionId
-                    })
+            // Store pending write for GitHub Gist sync
+            if (GITHUB_STATS_ENABLED) {
+                const pending = JSON.parse(localStorage.getItem('persistenceai_pending_writes') || '[]');
+                pending.push({
+                    type: 'copy',
+                    platform: targetPlatform,
+                    sessionId: sessionId,
+                    timestamp: new Date().toISOString()
                 });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    
-                    // Check if rate limited
-                    if (data.message && data.message.includes('Rate limited')) {
-                        // Show rate limit message (optional - you can customize this)
-                        console.log('Rate limited:', data.message);
-                        if (data.nextCopyAllowed) {
-                            const nextAllowed = new Date(data.nextCopyAllowed);
-                            const minutesLeft = Math.ceil((nextAllowed - new Date()) / 60000);
-                            // You could show a toast notification here
-                            return { rateLimited: true, minutesLeft };
-                        }
-                        return { rateLimited: true };
-                    }
-
-                    // Update counts from server response
-                    if (data.windows !== undefined) {
-                        copyCounts = {
-                            windows: parseInt(data.windows || 0, 10),
-                            linux: parseInt(data.linux || 0, 10),
-                            mac: parseInt(data.mac || 0, 10),
-                            total: parseInt(data.total || 0, 10)
-                        };
-                        updateCounterDisplay(true); // Animate the update
-                        localStorage.setItem('persistenceai_copy_counts', JSON.stringify(copyCounts));
-                        return { success: true };
-                    }
-                } else {
-                    console.error('Failed to track copy:', response.statusText);
-                }
-            } catch (err) {
-                // API not available, update locally as fallback
-                console.log('Could not send copy event to API, updating locally');
-                if (targetPlatform === 'windows') {
-                    copyCounts.windows++;
-                } else if (targetPlatform === 'linux') {
-                    copyCounts.linux++;
-                } else if (targetPlatform === 'mac') {
-                    copyCounts.mac++;
-                }
-                copyCounts.total = copyCounts.windows + copyCounts.linux + copyCounts.mac;
-                updateCounterDisplay(true);
-                localStorage.setItem('persistenceai_copy_counts', JSON.stringify(copyCounts));
+                localStorage.setItem('persistenceai_pending_writes', JSON.stringify(pending));
             }
+
+            return { success: true };
         }
 
         // Copy to clipboard functionality with platform tracking and rate limiting
