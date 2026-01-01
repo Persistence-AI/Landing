@@ -43,8 +43,8 @@ if ($args.Count -gt 0) {
 } else {
     Write-Info "Fetching latest version..."
     try {
-        # Try to get latest version from API or releases page
-        $latestResponse = Invoke-RestMethod -Uri "$BASE_URL/api/latest" -ErrorAction SilentlyContinue
+        # Try to get latest version from API
+        $latestResponse = Invoke-RestMethod -Uri "$BASE_URL/api/latest.json" -ErrorAction SilentlyContinue
         if ($latestResponse.version) {
             $Version = $latestResponse.version
         }
@@ -56,7 +56,7 @@ if ($args.Count -gt 0) {
                 $Version = $ghResponse.tag_name -replace '^v', ''
             }
         } catch {
-            Write-Warning "Could not fetch latest version, using 'latest'"
+            Write-Warning "Could not fetch latest version, using GitHub Releases"
             $Version = "latest"
         }
     }
@@ -64,14 +64,23 @@ if ($args.Count -gt 0) {
     if (-not $Version) {
         $Version = "latest"
     }
-    Write-Info "Latest version: $Version"
+    Write-Info "Installing version: $Version"
 }
 
-# Build download URL
+# Build download URL - use GitHub Releases directly
 if ($Version -eq "latest") {
-    $downloadUrl = "$BASE_URL/download/$zipName"
+    # For latest, get the actual latest version from GitHub
+    try {
+        $ghResponse = Invoke-RestMethod -Uri "https://api.github.com/repos/Persistence-AI/Landing/releases/latest" -ErrorAction Stop
+        $actualVersion = $ghResponse.tag_name -replace '^v', ''
+        $downloadUrl = "https://github.com/Persistence-AI/Landing/releases/download/v$actualVersion/persistenceai-windows-x64-v$actualVersion.zip"
+        $Version = $actualVersion
+    } catch {
+        Write-Error "Could not determine latest version from GitHub"
+        exit 1
+    }
 } else {
-    $downloadUrl = "$BASE_URL/download/v$Version/$zipName"
+    $downloadUrl = "https://github.com/Persistence-AI/Landing/releases/download/v$Version/persistenceai-windows-x64-v$Version.zip"
 }
 
 # Check if already installed
@@ -105,29 +114,21 @@ New-Item -ItemType Directory -Force -Path $TEMP_DIR | Out-Null
 
 # Download
 Write-Info "Downloading PersistenceAI from: $downloadUrl"
+$zipPath = Join-Path $TEMP_DIR $zipName
 try {
-    $zipPath = Join-Path $TEMP_DIR $zipName
     $ProgressPreference = 'SilentlyContinue'
     Invoke-WebRequest -Uri $downloadUrl -OutFile $zipPath -ErrorAction Stop
     Write-Success "Download completed"
 } catch {
     Write-Error "Download failed: $_"
-    Write-Info "Trying alternative download method..."
-    
-    # Fallback: Try GitHub Releases
-    try {
-        if ($Version -eq "latest") {
-            $ghUrl = "https://github.com/Persistence-AI/Landing/releases/latest/download/persistenceai-windows-x64-v$Version.zip"
-        } else {
-            $ghUrl = "https://github.com/Persistence-AI/Landing/releases/download/v$Version/persistenceai-windows-x64-v$Version.zip"
-        }
-        Invoke-WebRequest -Uri $ghUrl -OutFile $zipPath -ErrorAction Stop
-        Write-Success "Download completed from GitHub"
-    } catch {
-        Write-Error "All download methods failed: $_"
-        Remove-Item -Path $TEMP_DIR -Recurse -Force -ErrorAction SilentlyContinue
-        exit 1
-    }
+    Write-Error "URL attempted: $downloadUrl"
+    Write-Info ""
+    Write-Info "Please check:"
+    Write-Info "1. The version exists in GitHub Releases: https://github.com/Persistence-AI/Landing/releases"
+    Write-Info "2. The file name matches: persistenceai-windows-x64-v$Version.zip"
+    Write-Info "3. Your internet connection is working"
+    Remove-Item -Path $TEMP_DIR -Recurse -Force -ErrorAction SilentlyContinue
+    exit 1
 }
 
 # Verify download
