@@ -5,16 +5,91 @@
 
 $ErrorActionPreference = "Stop"
 
-# Colors for output - Modern, clean formatting
-function Write-Info { param([string]$msg) Write-Host "  " -NoNewline; Write-Host "i" -ForegroundColor Cyan -NoNewline; Write-Host " $msg" -ForegroundColor Gray }
-function Write-Success { param([string]$msg) Write-Host "  " -NoNewline; Write-Host "+" -ForegroundColor Green -NoNewline; Write-Host " $msg" -ForegroundColor Gray }
-function Write-Error { param([string]$msg) Write-Host "  " -NoNewline; Write-Host "x" -ForegroundColor Red -NoNewline; Write-Host " $msg" -ForegroundColor Gray }
-function Write-Warning { param([string]$msg) Write-Host "  " -NoNewline; Write-Host "!" -ForegroundColor Yellow -NoNewline; Write-Host " $msg" -ForegroundColor Gray }
-function Write-Step { param([string]$msg) Write-Host "  " -NoNewline; Write-Host ">" -ForegroundColor Cyan -NoNewline; Write-Host " $msg" -ForegroundColor White }
+# Enterprise-grade output functions with animations
+$script:spinnerChars = @('⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏')
+$script:spinnerIndex = 0
+$script:spinnerJob = $null
 
+function Show-Spinner {
+    param([string]$Message)
+    if ($script:spinnerJob) { Stop-Job $script:spinnerJob -ErrorAction SilentlyContinue; Remove-Job $script:spinnerJob -ErrorAction SilentlyContinue }
+    
+    $job = Start-Job -ScriptBlock {
+        param($chars)
+        $i = 0
+        while ($true) {
+            $char = $chars[$i % $chars.Length]
+            Write-Output $char
+            Start-Sleep -Milliseconds 100
+            $i++
+        }
+    } -ArgumentList $script:spinnerChars
+    
+    $script:spinnerJob = $job
+    Write-Host "  " -NoNewline
+    Write-Host $Message -NoNewline -ForegroundColor White
+    Write-Host " " -NoNewline
+}
+
+function Hide-Spinner {
+    if ($script:spinnerJob) {
+        Stop-Job $script:spinnerJob -ErrorAction SilentlyContinue
+        Remove-Job $script:spinnerJob -ErrorAction SilentlyContinue
+        $script:spinnerJob = $null
+    }
+    Write-Host ""
+}
+
+function Write-ProgressBar {
+    param([int]$Percent, [string]$Activity, [string]$Status)
+    $barLength = 30
+    $filled = [math]::Floor($Percent / 100 * $barLength)
+    $empty = $barLength - $filled
+    
+    $bar = "[" + ("#" * $filled) + ("-" * $empty) + "]"
+    Write-Host "`r  " -NoNewline
+    Write-Host $bar -NoNewline -ForegroundColor Cyan
+    Write-Host " $Percent% " -NoNewline -ForegroundColor White
+    Write-Host $Status -NoNewline -ForegroundColor Gray
+}
+
+function Write-Info { 
+    param([string]$msg) 
+    Write-Host "  " -NoNewline
+    Write-Host "[i]" -ForegroundColor Cyan -NoNewline
+    Write-Host " $msg" -ForegroundColor Gray 
+}
+function Write-Success { 
+    param([string]$msg) 
+    Write-Host "  " -NoNewline
+    Write-Host "[+]" -ForegroundColor Green -NoNewline
+    Write-Host " $msg" -ForegroundColor Gray 
+}
+function Write-Error { 
+    param([string]$msg) 
+    Write-Host "  " -NoNewline
+    Write-Host "[x]" -ForegroundColor Red -NoNewline
+    Write-Host " $msg" -ForegroundColor Gray 
+}
+function Write-Warning { 
+    param([string]$msg) 
+    Write-Host "  " -NoNewline
+    Write-Host "[!]" -ForegroundColor Yellow -NoNewline
+    Write-Host " $msg" -ForegroundColor Gray 
+}
+function Write-Step { 
+    param([string]$msg) 
+    Write-Host "  " -NoNewline
+    Write-Host "[>]" -ForegroundColor Cyan -NoNewline
+    Write-Host " $msg" -ForegroundColor White 
+}
+
+# Enterprise banner with ASCII
 Write-Host ""
-Write-Host "  " -NoNewline; Write-Host "PersistenceAI" -ForegroundColor Magenta -NoNewline; Write-Host " Installer" -ForegroundColor White
-Write-Host "  " -NoNewline; Write-Host "================================" -ForegroundColor DarkGray
+Write-Host "  " -NoNewline; Write-Host "========================================" -ForegroundColor Magenta
+Write-Host "  " -NoNewline; Write-Host "|" -ForegroundColor Magenta -NoNewline
+Write-Host "     " -NoNewline; Write-Host "PersistenceAI" -ForegroundColor Magenta -NoNewline; Write-Host " Installer" -ForegroundColor White -NoNewline; Write-Host "     " -NoNewline; Write-Host "|" -ForegroundColor Magenta
+Write-Host "  " -NoNewline; Write-Host "========================================" -ForegroundColor Magenta
 Write-Host ""
 
 # Configuration
@@ -41,10 +116,32 @@ if ($args.Count -gt 0) {
     $Version = $args[0]
     Write-Info "Installing version: $Version"
 } else {
-    Write-Step "Fetching latest version..."
+    Write-Step "Fetching latest version"
+    Write-Host "  " -NoNewline; Write-Host "Checking for updates" -NoNewline -ForegroundColor White
+    $dots = 0
     try {
         # Try to get latest version from API
-        $latestResponse = Invoke-RestMethod -Uri "$BASE_URL/api/latest.json" -ErrorAction SilentlyContinue
+        $fetchJob = Start-Job -ScriptBlock {
+            param($url)
+            try {
+                $response = Invoke-RestMethod -Uri $url -ErrorAction SilentlyContinue
+                return $response
+            } catch {
+                return $null
+            }
+        } -ArgumentList "$BASE_URL/api/latest.json"
+        
+        while ($fetchJob.State -eq 'Running') {
+            $dots = ($dots + 1) % 4
+            $dotStr = "." * $dots + " " * (3 - $dots)
+            Write-Host "`r  Checking for updates$dotStr" -NoNewline -ForegroundColor White
+            Start-Sleep -Milliseconds 200
+        }
+        Write-Host "`r  Checking for updates... done" -ForegroundColor White
+        Write-Host ""
+        
+        $latestResponse = Receive-Job $fetchJob
+        Remove-Job $fetchJob -Force -ErrorAction SilentlyContinue
         if ($latestResponse.version) {
             $Version = $latestResponse.version
         }
@@ -177,15 +274,46 @@ if (Test-Path $TEMP_DIR) {
 }
 New-Item -ItemType Directory -Force -Path $TEMP_DIR | Out-Null
 
-# Download
+# Download with progress bar
 Write-Step "Downloading PersistenceAI..."
 Write-Info "Source: $downloadUrl"
 $zipPath = Join-Path $TEMP_DIR $zipName
 try {
-    $ProgressPreference = 'SilentlyContinue'
-    Invoke-WebRequest -Uri $downloadUrl -OutFile $zipPath -ErrorAction Stop
-    Write-Success "Download completed"
+    # Use Write-Progress for native PowerShell progress bar
+    $ProgressPreference = 'Continue'
+    
+    # Show animated status
+    Write-Host "  " -NoNewline; Write-Host "Downloading" -NoNewline -ForegroundColor White
+    $downloadJob = Start-Job -ScriptBlock {
+        param($url, $outFile)
+        try {
+            Invoke-WebRequest -Uri $url -OutFile $outFile -ErrorAction Stop
+            return $true
+        } catch {
+            return $false
+        }
+    } -ArgumentList $downloadUrl, $zipPath
+    
+    $dots = 0
+    while ($downloadJob.State -eq 'Running') {
+        $dots = ($dots + 1) % 4
+        $dotStr = "." * $dots + " " * (3 - $dots)
+        Write-Host "`r  Downloading$dotStr" -NoNewline -ForegroundColor White
+        Start-Sleep -Milliseconds 300
+    }
+    
+    $downloadResult = Receive-Job $downloadJob
+    Remove-Job $downloadJob -Force -ErrorAction SilentlyContinue
+    
+    if (-not $downloadResult) {
+        throw "Download failed"
+    }
+    
+    Write-Host "`r  Downloading... done" -ForegroundColor White
+    Write-Host ""
+    Write-Success "Download completed successfully"
 } catch {
+    Write-Host ""
     Write-Error "Download failed: $_"
     Write-Error "URL attempted: $downloadUrl"
     Write-Info ""
@@ -204,10 +332,38 @@ if (-not (Test-Path $zipPath)) {
     exit 1
 }
 
-# Extract
+# Extract with progress indication
 Write-Step "Extracting archive..."
 try {
-    Expand-Archive -Path $zipPath -DestinationPath $TEMP_DIR -Force
+    Write-Host "  " -NoNewline; Write-Host "Extracting files" -NoNewline -ForegroundColor White
+    $dots = 0
+    $extractJob = Start-Job -ScriptBlock {
+        param($zipPath, $destPath)
+        try {
+            Expand-Archive -Path $zipPath -DestinationPath $destPath -Force
+            return $true
+        } catch {
+            return $false
+        }
+    } -ArgumentList $zipPath, $TEMP_DIR
+
+    # Show animated dots while extracting
+    while ($extractJob.State -eq 'Running') {
+        $dots = ($dots + 1) % 4
+        $dotStr = "." * $dots + " " * (3 - $dots)
+        Write-Host "`r  Extracting files$dotStr" -NoNewline -ForegroundColor White
+        Start-Sleep -Milliseconds 300
+    }
+    
+    $extractResult = Receive-Job $extractJob
+    Remove-Job $extractJob -Force -ErrorAction SilentlyContinue
+    
+    if (-not $extractResult) {
+        throw "Extraction failed"
+    }
+    
+    Write-Host "`r  Extracting files... done" -ForegroundColor White
+    Write-Host ""
     
     # Find executable (could be in bin/ subdirectory or root)
     # Try persistenceai.exe first (for backward compatibility)
