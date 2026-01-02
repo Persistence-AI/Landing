@@ -4,8 +4,6 @@
 #   curl -fsSL https://persistenceai.com/install.ps1 | powershell -ExecutionPolicy Bypass -Command -
 
 $ErrorActionPreference = "Stop"
-# Suppress verbose progress output to keep installation clean
-$ProgressPreference = 'SilentlyContinue'
 
 # Enterprise-grade output functions with animations
 $script:spinnerChars = @('⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏')
@@ -281,15 +279,13 @@ Write-Step "Downloading PersistenceAI..."
 Write-Info "Source: $downloadUrl"
 $zipPath = Join-Path $TEMP_DIR $zipName
 try {
-    # Suppress progress output to avoid verbose byte-by-byte output
-    $ProgressPreference = 'SilentlyContinue'
+    # Use Write-Progress for native PowerShell progress bar
+    $ProgressPreference = 'Continue'
     
     # Show animated status
     Write-Host "  " -NoNewline; Write-Host "Downloading" -NoNewline -ForegroundColor White
     $downloadJob = Start-Job -ScriptBlock {
         param($url, $outFile)
-        # Suppress progress in background job too
-        $ProgressPreference = 'SilentlyContinue'
         try {
             Invoke-WebRequest -Uri $url -OutFile $outFile -ErrorAction Stop
             return $true
@@ -387,24 +383,81 @@ try {
     }
     
     # Install both commands: 'pai' and 'persistenceai'
-    # Remove existing binaries first to ensure clean overwrite
+    # Fully uninstall existing version first to ensure clean replacement
     if (Test-Path $INSTALL_DIR) {
-        $existingBinaries = Get-ChildItem -Path $INSTALL_DIR -Filter "*.exe" -ErrorAction SilentlyContinue
-        foreach ($existing in $existingBinaries) {
-            Remove-Item -Path $existing.FullName -Force -ErrorAction SilentlyContinue
+        Write-Step "Removing existing installation..."
+        
+        # Try to stop any running processes that might be using the binaries
+        $processes = Get-Process | Where-Object {
+            ($_.Path -like "*$INSTALL_DIR\*") -or 
+            ($_.ProcessName -eq "pai") -or 
+            ($_.ProcessName -eq "persistenceai")
+        } -ErrorAction SilentlyContinue
+        
+        if ($processes) {
+            Write-Info "Stopping running PersistenceAI processes..."
+            foreach ($proc in $processes) {
+                try {
+                    Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue
+                    Start-Sleep -Milliseconds 200
+                } catch {
+                    # Ignore errors - process might have already stopped
+                }
+            }
         }
+        
+        # Remove all files in install directory (not just .exe)
+        $allFiles = Get-ChildItem -Path $INSTALL_DIR -File -ErrorAction SilentlyContinue
+        foreach ($file in $allFiles) {
+            try {
+                # Retry logic for locked files
+                $retries = 3
+                $retryDelay = 500
+                for ($i = 0; $i -lt $retries; $i++) {
+                    try {
+                        Remove-Item -Path $file.FullName -Force -ErrorAction Stop
+                        break
+                    } catch {
+                        if ($i -lt $retries - 1) {
+                            Start-Sleep -Milliseconds $retryDelay
+                            $retryDelay *= 2
+                        } else {
+                            throw
+                        }
+                    }
+                }
+            } catch {
+                Write-Warning "Could not remove $($file.Name), will overwrite"
+            }
+        }
+        
+        Write-Success "Existing installation removed"
     }
     
     if (Test-Path $exePath) {
         $targetPath = Join-Path $INSTALL_DIR "$APP_NAME.exe"
+        # Get file info before copy to verify replacement
+        $sourceFileInfo = Get-Item $exePath
         Copy-Item -Path $exePath -Destination $targetPath -Force
-        Write-Success "Installed 'persistenceai' command"
+        # Verify the file was actually copied (check size)
+        $targetFileInfo = Get-Item $targetPath
+        if ($targetFileInfo.Length -eq $sourceFileInfo.Length) {
+            Write-Success "Installed 'persistenceai' command ($([math]::Round($targetFileInfo.Length/1MB, 2)) MB)"
+        } else {
+            Write-Warning "File size mismatch - may not have copied correctly"
+        }
     }
     
     if (Test-Path $paiExePath) {
         $paiTargetPath = Join-Path $INSTALL_DIR "pai.exe"
+        $sourcePaiInfo = Get-Item $paiExePath
         Copy-Item -Path $paiExePath -Destination $paiTargetPath -Force
-        Write-Success "Installed 'pai' command"
+        $targetPaiInfo = Get-Item $paiTargetPath
+        if ($targetPaiInfo.Length -eq $sourcePaiInfo.Length) {
+            Write-Success "Installed 'pai' command ($([math]::Round($targetPaiInfo.Length/1MB, 2)) MB)"
+        } else {
+            Write-Warning "File size mismatch for pai.exe"
+        }
     } elseif (Test-Path $exePath) {
         # If only persistenceai.exe exists, create pai.exe as a copy
         $paiTargetPath = Join-Path $INSTALL_DIR "pai.exe"
@@ -412,7 +465,7 @@ try {
         Write-Success "Installed 'pai' command (created from persistenceai.exe)"
     }
     
-    # Verify installed binary is production
+    # Verify installed binary is production and matches expected version
     if (Test-Path $targetPath) {
         try {
             $installedVersion = & $targetPath --version 2>&1 | Select-Object -First 1
@@ -420,10 +473,30 @@ try {
                 Write-Warning "Installed binary appears to be DEV version (0.0.0-local-*)"
                 Write-Warning "This should not happen with production ZIP. Please report this issue."
             } elseif ($installedVersion -match "1\.\d+\.\d+") {
-                Write-Success "Verified installed binary is production version: $installedVersion"
+                # Check if version matches what we downloaded
+                if ($Version -and $installedVersion -like "*$Version*") {
+                    Write-Success "Verified installed binary version: $installedVersion (matches expected: $Version)"
+                } else {
+                    Write-Success "Verified installed binary version: $installedVersion"
+                    if ($Version) {
+                        Write-Info "Expected version: $Version (version may differ if using 'latest')"
+                    }
+                }
+            } else {
+                Write-Warning "Installed binary version format unexpected: $installedVersion"
             }
         } catch {
-            # Ignore verification errors
+            Write-Warning "Could not verify installed binary version: $_"
+        }
+    }
+    
+    # Also verify pai.exe if it exists
+    if (Test-Path $paiTargetPath) {
+        try {
+            $paiVersion = & $paiTargetPath --version 2>&1 | Select-Object -First 1
+            Write-Info "Verified pai.exe version: $paiVersion"
+        } catch {
+            # Ignore - pai.exe might be a copy
         }
     }
     
