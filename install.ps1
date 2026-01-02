@@ -4,6 +4,8 @@
 #   curl -fsSL https://persistenceai.com/install.ps1 | powershell -ExecutionPolicy Bypass -Command -
 
 $ErrorActionPreference = "Stop"
+# Suppress verbose progress output to keep installation clean
+$ProgressPreference = 'SilentlyContinue'
 
 # Enterprise-grade output functions with animations
 $script:spinnerChars = @('⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏')
@@ -279,13 +281,15 @@ Write-Step "Downloading PersistenceAI..."
 Write-Info "Source: $downloadUrl"
 $zipPath = Join-Path $TEMP_DIR $zipName
 try {
-    # Use Write-Progress for native PowerShell progress bar
-    $ProgressPreference = 'Continue'
+    # Suppress progress output to avoid verbose byte-by-byte output
+    $ProgressPreference = 'SilentlyContinue'
     
     # Show animated status
     Write-Host "  " -NoNewline; Write-Host "Downloading" -NoNewline -ForegroundColor White
     $downloadJob = Start-Job -ScriptBlock {
         param($url, $outFile)
+        # Suppress progress in background job too
+        $ProgressPreference = 'SilentlyContinue'
         try {
             Invoke-WebRequest -Uri $url -OutFile $outFile -ErrorAction Stop
             return $true
