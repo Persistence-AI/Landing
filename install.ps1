@@ -695,49 +695,60 @@ try {
             Start-Sleep -Seconds 1
         }
         
-        # Copy new file - use multiple strategies for locked files
+        # Replace file - use Move-Item for atomic replacement (like OpenCode's mv command)
+        # Move-Item is more atomic than Copy-Item and can replace locked files better
+        $fileReplaced = $false
+        
         if (Test-Path $targetPath) {
-            Write-Warning "Target file still exists (may be locked), trying multiple replacement strategies..."
+            Write-Info "Replacing existing file (using atomic move operation)..."
             
-            # Strategy 1: Try robocopy (handles locked files better than Copy-Item)
-            $success = $false
+            # Strategy 1: Try Move-Item directly (most atomic, like Unix mv)
             try {
-                Write-Info "Attempting robocopy replacement..."
-                $tempDir = Join-Path $env:TEMP "pai-replace-$(Get-Date -Format 'yyyyMMddHHmmss')"
-                New-Item -ItemType Directory -Path $tempDir -Force | Out-Null
-                $tempFile = Join-Path $tempDir (Split-Path $targetPath -Leaf)
-                Copy-Item -Path $exePath -Destination $tempFile -Force
-                
-                # Robocopy with /PURGE to delete destination files, /MOV to move (delete source)
-                # /R:10 retries 10 times, /W:3 waits 3 seconds between retries
-                $null = & robocopy $tempDir (Split-Path $targetPath -Parent) (Split-Path $targetPath -Leaf) /PURGE /MOV /R:10 /W:3 /NP /NFL /NDL /NJH /NJS 2>&1
-                $robocopyExitCode = $LASTEXITCODE
-                
-                # Robocopy exit codes: 0-7 are success, 8+ are errors
-                if ($robocopyExitCode -le 7) {
-                    Write-Success "Successfully replaced file using robocopy"
-                    $success = $true
-                } else {
-                    Write-Warning "Robocopy exit code: $robocopyExitCode (may indicate locked file)"
-                }
-                
-                # Cleanup temp directory
-                Remove-Item -Path $tempDir -Recurse -Force -ErrorAction SilentlyContinue
+                # Move new file to target (this atomically replaces the old file)
+                Move-Item -Path $exePath -Destination $targetPath -Force -ErrorAction Stop
+                Write-Success "Successfully replaced file using Move-Item (atomic operation)"
+                $fileReplaced = $true
             } catch {
-                Write-Warning "Robocopy approach failed: $_"
+                Write-Warning "Move-Item failed: $_"
+                Write-Info "Trying alternative strategies..."
             }
             
-            # Strategy 2: If robocopy failed, try rename-then-copy (rename usually works even when delete doesn't)
-            if (-not $success) {
+            # Strategy 2: If Move-Item failed, try robocopy
+            if (-not $fileReplaced) {
                 try {
-                    Write-Info "Attempting rename-then-copy strategy..."
+                    Write-Info "Attempting robocopy replacement..."
+                    $tempDir = Join-Path $env:TEMP "pai-replace-$(Get-Date -Format 'yyyyMMddHHmmss')"
+                    New-Item -ItemType Directory -Path $tempDir -Force | Out-Null
+                    $tempFile = Join-Path $tempDir (Split-Path $targetPath -Leaf)
+                    Copy-Item -Path $exePath -Destination $tempFile -Force
+                    
+                    # Robocopy with /PURGE to delete destination files, /MOV to move (delete source)
+                    $null = & robocopy $tempDir (Split-Path $targetPath -Parent) (Split-Path $targetPath -Leaf) /PURGE /MOV /R:10 /W:3 /NP /NFL /NDL /NJH /NJS 2>&1
+                    $robocopyExitCode = $LASTEXITCODE
+                    
+                    if ($robocopyExitCode -le 7) {
+                        Write-Success "Successfully replaced file using robocopy"
+                        $fileReplaced = $true
+                    } else {
+                        Write-Warning "Robocopy exit code: $robocopyExitCode"
+                    }
+                    
+                    Remove-Item -Path $tempDir -Recurse -Force -ErrorAction SilentlyContinue
+                } catch {
+                    Write-Warning "Robocopy approach failed: $_"
+                }
+            }
+            
+            # Strategy 3: Rename old file, then move new file
+            if (-not $fileReplaced) {
+                try {
+                    Write-Info "Attempting rename-then-move strategy..."
                     $oldFileBackup = "$targetPath.old.$(Get-Date -Format 'yyyyMMddHHmmss')"
                     Rename-Item -Path $targetPath -NewName (Split-Path $oldFileBackup -Leaf) -Force -ErrorAction Stop
-                    Write-Info "Renamed old file, now copying new file..."
                     Start-Sleep -Milliseconds 500
-                    Copy-Item -Path $exePath -Destination $targetPath -Force
-                    Write-Success "Successfully replaced file using rename-then-copy"
-                    $success = $true
+                    Move-Item -Path $exePath -Destination $targetPath -Force -ErrorAction Stop
+                    Write-Success "Successfully replaced file using rename-then-move"
+                    $fileReplaced = $true
                     
                     # Try to delete the renamed old file
                     try {
@@ -746,18 +757,20 @@ try {
                         # Old file will be cleaned up later
                     }
                 } catch {
-                    Write-Warning "Rename approach failed: $_"
+                    Write-Warning "Rename-then-move approach failed: $_"
                 }
             }
             
-            # Strategy 3: Last resort - direct copy (may fail if file is truly locked)
-            if (-not $success) {
-                Write-Warning "All strategies failed, attempting direct copy (likely to fail if file is locked)..."
+            # Strategy 4: Last resort - Copy-Item (least reliable for locked files)
+            if (-not $fileReplaced) {
+                Write-Warning "All move strategies failed, attempting Copy-Item (may not work if file is locked)..."
                 Copy-Item -Path $exePath -Destination $targetPath -Force
+                $fileReplaced = $true  # Assume it worked, verification will catch if it didn't
             }
         } else {
-            # File doesn't exist, simple copy
-            Copy-Item -Path $exePath -Destination $targetPath -Force
+            # File doesn't exist, move new file into place
+            Move-Item -Path $exePath -Destination $targetPath -Force
+            $fileReplaced = $true
         }
         
         # Try to clean up the old backup file if it exists
@@ -770,31 +783,46 @@ try {
             }
         }
         
-        # Verify the file was actually replaced (check hash and modification time)
-        Start-Sleep -Milliseconds 300  # Ensure file system has updated
-        $targetFileInfo = Get-Item $targetPath
-        $targetHash = (Get-FileHash -Path $targetPath -Algorithm SHA256).Hash
+        # Verify the file was actually replaced (check hash, modification time, and size)
+        Start-Sleep -Seconds 1  # Give Windows time to update file system metadata
+        $targetFileInfo = Get-Item $targetPath -ErrorAction Stop
+        $targetHash = (Get-FileHash -Path $targetPath -Algorithm SHA256 -ErrorAction Stop).Hash
         $targetModTime = $targetFileInfo.LastWriteTime
+        $targetSize = $targetFileInfo.Length
+        $timeDiff = (Get-Date) - $targetModTime
         
-        if ($targetFileInfo.Length -eq $sourceFileInfo.Length -and $targetHash -eq $sourceHash) {
-            if ($oldHash -and $targetHash -eq $oldHash) {
-                Write-Warning "WARNING: File hash matches old version - binary was NOT updated!"
-                Write-Warning "File modification time: $targetModTime"
-                Write-Info "This usually means the file is locked. Try closing all terminals and reinstalling."
+        Write-Info "Verification:"
+        Write-Info "  Target hash: $($targetHash.Substring(0, 16))..."
+        Write-Info "  Target size: $([math]::Round($targetSize/1MB, 2)) MB"
+        Write-Info "  Modified: $targetModTime ($([math]::Round($timeDiff.TotalMinutes, 1)) minutes ago)"
+        
+        if ($targetHash -eq $sourceHash) {
+            Write-Success "File verified: Hash matches downloaded binary"
+            if ($oldHash -and $targetHash -ne $oldHash) {
+                Write-Success "File updated: Hash changed from old version"
+            } elseif ($oldHash -and $targetHash -eq $oldHash) {
+                Write-Warning "File hash matches old version - file may not have been updated"
+            }
+            
+            # Critical check: modification time must be recent (within last 2 minutes)
+            if ($timeDiff.TotalMinutes -gt 2) {
+                Write-Warning "WARNING: File modification time is $([math]::Round($timeDiff.TotalMinutes, 1)) minutes old!"
+                Write-Warning "This indicates the file was NOT updated despite hash match."
+                Write-Warning "The old file is still present. Windows may be caching the file."
+                Write-Info "Try:"
+                Write-Info "  1. Close all PowerShell/terminal windows"
+                Write-Info "  2. Restart your computer"
+                Write-Info "  3. Run the installer again"
             } else {
-                Write-Success "Installed 'persistenceai' command ($([math]::Round($targetFileInfo.Length/1MB, 2)) MB)"
-                Write-Info "File updated at: $targetModTime"
-                
-                # Verify modification time is recent (within last 5 minutes)
-                $timeDiff = (Get-Date) - $targetModTime
-                if ($timeDiff.TotalMinutes -gt 5) {
-                    Write-Warning "WARNING: File modification time is $([math]::Round($timeDiff.TotalMinutes, 1)) minutes old!"
-                    Write-Warning "This indicates the file was NOT updated. The old file is still present."
-                }
+                Write-Success "File modification time is recent - file was successfully updated"
             }
         } else {
-            Write-Warning "File verification failed - size or hash mismatch"
-            Write-Info "Source size: $($sourceFileInfo.Length) bytes, Target size: $($targetFileInfo.Length) bytes"
+            Write-Warning "File verification FAILED - hash mismatch!"
+            Write-Warning "Source hash: $($sourceHash.Substring(0, 16))..."
+            Write-Warning "Target hash: $($targetHash.Substring(0, 16))..."
+            Write-Warning "Source size: $([math]::Round($sourceFileInfo.Length/1MB, 2)) MB"
+            Write-Warning "Target size: $([math]::Round($targetSize/1MB, 2)) MB"
+            Write-Warning "The file was NOT properly replaced!"
         }
     }
     
@@ -828,53 +856,57 @@ try {
             Start-Sleep -Seconds 1
         }
         
-        # Copy new file - use multiple strategies for locked files
+        # Replace file - use Move-Item for atomic replacement (like OpenCode's mv command)
+        $paiFileReplaced = $false
+        
         if (Test-Path $paiTargetPath) {
-            Write-Warning "Target file still exists (may be locked), trying multiple replacement strategies..."
+            Write-Info "Replacing existing pai.exe (using atomic move operation)..."
             
-            # Strategy 1: Try robocopy
-            $success = $false
+            # Strategy 1: Try Move-Item directly (most atomic)
             try {
-                Write-Info "Attempting robocopy replacement..."
-                $tempDir = Join-Path $env:TEMP "pai-replace-$(Get-Date -Format 'yyyyMMddHHmmss')"
-                New-Item -ItemType Directory -Path $tempDir -Force | Out-Null
-                $tempFile = Join-Path $tempDir (Split-Path $paiTargetPath -Leaf)
-                Copy-Item -Path $paiExePath -Destination $tempFile -Force
-                
-                $null = & robocopy $tempDir (Split-Path $paiTargetPath -Parent) (Split-Path $paiTargetPath -Leaf) /PURGE /MOV /R:10 /W:3 /NP /NFL /NDL /NJH /NJS 2>&1
-                $robocopyExitCode = $LASTEXITCODE
-                
-                if ($robocopyExitCode -le 7) {
-                    Write-Success "Successfully replaced file using robocopy"
-                    $success = $true
-                }
-                
-                Remove-Item -Path $tempDir -Recurse -Force -ErrorAction SilentlyContinue
+                Move-Item -Path $paiExePath -Destination $paiTargetPath -Force -ErrorAction Stop
+                Write-Success "Successfully replaced pai.exe using Move-Item"
+                $paiFileReplaced = $true
             } catch {
-                Write-Warning "Robocopy approach failed: $_"
+                Write-Warning "Move-Item failed: $_"
             }
             
-            # Strategy 2: Rename-then-copy
-            if (-not $success) {
+            # Strategy 2: Robocopy
+            if (-not $paiFileReplaced) {
                 try {
-                    Write-Info "Attempting rename-then-copy strategy..."
+                    $tempDir = Join-Path $env:TEMP "pai-replace-$(Get-Date -Format 'yyyyMMddHHmmss')"
+                    New-Item -ItemType Directory -Path $tempDir -Force | Out-Null
+                    $tempFile = Join-Path $tempDir (Split-Path $paiTargetPath -Leaf)
+                    Copy-Item -Path $paiExePath -Destination $tempFile -Force
+                    
+                    $null = & robocopy $tempDir (Split-Path $paiTargetPath -Parent) (Split-Path $paiTargetPath -Leaf) /PURGE /MOV /R:10 /W:3 /NP /NFL /NDL /NJH /NJS 2>&1
+                    if ($LASTEXITCODE -le 7) {
+                        Write-Success "Successfully replaced pai.exe using robocopy"
+                        $paiFileReplaced = $true
+                    }
+                    Remove-Item -Path $tempDir -Recurse -Force -ErrorAction SilentlyContinue
+                } catch {
+                    Write-Warning "Robocopy approach failed: $_"
+                }
+            }
+            
+            # Strategy 3: Rename-then-move
+            if (-not $paiFileReplaced) {
+                try {
                     $oldFileBackup = "$paiTargetPath.old.$(Get-Date -Format 'yyyyMMddHHmmss')"
                     Rename-Item -Path $paiTargetPath -NewName (Split-Path $oldFileBackup -Leaf) -Force -ErrorAction Stop
                     Start-Sleep -Milliseconds 500
-                    Copy-Item -Path $paiExePath -Destination $paiTargetPath -Force
-                    Write-Success "Successfully replaced file using rename-then-copy"
-                    $success = $true
+                    Move-Item -Path $paiExePath -Destination $paiTargetPath -Force -ErrorAction Stop
+                    Write-Success "Successfully replaced pai.exe using rename-then-move"
+                    $paiFileReplaced = $true
                 } catch {
-                    Write-Warning "Rename approach failed: $_"
+                    Write-Warning "Rename-then-move approach failed: $_"
+                    Copy-Item -Path $paiExePath -Destination $paiTargetPath -Force
                 }
             }
-            
-            # Strategy 3: Direct copy
-            if (-not $success) {
-                Copy-Item -Path $paiExePath -Destination $paiTargetPath -Force
-            }
         } else {
-            Copy-Item -Path $paiExePath -Destination $paiTargetPath -Force
+            Move-Item -Path $paiExePath -Destination $paiTargetPath -Force
+            $paiFileReplaced = $true
         }
         
         # Try to clean up the old backup file if it exists
