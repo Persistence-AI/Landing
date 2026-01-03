@@ -1912,7 +1912,23 @@ persistenceai run --model ollama/llama3</code>
                         <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
                     </svg>
                 </span>
-                Windows (PowerShell)
+                Windows (PowerShell) - Recommended
+            </h4>
+            <p>Download and run the uninstall script (handles file locks automatically)</p>
+            <div class="command">
+                iwr -useb https://persistence-ai.github.io/Landing/uninstall.ps1 | iex
+                <button class="command-copy" onclick="copyToClipboard('iwr -useb https://persistence-ai.github.io/Landing/uninstall.ps1 | iex', this, 'windows')">Copy</button>
+            </div>
+        </div>
+
+        <div class="install-method" style="margin-top: 1rem;">
+            <h4>
+                <span class="icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                    </svg>
+                </span>
+                Windows (PowerShell) - Manual
             </h4>
             <p>Completely remove PersistenceAI including binaries, cache, and config files</p>
             <div class="command">
