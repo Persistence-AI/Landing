@@ -1912,28 +1912,12 @@ persistenceai run --model ollama/llama3</code>
                         <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
                     </svg>
                 </span>
-                Windows (PowerShell) - Recommended
+                Windows (PowerShell)
             </h4>
-            <p>Download and run the uninstall script (handles file locks automatically)</p>
+            <p>Completely remove PersistenceAI including binaries, cache, and config files (handles file locks automatically)</p>
             <div class="command">
                 iwr -useb https://persistence-ai.github.io/Landing/uninstall.ps1 | iex
                 <button class="command-copy" onclick="copyToClipboard('iwr -useb https://persistence-ai.github.io/Landing/uninstall.ps1 | iex', this, 'windows')">Copy</button>
-            </div>
-        </div>
-
-        <div class="install-method" style="margin-top: 1rem;">
-            <h4>
-                <span class="icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                    </svg>
-                </span>
-                Windows (PowerShell) - Manual
-            </h4>
-            <p>Completely remove PersistenceAI including binaries, cache, and config files</p>
-            <div class="command">
-                # Stop running processes<br>Get-Process | Where-Object { $_.ProcessName -eq &quot;pai&quot; -or $_.ProcessName -eq &quot;persistenceai&quot; } | Stop-Process -Force -ErrorAction SilentlyContinue<br>Start-Sleep -Seconds 2<br># Find all pai/persistenceai installations<br>$installDirs = @()<br>$paiCmd = Get-Command -Name &quot;pai&quot; -ErrorAction SilentlyContinue<br>$persistenceaiCmd = Get-Command -Name &quot;persistenceai&quot; -ErrorAction SilentlyContinue<br>if ($paiCmd) { $installDirs += Split-Path $paiCmd.Source -Parent }<br>if ($persistenceaiCmd) { $installDirs += Split-Path $persistenceaiCmd.Source -Parent }<br>$installDirs = $installDirs | Select-Object -Unique<br># Remove found installation directories<br>foreach ($dir in $installDirs) { if (Test-Path $dir) { Remove-Item -Path $dir -Recurse -Force -ErrorAction SilentlyContinue; Write-Host &quot;Removed: $dir&quot; } }<br># Remove standard directories<br>$dirs = @(&quot;$env:USERPROFILE\.persistenceai&quot;, &quot;$env:USERPROFILE\.pai&quot;, &quot;$env:USERPROFILE\.config\persistenceai&quot;, &quot;$env:USERPROFILE\.config\pai&quot;, &quot;$env:LOCALAPPDATA\persistenceai&quot;, &quot;$env:LOCALAPPDATA\pai&quot;)<br>foreach ($dir in $dirs) { if (Test-Path $dir) { Remove-Item -Path $dir -Recurse -Force -ErrorAction SilentlyContinue } }<br># Remove from PATH (User and System)<br>$userPath = [Environment]::GetEnvironmentVariable(&quot;Path&quot;, &quot;User&quot;)<br>if ($userPath) {<br>&nbsp;&nbsp;$newUserPath = ($userPath -split &quot;;&quot; | Where-Object { $_ -and $_ -notmatch &quot;\.persistenceai&quot; -and $_ -notmatch &quot;\.pai&quot; }) -join &quot;;&quot;<br>&nbsp;&nbsp;[Environment]::SetEnvironmentVariable(&quot;Path&quot;, $newUserPath, &quot;User&quot;)<br>}<br># Update current session PATH<br>$env:Path = ($env:Path -split &quot;;&quot; | Where-Object { $_ -and $_ -notmatch &quot;\.persistenceai&quot; -and $_ -notmatch &quot;\.pai&quot; }) -join &quot;;&quot;<br>Write-Host &quot;PersistenceAI completely uninstalled. Please restart PowerShell for changes to take effect.&quot; -ForegroundColor Green
-                <button class="command-copy" onclick="copyToClipboard('# Stop running processes\nGet-Process | Where-Object { $_.ProcessName -eq \'pai\' -or $_.ProcessName -eq \'persistenceai\' } | Stop-Process -Force -ErrorAction SilentlyContinue\nStart-Sleep -Seconds 2\n# Find all pai/persistenceai installations\n$installDirs = @()\n$paiCmd = Get-Command -Name \'pai\' -ErrorAction SilentlyContinue\n$persistenceaiCmd = Get-Command -Name \'persistenceai\' -ErrorAction SilentlyContinue\nif ($paiCmd) { $installDirs += Split-Path $paiCmd.Source -Parent }\nif ($persistenceaiCmd) { $installDirs += Split-Path $persistenceaiCmd.Source -Parent }\n$installDirs = $installDirs | Select-Object -Unique\n# Remove found installation directories\nforeach ($dir in $installDirs) { if (Test-Path $dir) { Remove-Item -Path $dir -Recurse -Force -ErrorAction SilentlyContinue; Write-Host \'Removed: $dir\' } }\n# Remove standard directories\n$dirs = @(\'$env:USERPROFILE\\.persistenceai\', \'$env:USERPROFILE\\.pai\', \'$env:USERPROFILE\\.config\\persistenceai\', \'$env:USERPROFILE\\.config\\pai\', \'$env:LOCALAPPDATA\\persistenceai\', \'$env:LOCALAPPDATA\\pai\')\nforeach ($dir in $dirs) { if (Test-Path $dir) { Remove-Item -Path $dir -Recurse -Force -ErrorAction SilentlyContinue } }\n# Remove from PATH (User and System)\n$userPath = [Environment]::GetEnvironmentVariable(\'Path\', \'User\')\nif ($userPath) {\n  $newUserPath = ($userPath -split \';\' | Where-Object { $_ -and $_ -notmatch \'\\.persistenceai\' -and $_ -notmatch \'\\.pai\' }) -join \';\'\n  [Environment]::SetEnvironmentVariable(\'Path\', $newUserPath, \'User\')\n}\n# Update current session PATH\n$env:Path = ($env:Path -split \';\' | Where-Object { $_ -and $_ -notmatch \'\\.persistenceai\' -and $_ -notmatch \'\\.pai\' }) -join \';\'\nWrite-Host \'PersistenceAI completely uninstalled. Please restart PowerShell for changes to take effect.\' -ForegroundColor Green', this, 'windows')">Copy</button>
             </div>
         </div>
 
