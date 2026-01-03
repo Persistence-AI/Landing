@@ -195,7 +195,7 @@ if ($existingPath) {
 # Download Function (Simplified)
 # ============================================================================
 
-function Download-Binary {
+function Get-Binary {
     param(
         [string]$Url,
         [string]$OutputPath
