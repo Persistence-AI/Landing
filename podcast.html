@@ -163,6 +163,47 @@
             height: 40px;
         }
 
+        /* Video Section */
+        .intro-video-container {
+            margin: 3rem 0;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .intro-video-header {
+            padding: 1rem 1.5rem;
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .intro-video-header h2 {
+            color: var(--accent);
+            font-size: 1.25rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .intro-video-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            background: #000;
+        }
+
+        .intro-video-wrapper video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
         .coming-soon {
             text-align: center;
             padding: 4rem 2rem;
@@ -226,6 +267,18 @@
                 gap: 1rem;
                 font-size: 0.85rem;
             }
+
+            .intro-video-container {
+                margin: 2rem 0;
+            }
+
+            .intro-video-header {
+                padding: 0.75rem 1rem;
+            }
+
+            .intro-video-header h2 {
+                font-size: 1.1rem;
+            }
         }
     </style>
 </head>
@@ -253,6 +306,24 @@
     <main>
         <h1>🎙️ PersistenceAI Podcast</h1>
         <p class="subtitle">Discussions about AI development, coding agents, and software engineering</p>
+
+        <!-- Introduction Video -->
+        <div class="intro-video-container">
+            <div class="intro-video-header">
+                <h2>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="5 3 19 12 5 21 5 3"/>
+                    </svg>
+                    Introduction Video
+                </h2>
+            </div>
+            <div class="intro-video-wrapper">
+                <video controls preload="metadata" poster="">
+                    <source src="./assets/introduction-video.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
 
         <div class="coming-soon">
             <h2>Coming Soon</h2>
