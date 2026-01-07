@@ -1598,8 +1598,8 @@
                              src="assets/tui-home-preview.png" 
                              alt="PersistenceAI TUI Home Screen" 
                              class="screenshot-img"
-                             onload="if (this.naturalWidth > 1 && this.naturalHeight > 1) { this.classList.add('loaded'); const placeholder = document.getElementById('tui-home-placeholder'); if (placeholder) placeholder.classList.add('hidden'); }"
-                             onerror="this.style.display='none';">
+                             onload="this.classList.add('loaded'); const placeholder = document.getElementById('tui-home-placeholder'); if (placeholder) placeholder.classList.add('hidden');"
+                             onerror="console.error('Failed to load tui-home-preview.png'); const placeholder = document.getElementById('tui-home-placeholder'); if (placeholder) { placeholder.querySelector('p').innerHTML = 'Image failed to load<br/><small>Check console for details</small>'; }">
                     </div>
                 </div>
                 <div class="screenshot-card">
@@ -1626,8 +1626,8 @@
                              src="assets/tui-multipane-preview.png" 
                              alt="PersistenceAI TUI Multi-Pane Interface" 
                              class="screenshot-img"
-                             onload="if (this.naturalWidth > 1 && this.naturalHeight > 1) { this.classList.add('loaded'); const placeholder = document.getElementById('tui-multipane-placeholder'); if (placeholder) placeholder.classList.add('hidden'); }"
-                             onerror="this.style.display='none';">
+                             onload="this.classList.add('loaded'); const placeholder = document.getElementById('tui-multipane-placeholder'); if (placeholder) placeholder.classList.add('hidden');"
+                             onerror="console.error('Failed to load tui-multipane-preview.png'); const placeholder = document.getElementById('tui-multipane-placeholder'); if (placeholder) { placeholder.querySelector('p').innerHTML = 'Image failed to load<br/><small>Check console for details</small>'; }">
                     </div>
                 </div>
             </div>
@@ -3797,6 +3797,42 @@ persistenceai github install
                 card.style.transitionDelay = `${index * 0.15}s`;
                 observer.observe(card);
             });
+
+            // Ensure screenshot images load correctly
+            const homeImg = document.getElementById('tui-home-img');
+            const multipaneImg = document.getElementById('tui-multipane-img');
+            
+            if (homeImg) {
+                // Force reload if not already loaded
+                if (!homeImg.complete || homeImg.naturalHeight === 0) {
+                    homeImg.onload = function() {
+                        this.classList.add('loaded');
+                        const placeholder = document.getElementById('tui-home-placeholder');
+                        if (placeholder) placeholder.classList.add('hidden');
+                    };
+                } else {
+                    // Already loaded
+                    homeImg.classList.add('loaded');
+                    const placeholder = document.getElementById('tui-home-placeholder');
+                    if (placeholder) placeholder.classList.add('hidden');
+                }
+            }
+            
+            if (multipaneImg) {
+                // Force reload if not already loaded
+                if (!multipaneImg.complete || multipaneImg.naturalHeight === 0) {
+                    multipaneImg.onload = function() {
+                        this.classList.add('loaded');
+                        const placeholder = document.getElementById('tui-multipane-placeholder');
+                        if (placeholder) placeholder.classList.add('hidden');
+                    };
+                } else {
+                    // Already loaded
+                    multipaneImg.classList.add('loaded');
+                    const placeholder = document.getElementById('tui-multipane-placeholder');
+                    if (placeholder) placeholder.classList.add('hidden');
+                }
+            }
 
             // Animate install cards
             document.querySelectorAll('.install-card').forEach((card, index) => {
