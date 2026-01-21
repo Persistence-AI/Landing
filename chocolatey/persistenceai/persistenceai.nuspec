@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>persistenceai</id>
+    <version>1.0.14</version>
+    <title>PersistenceAI</title>
+    <authors>Persistence-AI</authors>
+    <owners>Persistence-AI</owners>
+    <projectUrl>https://github.com/Persistence-AI/Landing</projectUrl>
+    <description>The AI coding agent built for the terminal. PersistenceAI is an agentic coding extension that provides intelligent code assistance directly in your terminal.</description>
+    <summary>AI coding agent for the terminal</summary>
+    <releaseNotes>https://github.com/Persistence-AI/Landing/releases</releaseNotes>
+    <tags>ai coding agent terminal cli development tools</tags>
+    <license type="expression">MIT</license>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <packageSourceUrl>https://github.com/Persistence-AI/Landing</packageSourceUrl>
+    <docsUrl>https://persistence-ai.github.io/Landing</docsUrl>
+    <bugTrackerUrl>https://github.com/Persistence-AI/Landing/issues</bugTrackerUrl>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>

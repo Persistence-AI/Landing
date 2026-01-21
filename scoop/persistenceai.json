@@ -1,0 +1,38 @@
+{
+  "version": "1.0.14",
+  "description": "The AI coding agent built for the terminal",
+  "homepage": "https://github.com/Persistence-AI/Landing",
+  "license": "MIT",
+  "architecture": {
+    "64bit": {
+      "url": "https://github.com/Persistence-AI/Landing/releases/download/v1.0.14/persistenceai-windows-x64-v1.0.14.zip",
+      "hash": "",
+      "extract_dir": ""
+    }
+  },
+  "bin": [
+    [
+      "bin/persistenceai.exe",
+      "persistenceai"
+    ],
+    [
+      "bin/pai.exe",
+      "pai"
+    ]
+  ],
+  "checkver": {
+    "github": "https://github.com/Persistence-AI/Landing"
+  },
+  "autoupdate": {
+    "architecture": {
+      "64bit": {
+        "url": "https://github.com/Persistence-AI/Landing/releases/download/v$version/persistenceai-windows-x64-v$version.zip"
+      }
+    }
+  },
+  "notes": [
+    "PersistenceAI is now installed!",
+    "Run 'persistenceai' or 'pai' to start using it.",
+    "For more information, visit: https://persistence-ai.github.io/Landing"
+  ]
+}
