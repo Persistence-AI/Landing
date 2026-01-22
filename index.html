@@ -474,6 +474,24 @@
             margin: 0 0.25rem;
         }
 
+        /* Slashed Zero Style */
+        .slashed-zero {
+            position: relative;
+            display: inline-block;
+        }
+
+        .slashed-zero::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2.5px;
+            background: currentColor;
+            transform: translateY(-50%) rotate(-45deg);
+            pointer-events: none;
+        }
+
         /* Icon Styles */
         .icon {
             display: inline-block;
@@ -867,10 +885,10 @@
                         <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
                     </svg>
                 </span>
-                Introducing Agent <span style="position: relative; display: inline-block; font-family: 'Courier New', monospace;">0<span style="position: absolute; top: 50%; left: 0; right: 0; height: 2px; background: var(--accent); transform: translateY(-50%) rotate(-45deg); pointer-events: none;"></span></span>
+                Introducing Agent <span class="slashed-zero" style="color: var(--accent);">0</span>
             </h2>
             <p style="font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 2rem; line-height: 1.8; text-align: center;">
-                Your AI coding assistant just got smarter. Agent <span style="position: relative; display: inline-block; font-family: 'Courier New', monospace;">0<span style="position: absolute; top: 50%; left: 0; right: 0; height: 1.5px; background: var(--accent); transform: translateY(-50%) rotate(-45deg); pointer-events: none;"></span></span> is PersistenceAI's proprietary intelligent enhancement layer that learns from every session, continuously improving code quality, reducing errors, and speeding up your workflow.
+                Your AI coding assistant just got smarter. Agent <span class="slashed-zero" style="color: var(--accent);">0</span> is PersistenceAI's proprietary intelligent enhancement layer that learns from every session, continuously improving code quality, reducing errors, and speeding up your workflow.
             </p>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin: 2rem 0;">
                 <div class="feature-card" style="text-align: center; padding: 2rem;">
