@@ -317,6 +317,35 @@
             animation: counterPulse 0.4s ease;
         }
 
+        .traffic-counter {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .traffic-metric {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .traffic-value {
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .traffic-value.updated {
+            animation: counterPulse 0.4s ease;
+        }
+
+        .traffic-separator {
+            color: var(--border);
+        }
+
         @keyframes counterPulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.15); color: var(--accent-bright); }
@@ -796,6 +825,7 @@
                 <a href="#examples">Examples</a>
                 <a href="#install">Install</a>
                 <a href="#configure">Configure</a>
+                <a href="podcast.html">Podcast</a>
                 <a href="#changelog">Changelog</a>
                 <a href="#faq">FAQ</a>
                 <a href="https://github.com/Persistence-AI" class="github-btn" target="_blank" rel="noopener" style="text-decoration: none;">
@@ -868,6 +898,17 @@
                         <span class="copy-counter-platform-name">Mac:</span>
                         <span class="copy-counter-platform-value" id="hero-mac-count">0</span>
                     </div>
+                </div>
+            </div>
+            <div class="traffic-counter" id="traffic-counter">
+                <div class="traffic-metric">
+                    <span class="traffic-value" id="visitor-count">0</span>
+                    <span class="traffic-label">visitors</span>
+                </div>
+                <span class="traffic-separator">|</span>
+                <div class="traffic-metric">
+                    <span class="traffic-value" id="pageview-count">0</span>
+                    <span class="traffic-label">page views</span>
                 </div>
             </div>
         </div>
@@ -2373,6 +2414,7 @@ persistenceai github install
             <a href="#changelog">Changelog</a>
             <a href="https://github.com/Persistence-AI" target="_blank" rel="noopener">Persistence Zero</a>
             <a href="https://persistence-ai.github.io/Landing/docs/" target="_blank" rel="noopener">Documentation</a>
+            <a href="https://persistence-ai.github.io/Landing/podcast.html" target="_blank" rel="noopener">Podcast</a>
             <a href="https://discord.gg/persistenceai" target="_blank" rel="noopener">Discord</a>
             <a href="https://x.com/AiPersiste65218" target="_blank" rel="noopener">X.com</a>
         </div>
@@ -2395,6 +2437,16 @@ persistenceai github install
             linux: 0,
             mac: 0,
             total: 0
+        };
+
+        const TRAFFIC_GIST_ID = '';
+        const TRAFFIC_READ_ENABLED = Boolean(TRAFFIC_GIST_ID);
+        const TRAFFIC_WRITE_ENDPOINT = '';
+        const TRAFFIC_WRITE_ENABLED = Boolean(TRAFFIC_WRITE_ENDPOINT);
+
+        let trafficStats = {
+            visitors: 92,
+            pageViews: 92
         };
 
         // Session management
@@ -2520,6 +2572,166 @@ persistenceai github install
         // Format number with commas
         function formatNumber(num) {
             return num.toLocaleString('en-US');
+        }
+
+        function updateTrafficDisplay(animate = false) {
+            const visitorEl = document.getElementById('visitor-count');
+            const pageViewEl = document.getElementById('pageview-count');
+
+            if (visitorEl) {
+                visitorEl.textContent = formatNumber(trafficStats.visitors);
+                if (animate) {
+                    visitorEl.classList.add('updated');
+                    setTimeout(() => visitorEl.classList.remove('updated'), 400);
+                }
+            }
+
+            if (pageViewEl) {
+                pageViewEl.textContent = formatNumber(trafficStats.pageViews);
+                if (animate) {
+                    pageViewEl.classList.add('updated');
+                    setTimeout(() => pageViewEl.classList.remove('updated'), 400);
+                }
+            }
+        }
+
+        function loadTrafficFromStorage() {
+            const stored = localStorage.getItem('persistenceai_traffic_stats');
+            if (!stored) {
+                return;
+            }
+            try {
+                const parsed = JSON.parse(stored);
+                trafficStats = {
+                    visitors: parseInt(parsed.visitors || 0, 10),
+                    pageViews: parseInt(parsed.pageViews || 0, 10)
+                };
+            } catch (e) {
+                console.error('Error parsing stored traffic stats:', e);
+            }
+        }
+
+        function saveTrafficToStorage() {
+            localStorage.setItem('persistenceai_traffic_stats', JSON.stringify(trafficStats));
+        }
+
+        function getDateKey() {
+            return new Date().toISOString().split('T')[0];
+        }
+
+        async function getVisitorFingerprint() {
+            const input = [
+                navigator.userAgent,
+                navigator.language,
+                screen.width,
+                screen.height,
+                screen.colorDepth,
+                Intl.DateTimeFormat().resolvedOptions().timeZone || 'unknown'
+            ].join('|');
+            const encoded = new TextEncoder().encode(input);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', encoded);
+            return Array.from(new Uint8Array(hashBuffer))
+                .map((b) => b.toString(16).padStart(2, '0'))
+                .join('');
+        }
+
+        function getFallbackFingerprint() {
+            const key = 'persistenceai_fallback_fingerprint';
+            let fingerprint = localStorage.getItem(key);
+            if (!fingerprint) {
+                fingerprint = `fp_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+                localStorage.setItem(key, fingerprint);
+            }
+            return fingerprint;
+        }
+
+        async function refreshTrafficFromGist() {
+            if (!TRAFFIC_READ_ENABLED) {
+                return;
+            }
+            try {
+                const response = await fetch(`https://api.github.com/gists/${TRAFFIC_GIST_ID}`);
+                if (!response.ok) {
+                    return;
+                }
+                const gist = await response.json();
+                const filename = Object.keys(gist.files || {})[0];
+                if (!filename) {
+                    return;
+                }
+                const content = gist.files[filename].content;
+                const parsed = JSON.parse(content);
+                if (parsed && parsed.visitors && parsed.pageViews) {
+                    trafficStats = {
+                        visitors: parseInt(parsed.visitors.total || 0, 10),
+                        pageViews: parseInt(parsed.pageViews.total || 0, 10)
+                    };
+                    updateTrafficDisplay();
+                    saveTrafficToStorage();
+                }
+            } catch (e) {
+                console.error('Error fetching traffic stats:', e);
+            }
+        }
+
+        async function trackPageView() {
+            let fingerprint = '';
+            try {
+                fingerprint = await getVisitorFingerprint();
+            } catch (e) {
+                fingerprint = getFallbackFingerprint();
+            }
+
+            const today = getDateKey();
+
+            if (!TRAFFIC_WRITE_ENABLED) {
+                const seenKey = 'persistenceai_visitor_seen';
+                if (!localStorage.getItem(seenKey)) {
+                    trafficStats.visitors += 1;
+                    localStorage.setItem(seenKey, 'true');
+                }
+                trafficStats.pageViews += 1;
+                updateTrafficDisplay(true);
+                saveTrafficToStorage();
+                return;
+            }
+
+            try {
+                const response = await fetch(TRAFFIC_WRITE_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        type: 'pageView',
+                        fingerprint,
+                        date: today
+                    })
+                });
+
+                if (!response.ok) {
+                    return;
+                }
+
+                const result = await response.json();
+                if (result && result.stats && result.stats.visitors && result.stats.pageViews) {
+                    trafficStats = {
+                        visitors: parseInt(result.stats.visitors.total || 0, 10),
+                        pageViews: parseInt(result.stats.pageViews.total || 0, 10)
+                    };
+                    updateTrafficDisplay(true);
+                    saveTrafficToStorage();
+                }
+            } catch (e) {
+                console.error('Error tracking page view:', e);
+            }
+        }
+
+        async function initializeTrafficStats() {
+            loadTrafficFromStorage();
+            updateTrafficDisplay();
+            await refreshTrafficFromGist();
+            await trackPageView();
         }
 
         // Track copy event by platform with rate limiting
@@ -2678,6 +2890,7 @@ persistenceai github install
         // Initialize counter on page load
         document.addEventListener('DOMContentLoaded', function() {
             initializeCounter();
+            initializeTrafficStats();
             
             // Auto-detect platform and show appropriate command
             const platform = detectPlatform();
